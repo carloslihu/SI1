@@ -8,20 +8,20 @@
 <body>
     <!--   empieza el copypaste-->
     <div class="header">
-        <h1>Tienda de DVDs</h1>
-        <p>No vendemos peces</p>
+        <h1><a href="index.html">Tienda de DVDs</a></h1>
+        <p>Tu tienda de confianza</p>
     </div>
 
     <div class="topnav">
-        <a href="index.html" style="float:right;">Cesta</a>
-        <a href="index.html" style="float:right;">Login</a>
-        <a href="register.html" style="float:right;">Registrarse</a>
+        <a href="index.html">Cesta</a>
+        <a href="history.html">Perfil</a>
+        <a href="index.html">Cerrar Sesion</a>
     </div>
 
     <div class="row">
         <div class="column side">
             <h2>Menu</h2>
-                        <pre>
+            <pre>
 <a href= "">Recientes</a>
 
 <a href= "">Destacados</a>
@@ -36,21 +36,62 @@
             </pre>
         </div>
         <div class="column middle">
-            <h2>Contenido</h2>
             <!--            acaba el copypaste-->
+            <h2>Perfil del usuario:</h2>
+            <p><b>Nombre Usuario:</b> JavGomez
+            </p>
+            <p><b>E-mail:</b> carlos.li@estudiante.uam.es
+            </p>
+
+            <hr>
+            <h2>Historial:</h2>
             <table id="history">
                 <tr>
                     <th>Película</th>
+                    <th>Precio</th>
                     <th>Fecha</th>
+
                 </tr>
                 <tr>
-                    <td>GioGio's Bizarre Adventure
-                    <img src="../img/searchicon.png">
-                    
-                </img>
+                    <td>
+                        <div class="responsive">
+                            <div class="gallery">
+                                <a target="_blank" href="product.html">
+                                    <img src="../img/SOTL.jpg" width="100" height="100">
+                                </a>
+                                <div class="desc">El silencio de los corderos</div>
+                            </div>
+                        </div>
                     </td>
-                    <td>Not yet</td>
+
+                    <td>10€
+                    </td>
+
+                    <td>12-12-2012</td>
                 </tr>
+
+
+
+                <tr>
+                    <td>
+                        <div class="responsive">
+                            <div class="gallery">
+                                <a target="_blank" href="product.html">
+                                    <img src="../img/JAWS.JPG" width="100" height="100">
+                                </a>
+                                <div class="desc">JAWS</div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>12€
+                    </td>
+
+                    <td>12-12-2012</td>
+                </tr>
+
+
+
             </table>
             <!--   empieza el copypaste-->
             <div class="clearfix"></div>

@@ -56,13 +56,18 @@ body {
 /* Left and right column */
 
 .column.side {
+    border: 10px;
     width: 25%;
+    border-right: 1px solid black;
+    
 }
 
 
 /* Middle column */
 
 .column.middle {
+        border-left: 1px solid black;
+    margin-left: -1px;
     width: 75%;
 }
 
@@ -112,10 +117,6 @@ div.desc {
     text-align: center;
 }
 
-* {
-    box-sizing: border-box;
-}
-
 .responsive {
     padding: 0 6px;
     float: left;
@@ -139,6 +140,7 @@ div.desc {
     content: "";
     display: table;
     clear: both;
+    overflow: auto;
 }
 /*dropdowns*/
 .dropbtn {
