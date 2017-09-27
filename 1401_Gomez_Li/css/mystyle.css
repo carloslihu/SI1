@@ -11,17 +11,33 @@ body {
 
 .header {
     background-color: #f1f1f1;
-    padding: 20px;
+    padding: 1em;
     text-align: center;
-    /*text-shadow: 2px 2px blue;*/
+    top: 0;
+    position: fixed;
+    width: 100%;
+    margin-bottom: 20px;
+    height: 50px;
+    vertical-align: top;
+}
+
+.header_text{
+    height: 0;
+    vertical-align: top;
+    margin-top: 0;
 }
 
 
 /* Style the top navigation bar */
 
 .topnav {
+    margin-top: 50px;
     overflow: hidden;
     background-color: #333;
+    position: fixed;
+    width: 100%;
+    /*padding-top: 165px;
+    height: 200px;*/
 }
 
 
@@ -32,7 +48,8 @@ body {
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 14px 16px;
+    padding-top: 100px;
+    padding: 10px 10px;
     text-decoration: none;
 }
 
@@ -50,6 +67,8 @@ body {
 .column {
     float: left;
     padding: 10px;
+    margin-top: 50px;
+    z-index: 100;
 }
 
 
@@ -59,14 +78,13 @@ body {
     border: 10px;
     width: 25%;
     border-right: 1px solid black;
-    
 }
 
 
 /* Middle column */
 
 .column.middle {
-        border-left: 1px solid black;
+    border-left: 1px solid black;
     margin-left: -1px;
     width: 75%;
 }
@@ -87,6 +105,9 @@ body {
     background-color: #f1f1f1;
     padding: 10px;
     text-align: center;
+    bottom: 0;
+    position: fixed;
+    width: 100%;
 }
 
 
@@ -142,7 +163,10 @@ div.desc {
     clear: both;
     overflow: auto;
 }
+
+
 /*dropdowns*/
+
 .dropbtn {
     background-color: #4CAF50;
     color: white;
@@ -155,6 +179,8 @@ div.desc {
 .dropdown {
     position: relative;
     display: inline-block;
+    z-index: ;
+    
 }
 
 .dropdown-content {
@@ -162,7 +188,7 @@ div.desc {
     position: absolute;
     background-color: #f9f9f9;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
@@ -173,7 +199,9 @@ div.desc {
     display: block;
 }
 
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content a:hover {
+    background-color: #f1f1f1
+}
 
 .dropdown:hover .dropdown-content {
     display: block;
@@ -182,6 +210,7 @@ div.desc {
 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
 }
+
 
 /*register section*/
 
@@ -218,6 +247,7 @@ div {
     background-color: #f2f2f2;
     padding: 20px;
 }
+
 
 /*history section*/
 
