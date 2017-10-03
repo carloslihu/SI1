@@ -17,11 +17,8 @@ body {
 
 .header {
     background-color: #f1f1f1;
-    /*padding: 1em;*/
     text-align: center;
     top: 0;
-    
-    /*margin-bottom: 20px;*/
     height: 50%;
     vertical-align: top;
 }
@@ -36,13 +33,10 @@ body {
 /* Style the top navigation bar */
 
 .topnav {
-    /*margin-top: 50px;*/
     overflow: hidden;
     background-color: #333;
     position: fixed;
     width: 100%;
-    /*padding-top: 165px;
-    height: 200px;*/
 }
 
 
@@ -53,7 +47,6 @@ body {
     display: block;
     color: #f2f2f2;
     text-align: center;
-    /*padding-top: 100px;*/
     padding: 0px 10px;
     text-decoration: none;
 }
@@ -67,7 +60,7 @@ body {
 }
 
 
-/* Create three unequal columns that floats next to each other */
+/* Create two unequal columns that floats next to each other */
 
 .column {
     float: left;
@@ -76,7 +69,7 @@ body {
 }
 
 
-/* Left and right column */
+/* Left column */
 
 .column.side {
     border: 10px;
