@@ -1,45 +1,14 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <link rel="stylesheet" type="text/css" href="../css/mystyle.css">
-    <meta charset="UTF-8">
-    <title>
-        Tienda DvDs
-    </title>
-</head>
+<?php include 'includes/head.php';?>
 
 <body>
     <!--   empieza el copypaste-->
-    <div class="pageTop">
-        <div class="header">
-            <p class="header_text"><a href="index.html">Tienda de DvD's</a></p>
-        </div>
-
-        <div class="topnav">
-            <a href="cesta.html">Cesta</a>
-            <a href="history.html">Perfil</a>
-            <a href="index.html">Cerrar Sesion</a>
-        </div>
-    </div>
+    <?php include 'includes/header.php';?>
 
     <div class="row">
-        <div class="column side">
-            <h2>Menu</h2>
-            <pre>
-<a href= "">Recientes</a>
-
-<a href= "">Destacados</a>
-
-<a href= "">Accion</a>
-
-<a href= "">Drama</a>
-
-<a href= "">Comedia</a>
-
-...           
-            </pre>
-        </div>
+        <?php include 'includes/lateral.php';?>
 
 
         <div class="column middle">
@@ -51,11 +20,11 @@
                 <!-- ELEMENTOS DE LA LISTA DE LA COMPRA -->
                 <div class="responsive">
                     <div class="gallery">
-                        <a href="product.html">
+                        <a href="product.php">
                             <img src="../img/JAWS.JPG" alt="Trolltunga Norway" width="100" height="100">
                         </a>
                         <div class="desc">
-                            <a href="product.html">
+                            <a href="product.php">
                                 <b>Jaws</b>
                             </a>
                             <br> Steven Spielberg
@@ -66,11 +35,11 @@
                 </div>
                 <div class="responsive">
                     <div class="gallery">
-                        <a href="product.html">
+                        <a href="product.php">
                             <img src="../img/JAWS.JPG" alt="Trolltunga Norway" width="100" height="100">
                         </a>
                         <div class="desc">
-                            <a href="product.html">
+                            <a href="product.php">
                                 <b>Jaws</b>
                             </a>
                             <br> Steven Spielberg
@@ -84,14 +53,7 @@
 
         </div>
     </div>
-    <div class="footer">
-
-        <pre id="footer-content">
-        <b>Para mas informacion:</b>
-        javier.gomezmartinez@estudiante.uam.es
-        carlos.li@estudiante.uam.es</pre>
-    </div>
-    <!--            acaba el copypaste-->
+    <?php include 'includes/footer.php';?>
 
 </body>
 
