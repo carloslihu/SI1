@@ -1,29 +1,45 @@
 <!DOCTYPE html>
 <html>
 
-<?php include 'includes/head.php';?>
+<head>
+    <?php include 'includes/head.php';?>
+    <script type="text/javascript" src="../js/register.js"></script>
+</head>
 
 <body>
     <?php
     //definir variables
     $username = $email = $password = $password2 = $bank_account="";
-    //debo mirar si estos controles los hago mejor en el cliente
-    /*if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (empty($_POST["username"])) {
-            $usernameErr = "Username is required";
-        }else{
-            $username=test_input($_POST["username"]);
+    $usernameErr = $passwordErr = "";
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $username=$_POST["username"];
+        $email = $_POST["email"];
+        $password = $_POST["password"];
+        $password2 = $_POST["password2"];
+        $bank_account=$_POST["bank_account"];
+        
+        
+        if(is_dir("../../usuarios/$username")==TRUE){
+            $usernameErr= 'Usuario ya existe';
         }
-        if (empty($_POST["email"])) {
-            $emailErr = "Email is required";
-        } else {
-            $email = test_input($_POST["email"]);
-            // check if e-mail address is well-formed
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-              $emailErr = "Invalid email format"; 
-            }
+        else{
+            mkdir("../../usuarios/$username");
+            $userfile=fopen("../../usuarios/$username/datos.dat", "x");
+            //haremos comprobacion de pass iguales en cliente
+            $hash=md5($password);
+            $txt = "$username\n$email\n".md5($password)."\n$bank_account\n".rand(0,100);
+            fwrite($userfile, $txt);
+            fclose($userfile);
+            
+            $userfile=fopen("../../usuarios/$username/historial.xml", "x");
+            fclose($userfile);
+
         }
+        
+        
     }
+        
+    /*
     function test_input($data) {
         $data = trim($data);
         $data = stripslashes($data);
@@ -41,22 +57,26 @@
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]);?>">
                         <label for="uname">Username</label>
                         <input type="text" id="uname" name="username" placeholder="Tu nombre de usuario.." value="<?php echo $username;?>">
-
-
+                        <span class="error"> <?php echo $usernameErr;?></span>
+                        <br>
 
                         <label for="email">E-mail</label>
-                        <input type="text" id="email" name="email" placeholder="Tu e-mail.." value="<?php echo $email;?>">
+                        <input type="email" id="email" name="email" placeholder="Tu e-mail.." value="<?php echo $email;?>" required>
 
 
                         <label for="pass">Contraseña</label>
-                        <input type="password" id="pass" name="password" placeholder="Tu contraseña.." value="<?php echo $password;?>">
+                        <input type="password" id="pass" name="password" placeholder="Tu contraseña.." value="<?php echo $password;?>" required>
 
 
                         <label for="pass2">Repite tu contraseña</label>
-                        <input type="password" id="pass2" name="password2" placeholder="Tu contraseña..." value="<?php echo $password2;?>">
+                        <input type="password" id="pass2" name="password2" placeholder="Tu contraseña..." value="<?php echo $password2;?>" required>
+                        <!--
+                        <span class="error"> <?php echo $passwordErr;?></span>
+                        <br>
+-->
 
                         <label for="bacc">Cuenta Bancaria</label>
-                        <input type="number" id="bacc" name="bank_account" placeholder="Tu cuenta bancaria..." value="<?php echo $bank_account;?>">
+                        <input type="number" id="bacc" name="bank_account" placeholder="Tu cuenta bancaria..." value="<?php echo $bank_account;?>" required>
 
                         <input type="submit" value="Registrarse">
                     </form>
