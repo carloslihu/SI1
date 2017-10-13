@@ -18,7 +18,8 @@
                 document.getElementById('passmsg').innerHTML = '';
             }
         }
-
+        //para lo del password strength
+        $(':password').pwstrength("forceUpdate");
     </script>
 </head>
 
