@@ -19,12 +19,12 @@
 
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if(empty($_POST["username"])){
-                        $loginERR = "usuario o contraseña incorrectos";
+                        $loginERR = "usuario o contrasena incorrectos";
                     } else {
                         $username = test_input($_POST["username"]);
                     }
                     if(empty($_POST["password"])){
-                        $loginERR = "usuario o contraseña incorrectos";
+                        $loginERR = "usuario o contrasena incorrectos";
                     } else {
                         $password = test_input($_POST["password"]);
                     }
@@ -45,8 +45,8 @@
                     <label for="uname">Username</label>
                     <input type="text" id="uname" name="username" placeholder="Tu nombre de usuario o tu e-mail..">
 
-                    <label for="pass">Contraseña</label>
-                    <input type="password" id="pass" name="password" placeholder="Tu contraseña..">
+                    <label for="pass">Contrasena</label>
+                    <input type="password" id="pass" name="password" placeholder="Tu contrasena..">
 
                     <input type="submit" value="Login">
                 </form>
