@@ -26,7 +26,7 @@
     <?php
     //definir variables
     $username = $email = $password = $password2 = $bank_account="";
-    $usernameErr = $passwordErr = "";
+    $usernameErr = $passwordErr = $registerErr="";
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username=$_POST["username"];
         $email = $_POST["email"];
@@ -49,7 +49,7 @@
             
             $userfile=fopen("../../usuarios/$username/historial.xml", "x");
             fclose($userfile);
-
+            $registerErr="Cuenta creada";
         }
         
         
@@ -91,7 +91,8 @@
 
                         <label for="bacc">Cuenta Bancaria</label>
                         <input type="number" id="bacc" name="bank_account" placeholder="Tu cuenta bancaria..." value="<?php echo $bank_account;?>" required>
-
+                        <span class="error"> <?php echo $registerErr;?></span>
+                        
                         <input type="submit" value="Registrarse">
                     </form>
 
