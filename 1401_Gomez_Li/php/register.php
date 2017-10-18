@@ -53,7 +53,6 @@
             $registerErr="Cuenta creada";
         }
         
-        
     }
         
     /*

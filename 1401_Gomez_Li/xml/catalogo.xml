@@ -1,9 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <catalogo>
     <pelicula>
-        <titulo>
-            La guerra de las galaxias: Episodio 1-La amenaza fantasma
-        </titulo>
-        <poster>imagenes/guerraepisodio1.jpg</poster>
+        <titulo>La guerra de las galaxias: Episodio 1-La amenaza fantasma</titulo>
+        <poster>../img/SWI.jpg</poster>
         <director>George Lucas</director>
         <precio>18,99</precio>
         <categoria>Aventura</categoria>
@@ -12,8 +11,25 @@
             <actor>
                 <nombre>Jake Lloyd</nombre>
                 <personaje>Anakin Skywalker</personaje>
-                <foto>imagenes/anakin.jpg</foto>
+                <foto>../img/anakin.jpg</foto>
             </actor>
         </actores>
     </pelicula>
+
+    <pelicula>
+        <titulo>Titulo</titulo>
+        <poster>../img/SWI.jpg</poster>
+        <director>George Lucas</director>
+        <precio>18,99</precio>
+        <categoria>Aventura</categoria>
+        <anno>1999</anno>
+        <actores>
+            <actor>
+                <nombre>Jake Lloyd</nombre>
+                <personaje>Anakin Skywalker</personaje>
+                <foto>../img/anakin.jpg</foto>
+            </actor>
+        </actores>
+    </pelicula>
+
 </catalogo>
