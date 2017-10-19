@@ -49,6 +49,11 @@ session_start();
                             $loginErr = "contraseña incorrecta";
                         }else{
                             $loginErr = "contraseña correcta";
+                            $_SESSION["username"] = $username;
+                            echo "Variable sesion: ".$_SESSION["username"];
+                            //expira en 1 dia
+                            setcookie("username", $username, time() + 86400, "/");
+                            echo " Cookie: ".$_COOKIE["username"];
                         }
                         fclose($userfile);
                     }
@@ -66,8 +71,9 @@ session_start();
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]);?>">
 
                             <label for="uname">Username</label>
-                            <input type="text" id="uname" name="username" placeholder="Tu nombre de usuario o tu e-mail.." value="<?php echo $username;?>" required>
-
+                            <input type="text" id="uname" name="username" placeholder="Tu nombre de usuario o tu e-mail.." required value="<?php
+                            if(isset($_COOKIE["username"]))
+                                echo $_COOKIE["username"];?>">
                             <label for="pass">Contrasena</label>
                             <input type="password" id="pass" name="password" placeholder="Tu contrasena.." value="<?php echo $password;?>" required>
                             <span class="error"><?php echo $loginErr; ?></span><br>
