@@ -3,29 +3,13 @@
 
 <head>
     <?php include 'includes/head.php';?>
-    <script type="text/javascript" src="../js/register.js"></script>
-    <script>
-        function check() {
-            if (document.getElementById('pass').value != '' && document.getElementById('pass2').value != '') {
-                if (document.getElementById('pass').value == document.getElementById('pass2').value) {
-                    document.getElementById('passmsg').style.color = 'green';
-                    document.getElementById('passmsg').innerHTML = 'contraseñas coinciden';
-                } else {
-                    document.getElementById('passmsg').style.color = 'red';
-                    document.getElementById('passmsg').innerHTML = 'contraseñas no coinciden';
-                }
-            } else {
-                document.getElementById('passmsg').innerHTML = '';
-            }
-        }
-        //para lo del password strength
-        $(':password').pwstrength("forceUpdate");
-    </script>
 </head>
 
 <body>
+   
     <?php
     //definir variables
+    
     $username = $email = $password = $password2 = $bank_account="";
     $usernameErr = $passwordErr = $registerErr="";
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -85,7 +69,7 @@
 
 
                         <label for="pass2">Repite tu contraseña</label>
-                        <input type="password" id="pass2" name="password2" placeholder="Tu contraseña..." value="<?php echo $password2;?>" pattern=".{8,}" required title="8 caracteres minimo" onkeyup='check();'>
+                        <input type="password" id="pass2" name="password2" placeholder="Tu contraseña..." value="<?php echo $password2;?>" pattern=".{8,}" required title="8 caracteres minimo" onkeyup="check()">
                         <span id='passmsg'></span>
                         <br>
 
