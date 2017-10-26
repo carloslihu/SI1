@@ -293,3 +293,20 @@ div {
     background-color: #4CAF50;
     color: white;
 }
+
+.weak-pass{
+    /*width: 25px;*/
+    background-color: red;
+}
+.ok-pass{
+    /*width: 50px;*/
+    background-color: orange;
+}
+.good-pass{
+    /*width: 75px;*/
+    background-color: yellow;
+}
+.great-pass{
+    /*width: 100px;*/
+    background-color: green;
+}

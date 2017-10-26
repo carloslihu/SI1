@@ -19,7 +19,49 @@
             }
         }
         //para lo del password strength
-        $(':password').pwstrength("forceUpdate");
+        function okPass(pass){
+            var pattern = /(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{8,})/g;
+            return pattern.test(pass);
+        }
+        function goodPass(pass){
+            var pattern = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/g;
+            return pattern.test(pass);
+        }
+        function greatPass(pass){
+            var pattern = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/g;
+            return pattern.test(pass);
+        }
+
+        function strength(){
+            
+            var pass = $('#pass').val();
+            var strength="";
+            var val=0;
+            if(pass.length < 8){
+                val = 0;
+            }
+            if(pass.length >= 8 && okPass(pass)){
+                strength = "weak-pass";
+                val+=25;
+            }
+            if(okPass(pass)){
+                strength = "ok-pass";
+                val+=25;
+            }
+            if(goodPass(pass)){
+                strength="good-pass";
+                val+=25;
+            }
+            val+=pass.length;
+            if(greatPass(pass)){
+                strength="great-pass";
+                val=100;
+            }
+            
+            $('#strength-meter').attr("class", strength);
+            $('#strength-meter').attr("value", val);
+            $('#strength-meter').text(strength);
+        }
     </script>
 </head>
 
@@ -81,7 +123,8 @@
 
 
                         <label for="pass">Contraseña</label>
-                        <input type="password" id="pass" name="password" placeholder="Tu contraseña.." value="<?php echo $password;?>" pattern=".{8,}" required title="8 caracteres minimo" onkeyup='check();'>
+                        <input type="password" id="pass" name="password" placeholder="Tu contraseña.." value="<?php echo $password;?>" pattern=".{8,}" required title="8 caracteres minimo" onkeyup='check(); strength()'>
+                        <progress id="strength-meter" max="100" value="0"></progress><br>
 
 
                         <label for="pass2">Repite tu contraseña</label>
