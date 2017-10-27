@@ -19,7 +19,7 @@
 
     <pelicula>
         <id>2</id>
-        <titulo>Titulo</titulo>
+        <titulo>nombre</titulo>
         <poster>../img/SWI.jpg</poster>
         <director>George Lucas</director>
         <precio>18.99</precio>

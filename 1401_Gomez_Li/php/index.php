@@ -32,11 +32,10 @@
                 <?php
                 $xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
                 if (isset($_REQUEST['search'])) {
-                    echo 'estoy dentro';
                     $filtro = $_REQUEST['filtro'];
                     $search = $_REQUEST['search'];
-                    echo $search . '     ' . $filtro;
-                    $films = $xml->xpath("/catalogo/pelicula['.$filtro.'='.$search.']");
+                    $films = $xml->xpath("/catalogo/pelicula[$filtro='$search']");
+                    
                     foreach ($films as $film) {
                         echo '<div class="responsive">
                     <div class="gallery">
