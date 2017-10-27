@@ -6,11 +6,6 @@ body {
     margin: 0;
 }
 
-.error {
-    color: #FF0000;
-}
-
-
 /* Style the header */
 
 .pageTop {
@@ -309,4 +304,9 @@ div {
 .great-pass{
     /*width: 100px;*/
     background-color: green;
+}
+
+.confirmation_msg{
+    color: green;
+    text-align: center;
 }

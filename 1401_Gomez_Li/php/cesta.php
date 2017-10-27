@@ -36,8 +36,8 @@
                                 <input type="hidden" name="comprar" value="1" />
                                 <input type="submit" value="comprar">
                             </form>';
-                    foreach($_SESSION['cesta'] as $titles) { 
-                        $film = $xml->xpath("/catalogo/pelicula[titulo='$titles']")[0];
+                    foreach($_SESSION['cesta'] as $ids) { 
+                        $film = $xml->xpath("/catalogo/pelicula[id='$ids']")[0];
                         echo '<div class="responsive">
                             <div class="gallery">
                                 <a href="product.php?title='.$film->titulo.'">
@@ -50,7 +50,7 @@
                                     <br>'.$film->director.'</div>
                             </div>
                             <form method="post" action="cesta.php">
-                                <input type="hidden" name="eliminar" value="'.$film->titulo.'" />
+                                <input type="hidden" name="eliminar" value="'.$film->id.'" />
                                 <input type="submit" value="eliminar">
                             </form>
                         </div>';    
