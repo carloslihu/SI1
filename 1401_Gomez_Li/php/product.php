@@ -8,17 +8,27 @@
 <body>
     <?php include 'includes/header.php';?>
 
+
     <div class="row">
         <?php include 'includes/lateral.php';?>
         <div class="column middle">
             <h2>Producto</h2>
             <?php 
             $xml=simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
-            $titulo=$_REQUEST['title'];
+            $titulo=$_GET['title'];
             $film = $xml->xpath("/catalogo/pelicula[titulo='$titulo']")[0];
+            include 'fcesta.php';
+            if(isset($_POST['comprar'])){//si hemor llegado aqui intentando comprar el producto
+                if($_POST['comprar'] == '1'){
+                    add_to_cesta($titulo);//añadimos el producto a la cesta
+                    unset($_POST['comprar']);//desactivamos la variable por si el usuario da a f5 (?)
+                }
+            }
             
+
             echo
-            '<div class="responsive">
+            '
+            <div class="responsive">
                 <div class="gallery">
                     <a href="">
                         <img src='.$film->poster.' alt='.$film->titulo.' width="100" height="100">
@@ -30,9 +40,12 @@
             <p><b>Precio: </b>'.$film->precio .' </p>
             <p><b>Categoria: </b>'.$film->categoria  .'</p>
             <p><b>Año: </b>'.$film->anno .'</p>
-            <p><b>Reparto: </b>'.$film->actores->actor[0]->nombre .'</p>'
+            <p><b>Reparto: </b>'.$film->actores->actor[0]->nombre .'</p>
+            <form method="post" action="product.php?title='.$titulo.'">
+                <input type="hidden" name="comprar" value="1" />
+                <input value="añadir al carro" type="submit"/>
+            </form>'
             ?>
-            <button type="button">Añadir a Carro!</button>
             <div class="clearfix"></div>
         </div>
     </div>

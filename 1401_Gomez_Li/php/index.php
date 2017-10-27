@@ -8,7 +8,6 @@
 
 <body>
     <?php include 'includes/header.php';?>
-
     <div class="row">
         <?php include 'includes/lateral.php';?>
 

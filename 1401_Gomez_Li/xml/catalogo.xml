@@ -4,7 +4,7 @@
         <titulo>La guerra de las galaxias: Episodio 1-La amenaza fantasma</titulo>
         <poster>../img/SWI.jpg</poster>
         <director>George Lucas</director>
-        <precio>18,99</precio>
+        <precio>18.99</precio>
         <categoria>Aventura</categoria>
         <anno>1999</anno>
         <actores>
@@ -20,7 +20,7 @@
         <titulo>Titulo</titulo>
         <poster>../img/SWI.jpg</poster>
         <director>George Lucas</director>
-        <precio>18,99</precio>
+        <precio>18.99</precio>
         <categoria>Aventura</categoria>
         <anno>1999</anno>
         <actores>
