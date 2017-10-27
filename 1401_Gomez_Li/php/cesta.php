@@ -18,7 +18,7 @@
                 <!-- ELEMENTOS DE LA LISTA DE LA COMPRA -->
                 <?php
                     //codigo que procesa los post y actua ante ellos:
-                    include 'fcesta.php';
+                    include 'includes/fcesta.php';
 
                     if(isset($_POST['comprar'])){//el usuario ha pedido comprar los productos de su carrito
                         if(isset($_SESSION['username']))
