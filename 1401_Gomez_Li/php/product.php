@@ -15,8 +15,8 @@
             <h2>Producto</h2>
             <?php 
             $xml=simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
-            $titulo=$_GET['title'];
-            $film = $xml->xpath("/catalogo/pelicula[titulo='$titulo']")[0];
+            $id=$_GET['id'];
+            $film = $xml->xpath("/catalogo/pelicula[id='$id']")[0];
             include 'fcesta.php';
             if(isset($_POST['comprar'])){//si hemor llegado aqui intentando comprar el producto
                 if($_POST['comprar'] == '1'){

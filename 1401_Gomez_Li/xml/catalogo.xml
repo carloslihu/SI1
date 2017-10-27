@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <catalogo>
     <pelicula>
+        <id>1</id>
         <titulo>La guerra de las galaxias: Episodio 1-La amenaza fantasma</titulo>
         <poster>../img/SWI.jpg</poster>
         <director>George Lucas</director>
@@ -17,6 +18,7 @@
     </pelicula>
 
     <pelicula>
+        <id>2</id>
         <titulo>Titulo</titulo>
         <poster>../img/SWI.jpg</poster>
         <director>George Lucas</director>
