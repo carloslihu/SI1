@@ -291,19 +291,19 @@ div {
 
 .weak-pass{
     /*width: 25px;*/
-    background-color: red;
+    color: red;
 }
 .ok-pass{
     /*width: 50px;*/
-    background-color: orange;
+    color: orange;
 }
 .good-pass{
     /*width: 75px;*/
-    background-color: yellow;
+    color: yellow;
 }
 .great-pass{
     /*width: 100px;*/
-    background-color: green;
+    color: green;
 }
 
 .confirmation_msg{

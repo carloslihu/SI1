@@ -52,7 +52,7 @@
                 val=100;
             }
             
-            $('#strength-meter').attr("class", strength);
+            $('#strength-meter').attr("class", "."+strength);
             $('#strength-meter').attr("value", val);
             $('#strength-meter').text(strength);
         }

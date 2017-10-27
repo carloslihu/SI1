@@ -7,7 +7,7 @@ pareja 15
 
 
 # TODO:
-forma recomendada de pasar datos de bbdd al pinchar en pelicula o hacer query -> ids con un post de un formulario
+
 volver a juntar login y flogin?
 busqueda y filtrado de peliculas
 
