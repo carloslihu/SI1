@@ -12,13 +12,13 @@
 	}
 
 	function remove_from_cesta($title){
-		$array = $_SESSION['cesta'];
-		$len = $_SESSION['cesta_len'];
-		for($i=0;$i<$len;$i++){
-			if($array[$i] == $title){//si encontramos el elemento lo borramos, arreglamos el array y salimos
-				array_splice($array, $i, 1);
+		$i = 0;
+		foreach($_SESSION['cesta'] as $product){
+			if($product == $title){//si encontramos el elemento lo borramos, arreglamos el array y salimos
+				array_splice($_SESSION['cesta'], $i, 1);
 				return;
 			}
+			$i++;
 		}
 	}
 	/*

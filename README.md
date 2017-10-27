@@ -11,8 +11,6 @@ forma recomendada de pasar datos de bbdd al pinchar en pelicula o hacer query ->
 
 busqueda y filtrado de peliculas
 
-carrito entero
-
 Se deberá entregar los ficheros correspondientes al historial, errores, las
 funcionalidades adicionales, toda la documentación y ficheros requeridos.
 

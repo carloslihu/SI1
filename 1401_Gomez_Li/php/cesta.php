@@ -14,18 +14,28 @@
 
 
         <div class="column middle">
-
-            <?php
-                echo var_dump($_SESSION['cesta']);
-            ?>
             <div>
                 <!-- ELEMENTOS DE LA LISTA DE LA COMPRA -->
                 <?php
-                    $xml=simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
+                    //codigo que procesa los post y actua ante ellos:
                     include 'fcesta.php';
+
+                    if(isset($_POST['comprar'])){//el usuario ha pedido comprar los productos de su carrito
+                        if(isset($_SESSION['username']))
+                            clean_cesta();
+                        else
+                            header("Location: login.php");
+                    } else if(isset($_POST['eliminar']))//el usuario ha pedido eliminar un producto de su carrito
+                        remove_from_cesta($_POST['eliminar']);
+
+                    //info de la pagina
+                    $xml=simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
                     echo '<h2>Cesta</h2>
                             <h1>Total:'.strval(calculate_total($xml)).'</h1>
-                            <input type="submit" value="Comprar">';
+                            <form method="post" action="cesta.php">
+                                <input type="hidden" name="comprar" value="1" />
+                                <input type="submit" value="comprar">
+                            </form>';
                     foreach($_SESSION['cesta'] as $titles) { 
                         $film = $xml->xpath("/catalogo/pelicula[titulo='$titles']")[0];
                         echo '<div class="responsive">
@@ -39,6 +49,10 @@
                                 </a>
                                     <br>'.$film->director.'</div>
                             </div>
+                            <form method="post" action="cesta.php">
+                                <input type="hidden" name="eliminar" value="'.$film->titulo.'" />
+                                <input type="submit" value="eliminar">
+                            </form>
                         </div>';    
                     } 
                 ?>
