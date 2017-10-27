@@ -21,7 +21,7 @@
                 } else {
                     $id = $_GET['id'];
                     $film = $xml->xpath("/catalogo/pelicula[id='$id']")[0];
-                    include 'fcesta.php';
+                    include 'includes/fcesta.php';
                     $confirm_text="";
                     if (isset($_POST['comprar'])) {//si hemor llegado aqui intentando comprar el producto
                         if ($_POST['comprar'] == '1') {

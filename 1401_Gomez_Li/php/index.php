@@ -35,20 +35,9 @@
                     
                 }
                 $xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
-
+                include 'includes/utils.php';
                 foreach ($xml->children() as $films) {
-                    echo '<div class="responsive">
-                    <div class="gallery">
-                        <a href="product.php?id=' . $films->id . '">
-                        <img src=' . $films->poster . ' alt="imagen" width="100" height="100">
-                    </a>
-                        <div class="desc">
-                            <a href="product.php?id=' . $films->id . '">
-                            <b>' . $films->titulo . '</b>
-                        </a>
-                            <br>' . $films->director . '</div>
-                    </div>
-                </div>';
+                    print_film($films);
                 }
                 ?>
                 <div class="clearfix"></div>
