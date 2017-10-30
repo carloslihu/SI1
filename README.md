@@ -9,10 +9,12 @@ pareja 15
 # TODO:
 
 volver a juntar login y flogin?
-busqueda y filtrado de peliculas
 
 Se deberá entregar los ficheros correspondientes al historial, errores, las
 funcionalidades adicionales, toda la documentación y ficheros requeridos.
+
+añadir querys mas inteligentes (case insensitive y en caso de que sea substring)
+añadir funcionalidad a la barra lateral izquierda
 
 # OTROS
 Utilizar jQuery para desplegar/contraer detalles de los pedidos en el historial del usuario.

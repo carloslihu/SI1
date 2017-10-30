@@ -13,5 +13,6 @@ echo '
     <title>
         Tienda de DvDs
     </title>
-    <script type="text/javascript" src="../javascript/register.js"></script>';
+    <script type="text/javascript" src="../javascript/register.js"></script>
+    <script type="text/javascript" src="../javascript/utils.js"></script>';
     ?>
