@@ -26,7 +26,7 @@
 	function fix_cesta(){
 		if(!isset($_SESSION['username']) or !isset($_SESSION['cesta']))
 			return false;
-
+		//TODO
 	}
 
 	/*
@@ -35,7 +35,11 @@
 	 * devuelve false en caso de que el usuario no pueda añadir el producto debido a que ya compró el producto anteriormente
 	*/
 	function is_valid_compra($id){
-		
+		if(!isset($_SESSION['username']))
+			return true;
+		$path = '../../usuarios/'.$_SESSION['username'].'/historial.xml';
+		include "utils.php";
+		return (!history_contains_id($path, $id));
 		/*
 		if(!isset($_SESSION['username']))
 			return true;

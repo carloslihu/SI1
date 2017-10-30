@@ -6,6 +6,12 @@ pareja 15
 # TOASK:
 
 
+
+
+
+
+
+
 # TODO:
 
 volver a juntar login y flogin?
@@ -16,9 +22,24 @@ funcionalidades adicionales, toda la documentación y ficheros requeridos.
 añadir querys mas inteligentes (case insensitive y en caso de que sea substring)
 añadir funcionalidad a la barra lateral izquierda
 
+hacer historial.php <------------------
+continuar con la gestion de errores de compra (usuario ha metido en cesta objetos que ya habia comprado (fcesta.php))
+
+
+
+
+HACER PUTA MEMORIA <------------------
+
+
+
+
+
+
+
+
 # OTROS
-Utilizar jQuery para desplegar/contraer detalles de los pedidos en el historial del usuario.
+Utilizar jQuery para desplegar/contraer detalles de los pedidos en el historial del usuario.  <------------------
 
 Utilizar AJAX para mostrar un banner con el número (generado aleatoriamente en el servidor con
-una página PHP) de usuarios conectados al sistema de Venta de DVDs, que se debe actualizar cada
+una página PHP) de usuarios conectados al sistema de Venta de DVDs, que se debe actualizar cada <------------------
 3 segundos.
