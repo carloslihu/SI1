@@ -82,8 +82,8 @@ body {
 /* Middle column */
 
 .column.middle {
-    border-left: 1px solid black;
-    margin-left: -1px;
+    /*border-left: 1px solid black;*/
+    /*margin-left: -1px;*/
     width: 75%;
 }
 
@@ -94,6 +94,11 @@ body {
     content: "";
     display: table;
     clear: both;
+    margin: 0px;
+}
+
+.row {
+    margin: 0px;
 }
 
 
