@@ -5,7 +5,7 @@ pareja 15
 
 # TOASK:
 
-to carlos: como hago para imprimir una peli asi: {el responsive, a su derecha el precio} y luego las sucesivas pelis debajo (ordenandose en columna por asi decirlo)
+
 
 
 
@@ -22,10 +22,6 @@ funcionalidades adicionales, toda la documentación y ficheros requeridos.
 añadir querys mas inteligentes (case insensitive y en caso de que sea substring)
 añadir funcionalidad a la barra lateral izquierda
 
-hacer historial.php <------------------
-continuar con la gestion de errores de compra (usuario ha metido en cesta objetos que ya habia comprado (fcesta.php))
-
-
 
 
 HACER PUTA MEMORIA <------------------
@@ -38,4 +34,3 @@ HACER PUTA MEMORIA <------------------
 
 
 # OTROS
-Utilizar jQuery para desplegar/contraer detalles de los pedidos en el historial del usuario.  <------------------

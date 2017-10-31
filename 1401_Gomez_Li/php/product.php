@@ -12,12 +12,11 @@
         <div class="row">
             <?php include 'includes/lateral.php'; ?>
             <div class="column middle">
-                <h2>Producto</h2>
                 <?php
                 $xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
                 
                 if(!is_numeric($_GET['id'])){
-                    echo '<h1>error 404: film nof found</h1>';
+                    echo '<h1>error 404: film not found</h1>';
                 } else {
                     $id = $_GET['id'];
                     $film = $xml->xpath("/catalogo/pelicula[id='$id']")[0];
@@ -40,9 +39,8 @@
 
                     echo
                     '
-                <div class="confirmation_msg">
-                    <p>'.$confirm_text.'</p>
-                </div>
+                    <h1>'.$film->titulo.'</h1>
+                    <p class="confirmation_msg">'.$confirm_text.'</p>
                 <div class="responsive">
                     <div class="gallery">
                         <a href="">
@@ -56,7 +54,11 @@
                 <p><b>Precio: </b>' . $film->precio . ' €</p>
                 <p><b>Categoria: </b>' . $film->categoria . '</p>
                 <p><b>Año: </b>' . $film->anno . '</p>
-                <p><b>Reparto: </b>' . $film->actores->actor[0]->nombre . '</p>
+                <p><b>Reparto: </b><br>';
+                foreach ($film->actores->actor as $actor) {
+                    echo $actor->nombre . ' as '.$actor->personaje.'<br>';
+                }
+                echo '</p>
                 <form method="post" action="product.php?id=' . $film->id . '">
                     <input type="hidden" name="comprar" value="1" />
                     <input value="añadir al carro" type="submit"/>

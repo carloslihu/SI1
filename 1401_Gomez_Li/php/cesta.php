@@ -49,9 +49,7 @@
                     //info de la pagina
                     
                     echo '<h2>Cesta</h2>
-                            <div class="confirmation_msg">
-                                <p>'.$alert.'</p>
-                            </div>
+                            <p class="confirmation_msg">'.$alert.'</p>
                             <h1>Total:'.strval(calculate_total($xml)).' €</h1>
                             <form method="post" action="cesta.php">
                                 <input type="hidden" name="comprar" value="1" />

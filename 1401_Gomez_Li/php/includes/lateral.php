@@ -19,7 +19,7 @@
     <script type="text/javascript">
         setInterval(function () {
             $.ajax({url: './generator.php', cache: false, success: function (data) {
-                    document.getElementById('anId').innerHTML = "Numero de usuarios conectados: \n"+data.foo;
+                    document.getElementById('anId').innerHTML = "usuarios conectados: \n"+data.foo;
                 }, dataType: "json"});
         }, 3000);
     </script>

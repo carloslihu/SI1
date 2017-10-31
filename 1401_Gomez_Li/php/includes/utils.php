@@ -9,7 +9,7 @@ function print_film($films){
      echo '
                     <div class="gallery">
                         <a href="product.php?id=' . $films->id . '">
-                        <img src=' . $films->poster . ' alt="imagen" width="100" height="100">
+                        <img src=' . $films->poster . ' alt="'.$films->titulo.'" width="100" height="100">
                     </a>
                         <div class="desc abbreviative">
                             <a href="product.php?id=' . $films->id . '" title="'.$films->titulo.'">
