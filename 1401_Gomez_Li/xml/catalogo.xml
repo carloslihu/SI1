@@ -36,4 +36,27 @@
         </actores>
     </pelicula>
 
+    <pelicula>
+        <id>3</id>
+        <titulo>Murder On The Owl Express</titulo>
+        <descripcion></descripcion>
+        <poster>../img/murder-on-the-owl-express.jpg</poster>
+        <director>Conductor</director>
+        <precio>29.99</precio>
+        <categoria>Misterio</categoria>
+        <anno>2017</anno>
+        <actores>
+            <actor>
+                <nombre>Some Girl</nombre>
+                <personaje>Hat Kid</personaje>
+                <foto>../img/hat-kid.jpg</foto>
+            </actor>
+            <actor>
+                <nombre>The Crows</nombre>
+                <personaje>suspicious detectives</personaje>
+                <foto>../img/anakin.jpg</foto>
+            </actor>
+        </actores>
+    </pelicula>
+
 </catalogo>
