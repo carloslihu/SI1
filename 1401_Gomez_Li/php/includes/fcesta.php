@@ -24,9 +24,19 @@
 	 * devuelve true en caso de que tuviera que arreglar la cesta de la compra y false en caso contrario
 	*/
 	function fix_cesta(){
-		if(!isset($_SESSION['username']) or !isset($_SESSION['cesta']))
+		$had_to_fix = false;//se retornara este flag y representa si la cesta tuvo que ser arreglada o no. A priori, es false
+		if(!isset($_SESSION['username']) or !isset($_SESSION['cesta'])){
 			return false;
-		//TODO
+		}
+		$path = '../../usuarios/'.$_SESSION['username'].'/historial.xml';
+		include_once "utils.php";
+		foreach ($_SESSION['cesta'] as $item) {
+			if(history_contains_id($path, $item)){
+				remove_from_cesta($item);
+				$had_to_fix = true;
+			}
+		}
+		return $had_to_fix;
 	}
 
 	/*
@@ -38,7 +48,7 @@
 		if(!isset($_SESSION['username']))
 			return true;
 		$path = '../../usuarios/'.$_SESSION['username'].'/historial.xml';
-		include "utils.php";
+		include_once "utils.php";
 		return (!history_contains_id($path, $id));
 		/*
 		if(!isset($_SESSION['username']))

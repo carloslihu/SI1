@@ -46,13 +46,11 @@ function add_film_to_history($id, $when, $xml, $path){
         return;
     }
     $node = $xpath->query('//historial/fecha[text()="'.$when.'"]')[0];
-    echo '<p>'.var_dump($node).'</p>';
     if(!$node){
         $node = $xml->createElement('fecha');
         $node->nodeValue = $when;
         $root->appendChild($node);
     }
-    echo '<p>'.var_dump($node).'</p>';
     $xml_id = $xml->createElement("id");
     $xml_id->nodeValue = $id;
     $node->appendChild( $xml_id );
@@ -66,7 +64,7 @@ function history_contains_id($path, $id){
     $xml->load($path);
     $xpath = new DOMXPath($xml);
     foreach($xml->getElementsByTagName('id') as $elem){
-        if($elem == $id) return true;
+        if($elem->nodeValue == $id) return true;
     }
     return false;
 }

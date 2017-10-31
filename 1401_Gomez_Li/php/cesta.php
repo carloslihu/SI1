@@ -21,16 +21,24 @@
                     include 'includes/fcesta.php';
                     include 'includes/utils.php';
 
+                    $alert = "";
+                    if(fix_cesta() == true)
+                        $alert = "hemos eliminado del carrito algunos productos que ya poseía";
+
                     $xml=simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
-                    var_dump($_POST);
                     if(isset($_POST['comprar']) and isset($_POST['fecha'])){//el usuario ha pedido comprar los productos de su carrito
                         if(isset($_SESSION['username'])){
-                            $path = '../../usuarios/'.$_SESSION['username'].'/historial.xml';
-                            $history_xml = xml_history_setting($path);
-                            foreach ($_SESSION['cesta'] as $id) {
-                                add_film_to_history($id, $_POST['fecha'], $history_xml, $path);
+                            if(!empty($_SESSION['cesta'])){
+                                $path = '../../usuarios/'.$_SESSION['username'].'/historial.xml';
+                                $history_xml = xml_history_setting($path);
+                                foreach ($_SESSION['cesta'] as $id) {
+                                    add_film_to_history($id, $_POST['fecha'], $history_xml, $path);
+                                }
+                                clean_cesta();
+                                $alert = "¡Gracias por su compra!";
+                            } else {//en el caso de que la cesta estuviera vacía
+                                $alert = "La cesta estaba vacía.";
                             }
-                            clean_cesta();
                         }
                         else{
                             header("Location: login.php");
@@ -41,6 +49,9 @@
                     //info de la pagina
                     
                     echo '<h2>Cesta</h2>
+                            <div class="confirmation_msg">
+                                <p>'.$alert.'</p>
+                            </div>
                             <h1>Total:'.strval(calculate_total($xml)).'</h1>
                             <form method="post" action="cesta.php">
                                 <input type="hidden" name="comprar" value="1" />
