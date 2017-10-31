@@ -134,15 +134,20 @@ div.gallery:hover {
 
 div.gallery img {
     width: 100%;
-    /*height*/
+    height: 100%;
 }
 
 div.desc {
-    padding: 15px;
+    padding: 2px;
     text-align: center;
 }
 
+.toggled {
+    display: none;
+}
+
 .responsive {
+    margin: 4px;
     padding: 0 6px;
     float: left;
     width: 24.99999%;
@@ -168,6 +173,12 @@ div.desc {
     overflow: auto;
 }
 
+.abbreviative {
+    /*width: 100px;*/
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 /*dropdowns*/
 
@@ -216,6 +227,17 @@ div.desc {
 .error {
     color: red;
 }
+
+.history_tag{
+    padding: 0 6px;
+    float: left;
+    width: 100%;
+}
+div.history_tag {
+    margin: 10px;
+    border: 1px solid #ccc;
+}
+
 
 
 /*register section*/

@@ -3,6 +3,7 @@
     <pelicula>
         <id>1</id>
         <titulo>La guerra de las galaxias: Episodio 1-La amenaza fantasma</titulo>
+        <descripcion>primer episodio de la trilogia mala de Star Wars</descripcion>
         <poster>../img/SWI.jpg</poster>
         <director>George Lucas</director>
         <precio>18.99</precio>
@@ -20,6 +21,7 @@
     <pelicula>
         <id>2</id>
         <titulo>nombre</titulo>
+        <descripcion>hola, soy un texo de prueba</descripcion>
         <poster>../img/SWI.jpg</poster>
         <director>George Lucas</director>
         <precio>18.99</precio>

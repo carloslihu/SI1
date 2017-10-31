@@ -5,7 +5,7 @@ pareja 15
 
 # TOASK:
 
-
+to carlos: como hago para imprimir una peli asi: {el responsive, a su derecha el precio} y luego las sucesivas pelis debajo (ordenandose en columna por asi decirlo)
 
 
 

@@ -11,6 +11,7 @@
     <div class="row">
         <?php include 'includes/lateral.php';?>
         <div class="column middle">
+            <!--
             <h2>Perfil del usuario:</h2>
             <p><b>Nombre Usuario:</b> JavGomez
             </p>
@@ -19,6 +20,19 @@
 
             <hr>
             <h2>Historial:</h2>
+            -->
+            <?php
+            include "includes/utils.php";
+            if(isset($_SESSION['username'])){
+                $path = '../../usuarios/'.$_SESSION['username'].'/historial.xml';
+
+                echo '<h2>Perfil del usuario:</h2>';
+                echo '<p><b>Nombre Usuario:</b> '.$_SESSION['username'].' </p>';
+                echo '<h2>Historial:</h2>';
+                print_history($path);
+            }
+            ?>
+            <!--
             <table id="history">
                 <tr>
                     <th>Película</th>
@@ -75,6 +89,7 @@
 
 
             </table>
+            -->
             <div class="clearfix"></div>
         </div>
     </div>
