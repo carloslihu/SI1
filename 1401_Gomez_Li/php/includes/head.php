@@ -13,6 +13,9 @@ echo '
     <title>
         Tienda de DvDs
     </title>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script> 
+    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script type="text/javascript" src="../javascript/register.js"></script>
-    <script type="text/javascript" src="../javascript/utils.js"></script>';
+    <script type="text/javascript" src="../javascript/utils.js"></script>
+    <script type="text/javascript" src="../javascript/toggle_script.js"></script>';
     ?>

@@ -11,11 +11,13 @@ function print_film($films){
                         <a href="product.php?id=' . $films->id . '">
                         <img src=' . $films->poster . ' alt="imagen" width="100" height="100">
                     </a>
-                        <div class="desc">
-                            <a href="product.php?id=' . $films->id . '">
+                        <div class="desc abbreviative">
+                            <a href="product.php?id=' . $films->id . '" title="'.$films->titulo.'">
                             <b>' . $films->titulo . '</b>
                         </a>
-                            <br>' . $films->director . '</div>
+                            <br>' . $films->director . '
+                            <br>' . $films->precio . ' €
+                        </div>
                     </div>';
      return;
 }
@@ -62,11 +64,31 @@ function add_film_to_history($id, $when, $xml, $path){
 function history_contains_id($path, $id){
     $xml = new DOMDocument();
     $xml->load($path);
-    $xpath = new DOMXPath($xml);
     foreach($xml->getElementsByTagName('id') as $elem){
         if($elem->nodeValue == $id) return true;
     }
     return false;
+}
+
+function print_history($path){
+    $xml = new DOMDocument();
+    $xml->load($path);
+    $catalogo_xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
+    $xpath = new DOMXPath($xml);
+    foreach ($xml->getElementsByTagName('fecha') as $fecha_node) {
+        echo '<div class="history_tag">';
+            echo '<p>'.$xpath->query("text()",$fecha_node)[0]->nodeValue.' (<a href="#" class="toggler">expandir</a>)</p>';
+            echo '<div class="toggled">';
+                foreach ($xpath->query('id', $fecha_node) as $id_node){
+                    echo '<div class="responsive">';
+                        $film = $catalogo_xml->xpath("/catalogo/pelicula[id=".$id_node->nodeValue."]")[0];
+                        print_film($film);//printea la informacion de la pelicula
+                    echo '</div>';
+                }
+            echo '</div>';
+        echo '</div>';
+    }
+    return;
 }
 
 ?>

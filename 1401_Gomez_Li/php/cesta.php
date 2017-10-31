@@ -52,7 +52,7 @@
                             <div class="confirmation_msg">
                                 <p>'.$alert.'</p>
                             </div>
-                            <h1>Total:'.strval(calculate_total($xml)).'</h1>
+                            <h1>Total:'.strval(calculate_total($xml)).' €</h1>
                             <form method="post" action="cesta.php">
                                 <input type="hidden" name="comprar" value="1" />
                                 <input type="hidden" id="fecha" name="fecha" value="0/0/0" />

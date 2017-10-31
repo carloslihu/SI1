@@ -51,8 +51,9 @@
                         <div class="desc">' . $film->titulo . '</div>
                     </div>
                 </div>
+                <p><b>Descripción: </b><br/>'.$film->descripcion.'</p>
                 <p><b>Director: </b>' . $film->director . '</p>
-                <p><b>Precio: </b>' . $film->precio . ' </p>
+                <p><b>Precio: </b>' . $film->precio . ' €</p>
                 <p><b>Categoria: </b>' . $film->categoria . '</p>
                 <p><b>Año: </b>' . $film->anno . '</p>
                 <p><b>Reparto: </b>' . $film->actores->actor[0]->nombre . '</p>
