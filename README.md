@@ -39,7 +39,3 @@ HACER PUTA MEMORIA <------------------
 
 # OTROS
 Utilizar jQuery para desplegar/contraer detalles de los pedidos en el historial del usuario.  <------------------
-
-Utilizar AJAX para mostrar un banner con el número (generado aleatoriamente en el servidor con
-una página PHP) de usuarios conectados al sistema de Venta de DVDs, que se debe actualizar cada <------------------
-3 segundos.
