@@ -24,7 +24,7 @@
                             <option value="categoria">categoria</option> 
                             <option value="director">director</option>
                         </select>
-                        <input type="submit" value="submit">
+                        <input type="submit" value="Search">
                     </form>
                 </div>
 

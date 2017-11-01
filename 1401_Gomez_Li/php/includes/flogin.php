@@ -6,12 +6,12 @@ session_start();
 $username = test_input($_POST["username"]);
 $password = test_input($_POST["password"]);
 //comprueba que existe el usuario
-if (is_dir("../../usuarios/$username") == FALSE) {
+if (is_dir("../../../usuarios/$username") == FALSE) {
     $_SESSION["loginErr"] = "no existe el usuario";
     fclose($userfile);
-    header("Location: login.php");
+    header("Location: ../login.php");
 } else {
-    $userfile = fopen("../../usuarios/$username/datos.dat", "r");
+    $userfile = fopen("../../../usuarios/$username/datos.dat", "r");
     //nos saltamos los campos hasta llegar a password
     fgets($userfile);
     fgets($userfile);
@@ -20,13 +20,13 @@ if (is_dir("../../usuarios/$username") == FALSE) {
     if (strcmp($hash, md5($password) . "\n") != 0) {
         $_SESSION["loginErr"] = "contraseña incorrecta";
         fclose($userfile);
-        header("Location: login.php");
+        header("Location: ../login.php");
     } else {
         $_SESSION["username"] = $username;
         //expira en 1 dia
         setcookie("username", $username, time() + 86400, "/");
         fclose($userfile);
-        header("Location: index.php");
+        header("Location: ../index.php");
     }
 }
 

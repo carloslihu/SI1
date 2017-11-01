@@ -1,7 +1,7 @@
 <div class="column side">
     <h2 class="centerText">Seleccione Categoria</h2>
     <div class="linkButton">
-        
+
         <form action="index.php" method="post">
             <input type="hidden" name="search" value="">
             <input type="hidden" name="filtro" value="categoria">
