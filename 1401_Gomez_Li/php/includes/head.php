@@ -6,7 +6,10 @@ if (!isset($_SESSION['cesta'])) {
     $_SESSION['cesta_len'] = 0;
 }
 ?>
-
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Last-Modified" content="0">
+<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+<meta http-equiv="Pragma" content="no-cache">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="../css/mystyle.css?' . time() . '">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
