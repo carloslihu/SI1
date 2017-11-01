@@ -24,11 +24,13 @@
                     $alert = "";
                     if(fix_cesta() == true)
                         $alert = "hemos eliminado del carrito algunos productos que ya poseía";
+                    $total calculate_total($xml);
 
                     $xml=simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
                     if(isset($_POST['comprar']) and isset($_POST['fecha'])){//el usuario ha pedido comprar los productos de su carrito
                         if(isset($_SESSION['username'])){
-                            if(!empty($_SESSION['cesta'])){
+                            if(!empty($_SESSION['cesta'])){ç
+                                gastar_saldo($total);
                                 $path = '../../usuarios/'.$_SESSION['username'].'/historial.xml';
                                 $history_xml = xml_history_setting($path);
                                 foreach ($_SESSION['cesta'] as $id) {
@@ -50,7 +52,7 @@
                     
                     echo '<h2>Cesta</h2>
                             <p class="confirmation_msg">'.$alert.'</p>
-                            <h1>Total:'.strval(calculate_total($xml)).' €</h1>
+                            <h1>Total:'.strval($total).' €</h1>
                             <form method="post" action="cesta.php">
                                 <input type="hidden" name="comprar" value="1" />
                                 <input type="hidden" id="fecha" name="fecha" value="0/0/0" />
