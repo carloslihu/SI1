@@ -11,7 +11,13 @@ function check() {
         document.getElementById('passmsg').innerHTML = '';
     }
 }
-
+function checkChars() {
+    if (/^[a-z0-9]+$/i.test(document.getElementById('uname').value) == false) {
+        document.getElementById('userr').innerHTML = 'Caracteres prohibidos detectados';
+    } else {
+        document.getElementById('userr').innerHTML = '';
+    }
+}
 //para lo del password strength
 function okPass(pass) {
     var pattern = /(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{8,})/g;
