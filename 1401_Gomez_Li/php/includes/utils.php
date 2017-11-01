@@ -33,13 +33,14 @@ function gastar_saldo($gasto){
     if($gasto > $saldo)
         return false;
     $saldo -= $gasto;
-    $userfile = fopen("../../../usuarios/".$_SESSION['username']."/datos.dat", "r");
+    $userfile = fopen("../../usuarios/".$_SESSION['username']."/datos.dat", "r");
     //nos saltamos los campos hasta llegar a password
     $rewrite=fgets($userfile).fgets($userfile).fgets($userfile).fgets($userfile);
     fclose($userfile);
-    $userfile = fopen("../../../usuarios/".$_SESSION['username']."/prueba.dat", "w");
+    $userfile = fopen("../../usuarios/".$_SESSION['username']."/datos.dat", "w");
     fwrite($userfile, $rewrite.strval($saldo));
     fclose($userfile);
+    $_SESSION['saldo'] = strval($saldo);
     return true;
 }
 
