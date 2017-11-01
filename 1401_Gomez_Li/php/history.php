@@ -1,100 +1,101 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <?php include 'includes/head.php';?>
-</head>
+    <head>
+        <?php include 'includes/head.php'; ?>
+    </head>
 
-<body>
-    <?php include 'includes/header.php';?>
+    <body>
+        <?php
+        include "includes/utils.php";
+        if (isset($_POST['saldo']) and is_numeric($_POST['saldo'])) {
+            gastar_saldo(-$_POST['saldo']);
+            unset($_POST['saldo']);
+        }
+        include 'includes/header.php';
 
-    <div class="row">
-        <?php include 'includes/lateral.php';?>
-        <div class="column middle">
-            <!--
-            <h2>Perfil del usuario:</h2>
-            <p><b>Nombre Usuario:</b> JavGomez
-            </p>
-            <p><b>E-mail:</b> carlos.li@estudiante.uam.es
-            </p>
+        echo '<div class="row">';
+        include 'includes/lateral.php';
+        echo '<div class="column middle">';
 
-            <hr>
-            <h2>Historial:</h2>
-            -->
-            <?php
-            include "includes/utils.php";
-            if(isset($_SESSION['username'])){
-                $path = '../../usuarios/'.$_SESSION['username'].'/historial.xml';
 
-                echo '<h2>Perfil del usuario:</h2>';
-                echo '<p><b>Nombre Usuario:</b> '.$_SESSION['username'].' </p>';
-                echo '<h2>Historial:</h2>';
-                print_history($path);
-            }
-            ?>
-            <!--
-            <table id="history">
-                <tr>
-                    <th>Película</th>
-                    <th>Precio</th>
-                    <th>Fecha</th>
+        if (isset($_SESSION['username'])) {
+            $path = '../../usuarios/' . $_SESSION['username'] . '/historial.xml';
 
-                </tr>
-                <tr>
-                    <td>
-                        <div class="responsive">
-                            <div class="gallery">
+            echo '<h2>Perfil del usuario:</h2>';
+            echo '<p><b>Nombre Usuario:</b> ' . $_SESSION['username'] . ' </p>';
+            echo '<form method="post" action="' . htmlspecialchars($_SERVER[" PHP_SELF "]) . '">
+                        <label for="saldo">añadir saldo</label>
+                        <input type="number" step="0.01" id="saldo" name="saldo" placeholder="el saldo" required>
+                        <input type="submit" value="añadir saldo">
+                      </form>';
+            echo '<h2>Historial:</h2>';
+            print_history($path);
+        }
+        ?>
+        <!--
+        <table id="history">
+            <tr>
+                <th>Película</th>
+                <th>Precio</th>
+                <th>Fecha</th>
+
+            </tr>
+            <tr>
+                <td>
+                    <div class="responsive">
+                        <div class="gallery">
+                            <a href="product.php">
+                                <img alt="Silence of the Lambs" src="../img/SOTL.jpg" width="100" height="100">
+                            </a>
+                            <div class="desc">
                                 <a href="product.php">
-                                    <img alt="Silence of the Lambs" src="../img/SOTL.jpg" width="100" height="100">
+                                    El silencio de los corderos
                                 </a>
-                                <div class="desc">
-                                    <a href="product.php">
-                                        El silencio de los corderos
-                                    </a>
-                                </div>
                             </div>
                         </div>
-                    </td>
+                    </div>
+                </td>
 
-                    <td>10€
-                    </td>
+                <td>10€
+                </td>
 
-                    <td>12-12-2012</td>
-                </tr>
+                <td>12-12-2012</td>
+            </tr>
 
 
 
-                <tr>
-                    <td>
-                        <div class="responsive">
-                            <div class="gallery">
+            <tr>
+                <td>
+                    <div class="responsive">
+                        <div class="gallery">
+                            <a href="product.php">
+                                <img alt="Jaws" src="../img/JAWS.JPG" width="100" height="100">
+                            </a>
+                            <div class="desc">
                                 <a href="product.php">
-                                    <img alt="Jaws" src="../img/JAWS.JPG" width="100" height="100">
+                                    JAWS
                                 </a>
-                                <div class="desc">
-                                    <a href="product.php">
-                                        JAWS
-                                    </a>
-                                </div>
                             </div>
                         </div>
-                    </td>
+                    </div>
+                </td>
 
-                    <td>12€
-                    </td>
+                <td>12€
+                </td>
 
-                    <td>12-12-2012</td>
-                </tr>
+                <td>12-12-2012</td>
+            </tr>
 
 
 
-            </table>
-            -->
-            <div class="clearfix"></div>
-        </div>
+        </table>
+        -->
+        <div class="clearfix"></div>
     </div>
+</div>
 
-    <?php include 'includes/footer.php';?>
+<?php include 'includes/footer.php'; ?>
 </body>
 
 </html>
