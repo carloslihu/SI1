@@ -246,6 +246,9 @@ div.desc {
 .error {
     color: red;
 }
+.correct{
+    color:green;
+}
 
 .history_tag{
     padding: 0 6px;
