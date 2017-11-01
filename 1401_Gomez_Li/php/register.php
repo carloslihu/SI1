@@ -3,7 +3,7 @@
 
     <head>
         <?php include 'includes/head.php'; ?>
-        <script type="text/javascript" src="../js/register.js"></script>
+        <script type="text/javascript" src="../javascript/register.js"></script>
     </head>
 
     <body>
@@ -47,8 +47,10 @@
                 <div>
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]); ?>">
                         <label for="uname">Username</label>
-                        <input type="text" id="uname" name="username" placeholder="Tu nombre de usuario.." value="<?php echo $username; ?>">
-                        <span class="error"> <?php echo $usernameErr; ?></span>
+                        <input type="text" id="uname" name="username" placeholder="Tu nombre de usuario.." 
+                               value="<?php echo $username; ?>"
+                               onkeyup="checkChars();" >
+                        <span id= "userr" class="error"> <?php echo $usernameErr; ?></span>
                         <br>
 
                         <label for="email">E-mail</label>
