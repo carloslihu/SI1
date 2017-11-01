@@ -20,9 +20,9 @@
 
     <pelicula>
         <id>2</id>
-        <titulo>nombre</titulo>
+        <titulo>El Club de la Lucha</titulo>
         <descripcion>hola, soy un texo de prueba</descripcion>
-        <poster>../img/SWI.jpg</poster>
+        <poster>../img/FC.jpg</poster>
         <director>George Lucas</director>
         <precio>18.99</precio>
         <categoria>Aventura</categoria>

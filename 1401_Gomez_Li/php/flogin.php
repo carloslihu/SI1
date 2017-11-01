@@ -2,13 +2,12 @@
 
 session_start();
 // define variables and set to empty values
-
 //if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $username = test_input($_POST["username"]);
 $password = test_input($_POST["password"]);
 //comprueba que existe el usuario
 if (is_dir("../../usuarios/$username") == FALSE) {
-    $_SESSION["ERR"] = "no existe el usuario";
+    $_SESSION["loginErr"] = "no existe el usuario";
     fclose($userfile);
     header("Location: login.php");
 } else {
@@ -19,15 +18,13 @@ if (is_dir("../../usuarios/$username") == FALSE) {
     $hash = fgets($userfile);
     //añado \n para que coincidan passwords
     if (strcmp($hash, md5($password) . "\n") != 0) {
-        $_SESSION["ERR"] = "contraseña incorrecta";
+        $_SESSION["loginErr"] = "contraseña incorrecta";
         fclose($userfile);
         header("Location: login.php");
     } else {
         $_SESSION["username"] = $username;
-        //echo "Variable sesion: ".$_SESSION["username"];
         //expira en 1 dia
         setcookie("username", $username, time() + 86400, "/");
-        //echo "     Cookie: ".$_COOKIE["username"];
         fclose($userfile);
         header("Location: index.php");
     }

@@ -3,11 +3,12 @@
     overflow-x: hidden;
     max-width: 100%;
 }
-
+.centerText{
+    text-align: center;
+}
 body {
     margin: 0;
 }
-
 /* Style the header */
 
 .pageTop {
@@ -205,7 +206,7 @@ div.desc {
 }
 
 .dropdown-content {
-/*    display: none;*/
+    /*    display: none;*/
     position: absolute;
     background-color: #f9f9f9;
     min-width: 160px;
@@ -276,7 +277,14 @@ input[type=submit] {
     border-radius: 4px;
     cursor: pointer;
 }
-
+.linkButton input[type=submit]{ 
+    background: none;
+    background-color:none;
+    border: none;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer; 
+}
 input[type=submit]:hover {
     background-color: #45a049;
 }
