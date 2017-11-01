@@ -34,47 +34,19 @@
                 $xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
                 if (isset($_REQUEST['search'])) {
                     $filtro = $_REQUEST['filtro'];
-                    $search = $_REQUEST['search'];
-                    $films = $xml->xpath("/catalogo/pelicula[$filtro='$search']");
-                    
+                    $search = $search = strtolower($_REQUEST['search']);
+                    $films = $xml->xpath("/catalogo/pelicula[./" . $filtro . "[contains(translate(text(), 'ABCDEFGHJIKLMNOPQRSTUVWXYZ', 'abcdefghjiklmnopqrstuvwxyz'), '$search')]]");
+
                     foreach ($films as $film) {
                         echo '<div class="responsive">';
-                            print_film($film);
+                        print_film($film);
                         echo '</div>';
-                        /*
-                        echo '<div class="responsive">
-                    <div class="gallery">
-                        <a href="product.php?id=' . $film->id . '">
-                        <img src=' . $film->poster . ' alt="imagen" width="100" height="100">
-                    </a>
-                        <div class="desc">
-                            <a href="product.php?id=' . $film->id . '">
-                            <b>' . $film->titulo . '</b>
-                        </a>
-                            <br>' . $film->director . '</div>
-                    </div>
-                </div>';
-                */
                     }
                 } else {
                     foreach ($xml->children() as $films) {
                         echo '<div class="responsive">';
-                            print_film($films);
+                        print_film($films);
                         echo '</div>';
-                        /*
-                        echo '<div class="responsive">
-                    <div class="gallery">
-                        <a href="product.php?id=' . $films->id . '">
-                        <img src=' . $films->poster . ' alt="imagen" width="100" height="100">
-                    </a>
-                        <div class="desc">
-                            <a href="product.php?id=' . $films->id . '">
-                            <b>' . $films->titulo . '</b>
-                        </a>
-                            <br>' . $films->director . '</div>
-                    </div>
-                </div>';
-                */
                     }
                 }
                 ?>
