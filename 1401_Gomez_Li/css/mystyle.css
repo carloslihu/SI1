@@ -27,6 +27,7 @@ body {
 
 .header_text {
     height: 10%;
+    margin-bottom: 0px;
     vertical-align: top;
     margin-top: 0;
 }
