@@ -20,19 +20,24 @@
                 } else {
                     $id = $_GET['id'];
                     $film = $xml->xpath("/catalogo/pelicula[id='$id']")[0];
-                    include 'includes/fcesta.php';
-                    $confirm_text="";
-                    if (isset($_POST['comprar'])) {//si hemor llegado aqui intentando comprar el producto
-                        if ($_POST['comprar'] == '1') {
-                            $is_valid = is_valid_compra($id);
-                            if(!$is_valid){ //añadimos el producto a la cesta
-                                $confirm_text="ya tienes este producto";
-                            } else if(add_to_cesta($id) == true){//si el error viene dado por intentar añadir a la cesta un producto que ya se compro
-                                $confirm_text="producto añadido a la cesta";
-                            } else {//si el error viene dado por intentar añadir a la cesta algo que ya estaba añadido
-                                $confirm_text="este producto ya estaba en la cesta";
+                    if(is_null($film)){
+                        echo '<h1>error 404: film not found</h1>';
+                        return;
+                    } else {
+                        include 'includes/fcesta.php';
+                        $confirm_text="";
+                        if (isset($_POST['comprar'])) {//si hemor llegado aqui intentando comprar el producto
+                            if ($_POST['comprar'] == '1') {
+                                $is_valid = is_valid_compra($id);
+                                if(!$is_valid){ //añadimos el producto a la cesta
+                                    $confirm_text="ya tienes este producto";
+                                } else if(add_to_cesta($id) == true){//si el error viene dado por intentar añadir a la cesta un producto que ya se compro
+                                    $confirm_text="producto añadido a la cesta";
+                                } else {//si el error viene dado por intentar añadir a la cesta algo que ya estaba añadido
+                                    $confirm_text="este producto ya estaba en la cesta";
+                                }
+                                unset($_POST['comprar']); //desactivamos la variable por si el usuario da a f5 (?)
                             }
-                            unset($_POST['comprar']); //desactivamos la variable por si el usuario da a f5 (?)
                         }
                     }
 
