@@ -9,9 +9,11 @@
         <?php
         if (isset($_SESSION["username"])) {
             echo '
-    <a href="history.php">' . $_SESSION['username'] . '</a>
+    
     <a href="cesta.php">Cesta</a>
-    <a href="login.php">Cerrar Sesion<a>';
+    <a href="history.php">' . $_SESSION['username'] . '</a>
+    <a href="login.php">Cerrar Sesion<a>
+    <p id="saldo"> Saldo: ' . $_SESSION["saldo"].'€';
         } else {
             echo '<a href="cesta.php">Cesta</a>
             <a href="login.php">Login</a>
