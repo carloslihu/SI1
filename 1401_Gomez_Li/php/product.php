@@ -14,27 +14,27 @@
             <div class="column middle">
                 <?php
                 $xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
-                
-                if(!is_numeric($_GET['id'])){
+
+                if (!is_numeric($_GET['id'])) {
                     echo '<h1>error 404: film not found</h1>';
                 } else {
                     $id = $_GET['id'];
                     $film = $xml->xpath("/catalogo/pelicula[id='$id']")[0];
-                    if(is_null($film)){
+                    if (is_null($film)) {
                         echo '<h1>error 404: film not found</h1>';
                         return;
                     } else {
                         include 'includes/fcesta.php';
-                        $confirm_text="";
+                        $confirm_text = "";
                         if (isset($_POST['comprar'])) {//si hemor llegado aqui intentando comprar el producto
                             if ($_POST['comprar'] == '1') {
                                 $is_valid = is_valid_compra($id);
-                                if(!$is_valid){ //añadimos el producto a la cesta
-                                    $confirm_text="ya tienes este producto";
-                                } else if(add_to_cesta($id) == true){//si el error viene dado por intentar añadir a la cesta un producto que ya se compro
-                                    $confirm_text="producto añadido a la cesta";
+                                if (!$is_valid) { //añadimos el producto a la cesta
+                                    $confirm_text = "ya tienes este producto";
+                                } else if (add_to_cesta($id) == true) {//si el error viene dado por intentar añadir a la cesta un producto que ya se compro
+                                    $confirm_text = "producto añadido a la cesta";
                                 } else {//si el error viene dado por intentar añadir a la cesta algo que ya estaba añadido
-                                    $confirm_text="este producto ya estaba en la cesta";
+                                    $confirm_text = "este producto ya estaba en la cesta";
                                 }
                                 unset($_POST['comprar']); //desactivamos la variable por si el usuario da a f5 (?)
                             }
@@ -44,8 +44,8 @@
 
                     echo
                     '
-                    <h1>'.$film->titulo.'</h1>
-                    <p class="confirmation_msg">'.$confirm_text.'</p>
+                    <h1>' . $film->titulo . '</h1>
+                    <p class="confirmation_msg">' . $confirm_text . '</p>
                 <div class="responsive">
                     <div class="gallery">
                         <a href="">
@@ -54,16 +54,16 @@
                         <div class="desc">' . $film->titulo . '</div>
                     </div>
                 </div>
-                <p><b>Descripción: </b><br/>'.$film->descripcion.'</p>
+                <p><b>Descripción: </b><br/>' . $film->descripcion . '</p>
                 <p><b>Director: </b>' . $film->director . '</p>
                 <p><b>Precio: </b>' . $film->precio . ' €</p>
                 <p><b>Categoria: </b>' . $film->categoria . '</p>
                 <p><b>Año: </b>' . $film->anno . '</p>
                 <p><b>Reparto: </b><br>';
-                foreach ($film->actores->actor as $actor) {
-                    echo $actor->nombre . ' as '.$actor->personaje.'<br>';
-                }
-                echo '</p>
+                    foreach ($film->actores->actor as $actor) {
+                        echo $actor->nombre . ' as ' . $actor->personaje . '<br>';
+                    }
+                    echo '</p>
                 <form method="post" action="product.php?id=' . $film->id . '">
                     <input type="hidden" name="comprar" value="1" />
                     <input value="añadir al carro" type="submit"/>

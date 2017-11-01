@@ -57,12 +57,7 @@ body {
     background-color: #333;
     color: #f2f2f2;
 }
-/*
-#saldo:hover{ 
-    background-color: #333;
-    color: black;
-}
-*/
+
 /* Change color on hover */
 
 .topnav a:hover {
@@ -92,8 +87,6 @@ body {
 /* Middle column */
 
 .column.middle {
-    /*border-left: 1px solid black;*/
-    /*margin-left: -1px;*/
     width: 75%;
 }
 
@@ -193,7 +186,6 @@ div.desc {
 }
 
 .abbreviative {
-    /*width: 100px;*/
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -211,13 +203,11 @@ div.desc {
 }
 
 .dropdown {
-    /*    position: relative;*/
     display: inline-block;
     overflow: hidden;
 }
 
 .dropdown-content {
-    /*    display: none;*/
     position: absolute;
     background-color: #f9f9f9;
     min-width: 160px;
@@ -264,12 +254,7 @@ div.history_tag {
 
 /*register section*/
 
-/*
-input[type=text],
-input[type=password],
-input[type=number],
-input[type=email],
-*/
+
 input,
 select {
     width: 100%;
@@ -304,7 +289,6 @@ input[type=submit]:hover {
 }
 
 div {
-    /*border-radius: 5px;*/
     background-color: #f2f2f2;
     padding: 20px;
 }
@@ -341,19 +325,15 @@ div {
 }
 
 .weak-pass{
-    /*width: 25px;*/
     color: red;
 }
 .ok-pass{
-    /*width: 50px;*/
     color: orange;
 }
 .good-pass{
-    /*width: 75px;*/
     color: yellow;
 }
 .great-pass{
-    /*width: 100px;*/
     color: green;
 }
 
