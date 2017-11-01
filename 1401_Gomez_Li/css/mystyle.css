@@ -100,7 +100,8 @@ body {
 }
 
 .row {
-    display: table-row;
+    width: 100%;
+    display: inline-block;
     margin: 0px;
 }
 
