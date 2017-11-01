@@ -34,17 +34,9 @@
 
                 $userfile = fopen("../../usuarios/$username/historial.xml", "x");
                 fclose($userfile);
-                $registerErr = "Cuenta creada";
+                $registerErr = "Cuenta creada, por favor, haga login";
             }
         }
-
-        /*
-          function test_input($data) {
-          $data = trim($data);
-          $data = stripslashes($data);
-          $data = htmlspecialchars($data);
-          return $data;
-          } */
         ?>
         <?php include 'includes/header.php'; ?>
 
@@ -75,7 +67,7 @@
 
                         <label for="bacc">Cuenta Bancaria</label>
                         <input type="number" id="bacc" name="bank_account" placeholder="Tu cuenta bancaria..." value="<?php echo $bank_account; ?>" required>
-                        <span class="error"> <?php echo $registerErr; ?></span>
+                        <span class="correct"> <?php echo $registerErr; ?></span>
 
                         <input type="submit" value="Registrarse">
                     </form>

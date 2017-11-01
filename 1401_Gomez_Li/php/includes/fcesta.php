@@ -54,18 +54,6 @@ function is_valid_compra($id) {
     $path = '../../usuarios/' . $_SESSION['username'] . '/historial.xml';
     include_once "utils.php";
     return (!history_contains_id($path, $id));
-    /*
-      if(!isset($_SESSION['username']))
-      return true;
-      $xml = new DOMDocument();
-      $path = '../../usuarios/'.$_SESSION['username'].'/historial.xml';
-      $xml->load($path);
-      $xpath = new DOMXPath($xml);
-      foreach($xml->getElementsByTagName('id') as $elem){
-      if($elem == $id) return false;
-      }
-      return true;
-     */
 }
 
 /*

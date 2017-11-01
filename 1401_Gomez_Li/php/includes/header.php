@@ -1,6 +1,3 @@
-
-
-
 <div class="pageTop">
     <div class="header">
         <p class="header_text"><a href="index.php">Tienda de DvDs</a></p>
