@@ -27,7 +27,7 @@ if (is_dir("../../../usuarios/$username") == FALSE) {
         setcookie("username", $username, time() + 86400, "/");
         //nos saltamos numero cuenta bancaria
         fgets($userfile);
-        $_SESSION["saldo"]=fgets($userfile);
+        $_SESSION["saldo"] = fgets($userfile);
         fclose($userfile);
         header("Location: ../index.php");
     }
