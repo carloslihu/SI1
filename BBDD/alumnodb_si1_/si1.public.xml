@@ -2,9 +2,7 @@
 <database name="si1" schema="public" type="PostgreSQL - 9.5.9">
    <tables>
       <table name="customers" numRows="14093" remarks="" schema="public" type="TABLE">
-         <column autoUpdated="true" defaultValue="nextval('customers_customerid_seq'::regclass)" digits="0" id="0" name="customerid" nullable="false" remarks="" size="10" type="serial">
-            <child column="customerid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="orders"/>
-         </column>
+         <column autoUpdated="true" defaultValue="nextval('customers_customerid_seq'::regclass)" digits="0" id="0" name="customerid" nullable="false" remarks="" size="10" type="serial"/>
          <column autoUpdated="false" digits="0" id="1" name="firstname" nullable="false" remarks="" size="50" type="varchar"/>
          <column autoUpdated="false" digits="0" id="2" name="lastname" nullable="false" remarks="" size="50" type="varchar"/>
          <column autoUpdated="false" digits="0" id="3" name="address1" nullable="false" remarks="" size="50" type="varchar"/>
@@ -30,8 +28,12 @@
          </index>
       </table>
       <table name="imdb_actormovies" numRows="156544" remarks="" schema="public" type="TABLE">
-         <column autoUpdated="false" digits="0" id="0" name="actorid" nullable="false" remarks="" size="10" type="int4"/>
-         <column autoUpdated="false" digits="0" id="1" name="movieid" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="0" name="actorid" nullable="false" remarks="" size="10" type="int4">
+            <parent column="actorid" foreignKey="imdb_actormovies_actorid_fkey" implied="false" onDeleteCascade="false" schema="public" table="imdb_actors"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="movieid" nullable="false" remarks="" size="10" type="int4">
+            <parent column="movieid" foreignKey="imdb_actormovies_movieid_fkey" implied="false" onDeleteCascade="false" schema="public" table="imdb_movies"/>
+         </column>
          <column autoUpdated="false" digits="0" id="2" name="numparticipation" nullable="false" remarks="" size="10" type="int4"/>
          <column autoUpdated="false" digits="0" id="3" name="character" nullable="false" remarks="" size="2147483647" type="text"/>
          <column autoUpdated="false" digits="0" id="4" name="ascharacter" nullable="false" remarks="" size="2147483647" type="text"/>
@@ -142,7 +144,9 @@
          </index>
       </table>
       <table name="inventory" numRows="6318" remarks="" schema="public" type="TABLE">
-         <column autoUpdated="false" digits="0" id="0" name="prod_id" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="0" name="prod_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="prod_id" foreignKey="inventory_prod_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="products"/>
+         </column>
          <column autoUpdated="false" digits="0" id="1" name="stock" nullable="false" remarks="quantity in stock" size="10" type="int4"/>
          <column autoUpdated="false" digits="0" id="2" name="sales" nullable="false" remarks="quantity sold" size="10" type="int4"/>
          <primaryKey column="prod_id" sequenceNumberInPK="1"/>
@@ -152,19 +156,19 @@
       </table>
       <table name="orderdetail" numRows="1000112" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="orderid" nullable="false" remarks="" size="10" type="int4">
-            <parent column="orderid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="orders"/>
+            <parent column="orderid" foreignKey="orderdetail_orderid_fkey" implied="false" onDeleteCascade="false" schema="public" table="orders"/>
          </column>
-         <column autoUpdated="false" digits="0" id="1" name="prod_id" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="1" name="prod_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="prod_id" foreignKey="orderdetail_prod_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="products"/>
+         </column>
          <column autoUpdated="false" digits="0" id="2" name="price" nullable="true" remarks="price without taxes when the order was paid" size="131089" type="numeric"/>
          <column autoUpdated="false" digits="0" id="3" name="quantity" nullable="false" remarks="" size="10" type="int4"/>
       </table>
       <table name="orders" numRows="181790" remarks="" schema="public" type="TABLE">
-         <column autoUpdated="true" defaultValue="nextval('orders_orderid_seq'::regclass)" digits="0" id="0" name="orderid" nullable="false" remarks="" size="10" type="serial">
-            <child column="orderid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="orderdetail"/>
-         </column>
+         <column autoUpdated="true" defaultValue="nextval('orders_orderid_seq'::regclass)" digits="0" id="0" name="orderid" nullable="false" remarks="" size="10" type="serial"/>
          <column autoUpdated="false" digits="0" id="1" name="orderdate" nullable="false" remarks="" size="13" type="date"/>
          <column autoUpdated="false" digits="0" id="2" name="customerid" nullable="true" remarks="" size="10" type="int4">
-            <parent column="customerid" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="customers"/>
+            <parent column="customerid" foreignKey="orders_customerid_fkey" implied="false" onDeleteCascade="false" schema="public" table="customers"/>
          </column>
          <column autoUpdated="false" digits="0" id="3" name="netamount" nullable="true" remarks="order total without taxes" size="131089" type="numeric"/>
          <column autoUpdated="false" digits="0" id="4" name="tax" nullable="true" remarks="" size="131089" type="numeric"/>

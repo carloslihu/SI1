@@ -118,6 +118,14 @@
 				 </td>
 				 <td>
 				  <table border='0' cellspacing='0' cellpadding='0'>
+				   <tr>
+					<td title="imdb_actormovies.actorid references public.imdb_actors.actorid via imdb_actormovies_actorid_fkey">
+						<a href='../../public/tables/imdb_actors.html'>imdb_actors</a><span class='relatedKey'>.actorid</span>
+					</td>
+					<td class="constraint detail">
+						imdb_actormovies_actorid_fkey <span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span>
+					</td>
+				   </tr>
 				  </table>					 
 				 </td>
 				 <td></td>
@@ -135,6 +143,14 @@
 				 </td>
 				 <td>
 				  <table border='0' cellspacing='0' cellpadding='0'>
+				   <tr>
+					<td title="imdb_actormovies.movieid references public.imdb_movies.movieid via imdb_actormovies_movieid_fkey">
+						<a href='../../public/tables/imdb_movies.html'>imdb_movies</a><span class='relatedKey'>.movieid</span>
+					</td>
+					<td class="constraint detail">
+						imdb_actormovies_movieid_fkey <span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span>
+					</td>
+				   </tr>
 				  </table>					 
 				 </td>
 				 <td></td>
@@ -295,6 +311,54 @@
 				</tbody>
 				</table>   			  
 			</div><!-- /.box-body -->
+		</div>
+				<div class="box box-primary">		
+			<div class="box-header with-border">
+              <i class="fa fa-code-fork"></i>
+
+              <h3 id="Relationships" class="box-title">Relationships</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>	
+			<div class="box-body">	
+			<div class="nav-tabs-custom" style="cursor: move;">
+            <!-- Tabs within a box -->
+			<h5>Close relationships within degrees of separation</h5>
+            <ul class="nav nav-tabs pull-left ui-sortable-handle">
+			  			              <li class="active"><a href="#oneDegreeImg-chart" data-toggle="tab" aria-expanded="true">One</a></li>			  			 
+			  			              <li class=""><a href="#twodegreesDegreeImg-chart" data-toggle="tab" aria-expanded="true">Two degrees</a></li>			  			 
+            </ul>
+            <div class="tab-content no-padding">            
+				<div class="chart tab-pane active" id="oneDegreeImg-chart" style="position: relative; overflow-x:auto;">					
+					<map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
+<area shape="rect" id="node1" href="imdb_actormovies.html" title="imdb_actormovies" alt="" coords="271,35,608,368">
+<area shape="rect" id="node2" title="public.imdb_actors" alt="" coords="9,5,223,93">
+<area shape="rect" id="node3" title="public.imdb_movies" alt="" coords="5,111,227,199">
+</map>
+
+					<a name='diagram'><img id='oneDegreeImg' src='../diagrams/imdb_actormovies.1degree.png' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>							
+				</div>
+				<div class="chart tab-pane " id="twodegreesDegreeImg-chart" style="position: relative; overflow-x:auto;">					
+					<map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
+<area shape="rect" id="node1" href="imdb_actormovies.html" title="imdb_actormovies" alt="" coords="271,5,608,339">
+<area shape="rect" id="node2" title="public.imdb_actors" alt="" coords="9,13,223,101">
+<area shape="rect" id="node3" title="public.imdb_movies" alt="" coords="5,517,227,605">
+<area shape="rect" id="node4" href="imdb_directormovies.html" title="imdb_directormovies" alt="" coords="325,356,554,444">
+<area shape="rect" id="node5" href="imdb_moviecountries.html" title="imdb_moviecountries" alt="" coords="323,461,555,549">
+<area shape="rect" id="node6" href="imdb_moviegenres.html" title="imdb_moviegenres" alt="" coords="333,567,546,655">
+<area shape="rect" id="node7" href="imdb_movielanguages.html" title="imdb_movielanguages" alt="" coords="321,672,558,760">
+<area shape="rect" id="node8" href="products.html" title="products" alt="" coords="365,777,513,865">
+</map>
+
+					<a name='diagram'><img id='twodegreesDegreeImg' src='../diagrams/imdb_actormovies.2degrees.png' usemap='#twoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>							
+				</div>
+			  			</div>
+			</div>
+		  </div><!-- /.box-body -->
 		</div>
 	      </section>
     

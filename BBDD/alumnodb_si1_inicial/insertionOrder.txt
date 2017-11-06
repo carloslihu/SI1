@@ -1,0 +1,13 @@
+customers
+orders
+imdb_moviecountries
+imdb_moviegenres
+imdb_movielanguages
+orderdetail
+products
+imdb_directormovies
+imdb_actormovies
+imdb_actors
+imdb_directors
+imdb_movies
+inventory
