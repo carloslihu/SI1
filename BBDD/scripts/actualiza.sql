@@ -1,4 +1,6 @@
-﻿--EJECUTAR SCRIPT
+﻿--COMANDOS DE TERMINAL
+
+--EJECUTAR SCRIPT
 --cat actualiza.sql | psql -d si1 -U alumnodb
 
 --CREAR BBDD Y POBLAR
@@ -8,6 +10,19 @@
 --DESTRUIR BBDD
 --dropdb -U alumnodb si1
 
+--------------------------------------------------------
+
+
+--CONSULTA PERSONAL PARA VER CAMPOS REPETIDOS BAJO UN PRIMARY KEY
+select orderid,prod_id, count (*)
+from orderdetail
+group by (orderid,prod_id)
+having count(*)>1;
+--------------------------------------------------------
+
+
+
+--AÑADIR FOREIGN KEYS QUE FALTAN
 ALTER TABLE orderdetail 
 ADD CONSTRAINT orderdetail_orderid_fkey 
 FOREIGN KEY (orderid) 
@@ -43,16 +58,11 @@ ADD CONSTRAINT inventory_prod_id_fkey
 FOREIGN KEY (prod_id)
 REFERENCES products (prod_id)
 MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
+-----------------------------------------------------
 
 
---ver repetidos
-select orderid,prod_id, count (*)
-from orderdetail
-group by (orderid,prod_id)
-having count(*)>1;
---
 
-
+--ELIMINAR ROWS DUPLICADOS
 --ESTO FUNCIONA, PERO QUITA LOS DUPLICADOS Y EL ORIGINAL
 DELETE FROM imdb_movielanguages
 WHERE movieid IN (SELECT movieid
@@ -66,7 +76,8 @@ WHERE orderid IN (SELECT orderid
               FROM (SELECT orderid,
                              ROW_NUMBER() OVER (partition BY orderid, prod_id ORDER BY orderid) AS rnum
                      FROM orderdetail) t
-              WHERE t.rnum > 1);             
+              WHERE t.rnum > 1);
+--------------------------------------------------------                           
 --QUITANDO PRIMARY KEYS
 ALTER TABLE imdb_movielanguages
 DROP CONSTRAINT imdb_movielanguages_pkey;
@@ -89,11 +100,15 @@ DROP COLUMN numpartitipation;
 
 ALTER TABLE orderdetail
 ADD CONSTRAINT orderdetail_pkey PRIMARY KEY (orderid,prod_id);
+---------------------------------------------------------------------------
 
---meter inventory en products
 
 
---ENUNCIADO
+
+
+
+
+--OBSERVACIONES DEL ENUNCIADO
 
 --Un pedido en curso (cesta o carrito), se caracteriza por tener un valor NULL (valor reservado de
 --SQL, no una cadena de caracteres) en la columna status de la tabla orders. Por ello, sólo puede
@@ -105,27 +120,9 @@ ADD CONSTRAINT orderdetail_pkey PRIMARY KEY (orderid,prod_id);
 --La columna sales de la tabla inventory contiene el número acumulado de artículos vendidos de
 --un producto.
 
---i. claves primarias
---dejar orderdetail.price por comodidad (memoria)
 
 
---ii. claves externas 
-
---iii. qué tablas son entidades, cuáles relaciones y cuáles atributos
-
---iv. cardinalidad
-
---v. entidades débiles
-
---vi. atributos multivaluados
-
---vii. atributos derivados
-
-
---viii. participación total
---es total en este caso 
-
-
+--OBSERVACIONES PERSONALES
 --mirar uniques y nulls
-
+--no meteremos inventory en products porque no todos los products tienen inventory
 
