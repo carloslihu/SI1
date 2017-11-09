@@ -1,4 +1,4 @@
---EJECUTAR SCRIPT
+﻿--EJECUTAR SCRIPT
 --cat actualiza.sql | psql -d si1 -U alumnodb
 
 --CREAR BBDD Y POBLAR
@@ -45,9 +45,52 @@ REFERENCES products (prod_id)
 MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 
---igual hay que discutir cuales deben ser primary key o no
---ver si order_details necesita claves primarias
+--ver repetidos
+select orderid,prod_id, count (*)
+from orderdetail
+group by (orderid,prod_id)
+having count(*)>1;
+--
 
+
+--ESTO FUNCIONA, PERO QUITA LOS DUPLICADOS Y EL ORIGINAL
+DELETE FROM imdb_movielanguages
+WHERE movieid IN (SELECT movieid
+              FROM (SELECT movieid,
+                             ROW_NUMBER() OVER (partition BY movieid, language ORDER BY movieid) AS rnum
+                     FROM imdb_movielanguages) t
+              WHERE t.rnum > 1);
+
+DELETE FROM orderdetail
+WHERE orderid IN (SELECT orderid
+              FROM (SELECT orderid,
+                             ROW_NUMBER() OVER (partition BY orderid, prod_id ORDER BY orderid) AS rnum
+                     FROM orderdetail) t
+              WHERE t.rnum > 1);             
+--QUITANDO PRIMARY KEYS
+ALTER TABLE imdb_movielanguages
+DROP CONSTRAINT imdb_movielanguages_pkey;
+ALTER TABLE imdb_movielanguages
+ADD CONSTRAINT imdb_movielanguages_pkey PRIMARY KEY (movieid, language);
+
+ALTER TABLE imdb_actormovies
+DROP CONSTRAINT imdb_actormovies_pkey;
+ALTER TABLE imdb_actormovies
+ADD CONSTRAINT imdb_actormovies_pkey PRIMARY KEY (actorid,movieid);
+ALTER TABLE imdb_actormovies 
+DROP COLUMN numparticipation;
+
+ALTER TABLE imdb_directormovies
+DROP CONSTRAINT imdb_directormovies_pkey;
+ALTER TABLE imdb_directormovies
+ADD CONSTRAINT imdb_directormovies_pkey PRIMARY KEY (directorid,movieid);
+ALTER TABLE imdb_directormovies 
+DROP COLUMN numpartitipation;
+
+ALTER TABLE orderdetail
+ADD CONSTRAINT orderdetail_pkey PRIMARY KEY (orderid,prod_id);
+
+--meter inventory en products
 
 
 --ENUNCIADO
@@ -63,14 +106,26 @@ MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 --un producto.
 
 --i. claves primarias
---ii. claves externas
---iii. qué tablas son entidades, cuáles relaciones y cuáles atributos
---iv. cardinalidad
---v. entidades débiles
---vi. atributos multivaluados
---vii. atributos derivados
---viii. participación total
- 
+--dejar orderdetail.price por comodidad (memoria)
 
+
+--ii. claves externas 
+
+--iii. qué tablas son entidades, cuáles relaciones y cuáles atributos
+
+--iv. cardinalidad
+
+--v. entidades débiles
+
+--vi. atributos multivaluados
+
+--vii. atributos derivados
+
+
+--viii. participación total
+--es total en este caso 
+
+
+--mirar uniques y nulls
 
 

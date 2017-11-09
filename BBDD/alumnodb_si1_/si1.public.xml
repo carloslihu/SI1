@@ -34,20 +34,17 @@
          <column autoUpdated="false" digits="0" id="1" name="movieid" nullable="false" remarks="" size="10" type="int4">
             <parent column="movieid" foreignKey="imdb_actormovies_movieid_fkey" implied="false" onDeleteCascade="false" schema="public" table="imdb_movies"/>
          </column>
-         <column autoUpdated="false" digits="0" id="2" name="numparticipation" nullable="false" remarks="" size="10" type="int4"/>
-         <column autoUpdated="false" digits="0" id="3" name="character" nullable="false" remarks="" size="2147483647" type="text"/>
-         <column autoUpdated="false" digits="0" id="4" name="ascharacter" nullable="false" remarks="" size="2147483647" type="text"/>
-         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="5" name="isvoice" nullable="false" remarks="" size="5" type="int2"/>
-         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="6" name="isarchivefootage" nullable="false" remarks="" size="5" type="int2"/>
-         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="7" name="isuncredited" nullable="false" remarks="" size="5" type="int2"/>
-         <column autoUpdated="false" defaultValue="0" digits="0" id="8" name="creditsposition" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="2" name="character" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="3" name="ascharacter" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="4" name="isvoice" nullable="false" remarks="" size="5" type="int2"/>
+         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="5" name="isarchivefootage" nullable="false" remarks="" size="5" type="int2"/>
+         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="6" name="isuncredited" nullable="false" remarks="" size="5" type="int2"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="7" name="creditsposition" nullable="false" remarks="" size="10" type="int4"/>
          <primaryKey column="actorid" sequenceNumberInPK="1"/>
          <primaryKey column="movieid" sequenceNumberInPK="2"/>
-         <primaryKey column="numparticipation" sequenceNumberInPK="3"/>
          <index name="imdb_actormovies_pkey" unique="true">
             <column ascending="true" name="actorid"/>
             <column ascending="true" name="movieid"/>
-            <column ascending="true" name="numparticipation"/>
          </index>
       </table>
       <table name="imdb_actors" numRows="93135" remarks="" schema="public" type="TABLE">
@@ -66,22 +63,19 @@
          <column autoUpdated="true" defaultValue="nextval('imdb_directormovies_movieid_seq'::regclass)" digits="0" id="1" name="movieid" nullable="false" remarks="" size="10" type="serial">
             <parent column="movieid" foreignKey="imdb_directormovies_movieid_fkey" implied="false" onDeleteCascade="false" schema="public" table="imdb_movies"/>
          </column>
-         <column autoUpdated="false" digits="0" id="2" name="numpartitipation" nullable="false" remarks="" size="10" type="int4"/>
-         <column autoUpdated="false" digits="0" id="3" name="ascharacter" nullable="true" remarks="" size="2147483647" type="text"/>
-         <column autoUpdated="false" digits="0" id="4" name="participation" nullable="true" remarks="" size="2147483647" type="text"/>
-         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="5" name="isarchivefootage" nullable="false" remarks="" size="5" type="int2"/>
-         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="6" name="isuncredited" nullable="false" remarks="" size="5" type="int2"/>
-         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="7" name="iscodirector" nullable="false" remarks="" size="5" type="int2"/>
-         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="8" name="ispilot" nullable="false" remarks="" size="5" type="int2"/>
-         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="9" name="ischief" nullable="false" remarks="" size="5" type="int2"/>
-         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="10" name="ishead" nullable="false" remarks="" size="5" type="int2"/>
+         <column autoUpdated="false" digits="0" id="2" name="ascharacter" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="0" id="3" name="participation" nullable="true" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="4" name="isarchivefootage" nullable="false" remarks="" size="5" type="int2"/>
+         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="5" name="isuncredited" nullable="false" remarks="" size="5" type="int2"/>
+         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="6" name="iscodirector" nullable="false" remarks="" size="5" type="int2"/>
+         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="7" name="ispilot" nullable="false" remarks="" size="5" type="int2"/>
+         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="8" name="ischief" nullable="false" remarks="" size="5" type="int2"/>
+         <column autoUpdated="false" defaultValue="(0)::smallint" digits="0" id="9" name="ishead" nullable="false" remarks="" size="5" type="int2"/>
          <primaryKey column="directorid" sequenceNumberInPK="1"/>
          <primaryKey column="movieid" sequenceNumberInPK="2"/>
-         <primaryKey column="numpartitipation" sequenceNumberInPK="3"/>
          <index name="imdb_directormovies_pkey" unique="true">
             <column ascending="true" name="directorid"/>
             <column ascending="true" name="movieid"/>
-            <column ascending="true" name="numpartitipation"/>
          </index>
       </table>
       <table name="imdb_directors" numRows="2208" remarks="" schema="public" type="TABLE">
@@ -116,7 +110,7 @@
             <column ascending="true" name="genre"/>
          </index>
       </table>
-      <table name="imdb_movielanguages" numRows="4730" remarks="" schema="public" type="TABLE">
+      <table name="imdb_movielanguages" numRows="86" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="movieid" nullable="false" remarks="" size="10" type="int4">
             <parent column="movieid" foreignKey="imdb_movielanguages_movieid_fkey" implied="false" onDeleteCascade="false" schema="public" table="imdb_movies"/>
          </column>
@@ -124,11 +118,9 @@
          <column autoUpdated="false" digits="0" id="2" name="extrainformation" nullable="false" remarks="" size="128" type="varchar"/>
          <primaryKey column="movieid" sequenceNumberInPK="1"/>
          <primaryKey column="language" sequenceNumberInPK="2"/>
-         <primaryKey column="extrainformation" sequenceNumberInPK="3"/>
          <index name="imdb_movielanguages_pkey" unique="true">
             <column ascending="true" name="movieid"/>
             <column ascending="true" name="language"/>
-            <column ascending="true" name="extrainformation"/>
          </index>
       </table>
       <table name="imdb_movies" numRows="3873" remarks="" schema="public" type="TABLE">
@@ -154,7 +146,7 @@
             <column ascending="true" name="prod_id"/>
          </index>
       </table>
-      <table name="orderdetail" numRows="1000112" remarks="" schema="public" type="TABLE">
+      <table name="orderdetail" numRows="996559" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="orderid" nullable="false" remarks="" size="10" type="int4">
             <parent column="orderid" foreignKey="orderdetail_orderid_fkey" implied="false" onDeleteCascade="false" schema="public" table="orders"/>
          </column>
@@ -163,6 +155,12 @@
          </column>
          <column autoUpdated="false" digits="0" id="2" name="price" nullable="true" remarks="price without taxes when the order was paid" size="131089" type="numeric"/>
          <column autoUpdated="false" digits="0" id="3" name="quantity" nullable="false" remarks="" size="10" type="int4"/>
+         <primaryKey column="orderid" sequenceNumberInPK="1"/>
+         <primaryKey column="prod_id" sequenceNumberInPK="2"/>
+         <index name="orderdetail_pkey" unique="true">
+            <column ascending="true" name="orderid"/>
+            <column ascending="true" name="prod_id"/>
+         </index>
       </table>
       <table name="orders" numRows="181790" remarks="" schema="public" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('orders_orderid_seq'::regclass)" digits="0" id="0" name="orderid" nullable="false" remarks="" size="10" type="serial"/>
