@@ -56,6 +56,14 @@
             <column ascending="true" name="actorid"/>
          </index>
       </table>
+      <table name="imdb_countries" numRows="71" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('imdb_countries_countryid_seq'::regclass)" digits="0" id="0" name="countryid" nullable="false" remarks="" size="10" type="serial"/>
+         <column autoUpdated="false" digits="0" id="1" name="countryname" nullable="false" remarks="" size="128" type="varchar"/>
+         <primaryKey column="countryid" sequenceNumberInPK="1"/>
+         <index name="imdb_countries_pkey" unique="true">
+            <column ascending="true" name="countryid"/>
+         </index>
+      </table>
       <table name="imdb_directormovies" numRows="4180" remarks="" schema="public" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('imdb_directormovies_directorid_seq'::regclass)" digits="0" id="0" name="directorid" nullable="false" remarks="" size="10" type="serial">
             <parent column="directorid" foreignKey="imdb_directormovies_directorid_fkey" implied="false" onDeleteCascade="false" schema="public" table="imdb_directors"/>
@@ -86,41 +94,63 @@
             <column ascending="true" name="directorid"/>
          </index>
       </table>
+      <table name="imdb_genres" numRows="27" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('imdb_genres_genreid_seq'::regclass)" digits="0" id="0" name="genreid" nullable="false" remarks="" size="10" type="serial"/>
+         <column autoUpdated="false" digits="0" id="1" name="genrename" nullable="false" remarks="" size="128" type="varchar"/>
+         <primaryKey column="genreid" sequenceNumberInPK="1"/>
+         <index name="imdb_genres_pkey" unique="true">
+            <column ascending="true" name="genreid"/>
+         </index>
+      </table>
+      <table name="imdb_languages" numRows="116" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('imdb_languages_languageid_seq'::regclass)" digits="0" id="0" name="languageid" nullable="false" remarks="" size="10" type="serial"/>
+         <column autoUpdated="false" digits="0" id="1" name="languagename" nullable="false" remarks="" size="128" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="extrainformation" nullable="false" remarks="" size="128" type="varchar"/>
+         <primaryKey column="languageid" sequenceNumberInPK="1"/>
+         <index name="imdb_languages_pkey" unique="true">
+            <column ascending="true" name="languageid"/>
+         </index>
+      </table>
       <table name="imdb_moviecountries" numRows="4935" remarks="" schema="public" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('imdb_moviecountries_movieid_seq'::regclass)" digits="0" id="0" name="movieid" nullable="false" remarks="" size="10" type="serial">
             <parent column="movieid" foreignKey="imdb_moviecountries_movieid_fkey" implied="false" onDeleteCascade="false" schema="public" table="imdb_movies"/>
          </column>
-         <column autoUpdated="false" digits="0" id="1" name="country" nullable="false" remarks="" size="32" type="varchar"/>
+         <column autoUpdated="false" defaultValue="1" digits="0" id="1" name="countryid" nullable="false" remarks="" size="10" type="int4">
+            <parent column="countryid" foreignKey="imdb_moviecountries_countryid_fkey" implied="false" onDeleteCascade="false" schema="public" table="imdb_countries"/>
+         </column>
          <primaryKey column="movieid" sequenceNumberInPK="1"/>
-         <primaryKey column="country" sequenceNumberInPK="2"/>
-         <index name="imdb_moviecountries_pkey" unique="true">
+         <primaryKey column="countryid" sequenceNumberInPK="2"/>
+         <index name="imdb_moviecountries_countryid_pkey" unique="true">
             <column ascending="true" name="movieid"/>
-            <column ascending="true" name="country"/>
+            <column ascending="true" name="countryid"/>
          </index>
       </table>
       <table name="imdb_moviegenres" numRows="9333" remarks="" schema="public" type="TABLE">
          <column autoUpdated="true" defaultValue="nextval('imdb_moviegenres_movieid_seq'::regclass)" digits="0" id="0" name="movieid" nullable="false" remarks="" size="10" type="serial">
             <parent column="movieid" foreignKey="imdb_moviegenres_movieid_fkey" implied="false" onDeleteCascade="false" schema="public" table="imdb_movies"/>
          </column>
-         <column autoUpdated="false" digits="0" id="1" name="genre" nullable="false" remarks="" size="32" type="varchar"/>
+         <column autoUpdated="false" defaultValue="1" digits="0" id="1" name="genreid" nullable="false" remarks="" size="10" type="int4">
+            <parent column="genreid" foreignKey="imdb_moviegenres_genreid_fkey" implied="false" onDeleteCascade="false" schema="public" table="imdb_genres"/>
+         </column>
          <primaryKey column="movieid" sequenceNumberInPK="1"/>
-         <primaryKey column="genre" sequenceNumberInPK="2"/>
-         <index name="imdb_moviegenres_pkey" unique="true">
+         <primaryKey column="genreid" sequenceNumberInPK="2"/>
+         <index name="imdb_moviegenres_genreid_pkey" unique="true">
             <column ascending="true" name="movieid"/>
-            <column ascending="true" name="genre"/>
+            <column ascending="true" name="genreid"/>
          </index>
       </table>
-      <table name="imdb_movielanguages" numRows="86" remarks="" schema="public" type="TABLE">
+      <table name="imdb_movielanguages" numRows="4726" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="movieid" nullable="false" remarks="" size="10" type="int4">
             <parent column="movieid" foreignKey="imdb_movielanguages_movieid_fkey" implied="false" onDeleteCascade="false" schema="public" table="imdb_movies"/>
          </column>
-         <column autoUpdated="false" digits="0" id="1" name="language" nullable="false" remarks="" size="32" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="2" name="extrainformation" nullable="false" remarks="" size="128" type="varchar"/>
+         <column autoUpdated="false" defaultValue="1" digits="0" id="1" name="languageid" nullable="false" remarks="" size="10" type="int4">
+            <parent column="languageid" foreignKey="imdb_movielanguages_languageid_fkey" implied="false" onDeleteCascade="false" schema="public" table="imdb_languages"/>
+         </column>
          <primaryKey column="movieid" sequenceNumberInPK="1"/>
-         <primaryKey column="language" sequenceNumberInPK="2"/>
-         <index name="imdb_movielanguages_pkey" unique="true">
+         <primaryKey column="languageid" sequenceNumberInPK="2"/>
+         <index name="imdb_movielanguages_languageid_pkey" unique="true">
             <column ascending="true" name="movieid"/>
-            <column ascending="true" name="language"/>
+            <column ascending="true" name="languageid"/>
          </index>
       </table>
       <table name="imdb_movies" numRows="3873" remarks="" schema="public" type="TABLE">
