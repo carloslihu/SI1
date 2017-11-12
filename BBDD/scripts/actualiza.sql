@@ -68,7 +68,7 @@ MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 --ELIMINAR ROWS DUPLICADOS
 --ESTO FUNCIONA, PERO QUITA LOS DUPLICADOS Y EL ORIGINAL
 
-
+--quitamos los que tienen movieid y language duplicados
 DELETE FROM imdb_movielanguages
 WHERE movieid IN (
 	SELECT movieid
@@ -84,7 +84,7 @@ WHERE movieid IN (
 		  AS rnum
 		  FROM imdb_movielanguages) t
   WHERE t.rnum > 1);
-
+--quitamos orderid y prodid duplicados
 DELETE FROM orderdetail
 WHERE orderid IN (
 	SELECT 
