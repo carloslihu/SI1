@@ -14,13 +14,15 @@
 
 
 --CONSULTA PERSONAL PARA VER CAMPOS REPETIDOS BAJO UN PRIMARY KEY
-/*select 
-	orderid,
-	prod_id, 
+/*
+select 
+  t.orderid,
+	t.prod_id, 
 	count (*)
-from orderdetail
-group by (orderid,prod_id)
-having count(*)>1;*/
+from orderdetail as t
+group by orderid, prod_id
+having count(*)>1;
+*/
 --------------------------------------------------------
 
 
@@ -69,7 +71,7 @@ MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 --ESTO FUNCIONA, PERO QUITA LOS DUPLICADOS Y EL ORIGINAL
 
 --quitamos los que tienen movieid y language duplicados
-DELETE FROM imdb_movielanguages
+/*DELETE FROM imdb_movielanguages
 WHERE movieid IN (
 	SELECT movieid
  	FROM (
@@ -83,9 +85,9 @@ WHERE movieid IN (
 		  	)
 		  AS rnum
 		  FROM imdb_movielanguages) t
-  WHERE t.rnum > 1);
+  WHERE t.rnum > 1);*/
 --quitamos orderid y prodid duplicados
-DELETE FROM orderdetail
+/*DELETE FROM orderdetail
 WHERE orderid IN (
 	SELECT 
 	orderid
@@ -99,13 +101,46 @@ WHERE orderid IN (
       	ORDER BY orderid) 
       AS rnum
       FROM orderdetail) t
-  WHERE t.rnum > 1);
---CODIGO ESTHER
+  WHERE t.rnum > 1);*/
+--CODIGO PARA BORRAR EXTRAINFORMATION DUPLICADOS EN MOVIELANGUAGES PARA UN (MOVIEID,LANGUAGE) FIJO
 
---DELETE FROM imdb_movielanguages WHERE movieid IN
---(SELECT movieid FROM (SELECT movieid, language, COUNT(*) as c FROM imdb_movielanguages
---group by movieid, language) AS count_lan WHERE C>1) AND extrainformation=''
+DELETE FROM imdb_movielanguages WHERE movieid IN
+(SELECT movieid FROM (SELECT movieid, language, COUNT(*) as c FROM imdb_movielanguages
+group by movieid, language) AS count_lan WHERE C>1) AND extrainformation='';
 
+
+--CODIGO PARA JUNTAR FILAS DE ORDERDETAIL DUPLICADOS PARA UN (ORDERID,PROD_ID) FIJO
+CREATE TABLE aux (
+  orderid integer NOT NULL,
+  prod_id integer NOT NULL,
+  price numeric default NULL, -- price without taxes when the order was paid
+  quantity integer NOT NULL,
+  CONSTRAINT orderdetail_orderid_fkey FOREIGN KEY (orderid)
+      REFERENCES orders (orderid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT orderdetail_prod_id_fkey FOREIGN KEY (prod_id)
+      REFERENCES products (prod_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+/*
+INSERT INTO table1 ( column1 )
+SELECT  col1
+FROM    table2  
+*/
+
+INSERT INTO aux 
+(orderid, prod_id, quantity) 
+SELECT
+  orderid, 
+  prod_id, 
+  sum(quantity) 
+  from orderdetail 
+  group by 
+    prod_id, 
+    orderid;
+
+DROP TABLE orderdetail;
+ALTER TABLE aux rename to orderdetail;
 --------------------------------------------------------                           
 --QUITANDO PRIMARY KEYS
 
