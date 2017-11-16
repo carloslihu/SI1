@@ -29,7 +29,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-SELECT getTopMonths(270000000, 500000)
+SELECT * FROM getTopMonths(19000, 320000)
 --query para obtener la ganancia de todos los meses tales que esta sea mayor que <<tal>>
 SELECT max(tot) from 
   (SELECT to_char(orderdate, 'YYYY-MM') as fecha, sum(totalamount) as tot from orders
