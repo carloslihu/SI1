@@ -32,5 +32,3 @@ FOR EACH ROW EXECUTE PROCEDURE updOrders();
 /*INSERT INTO orderdetail VALUES (7,1,10,2);
 DELETE FROM orderdetail 
 WHERE orderid = 7 AND prod_id=1;*/
-
---falta probarlo, y falta ver si necesito usar new
