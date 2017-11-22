@@ -4,7 +4,10 @@ pareja 15
 1401_Gomez_Li.zip
 
 # TOASK:
+	
 
+	En el segundo trigger como mirar que el estado anterior era NULL
+	En la tabla de alertas se inserta (pero como actuamos cuando la compra ya se ha hecho?)
 
 # TODO:
 
