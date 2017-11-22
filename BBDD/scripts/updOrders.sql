@@ -23,7 +23,7 @@
       UPDATE orders set totalamount = netamount + netamount*tax*0.01
       WHERE orders.orderid = OLD.orderid;
     END IF;
-  RETURN NEW;   
+  RETURN NEW;
   END; $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER t_updOrders AFTER INSERT OR DELETE ON orderdetail
