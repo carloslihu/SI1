@@ -1,0 +1,19 @@
+﻿CREATE OR REPLACE FUNCTION
+checkLogin(username varchar(), pass varchar())
+RETURNS boolean output AS $$
+DECLARE
+	annos integer;
+BEGIN
+	
+	FOR annos IN select extract (year from orders.orderdate) as fecha from orders
+    where extract (year from orders.orderdate) >= anno
+    group by fecha
+	LOOP
+		return query select prod_id, sum(quantity) from orderdetail
+    inner join orders on orderdetail.orderid = orders.orderid and
+      EXTRACT(YEAR FROM orders.orderdate) = annos
+    group by prod_id
+    order by sum desc limit 1;
+	END LOOP;
+END;
+$$ LANGUAGE plpgsql;
