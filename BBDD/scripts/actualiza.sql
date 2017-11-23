@@ -308,7 +308,17 @@ REFERENCES imdb_languages (languageid)
 MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 -----------------------------------------------------
 
-
+--TABLA ALERTAS
+CREATE TABLE alerts (
+  orderid integer NOT NULL,
+  prod_id integer NOT NULL,
+  CONSTRAINT alerts_orderid_fkey FOREIGN KEY (orderid)
+      REFERENCES orders (orderid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT alerts_prod_id_fkey FOREIGN KEY (prod_id)
+      REFERENCES products (prod_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);
 
 
 

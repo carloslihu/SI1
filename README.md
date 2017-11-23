@@ -9,11 +9,14 @@ pareja 15
 		De imprimir los datos de la tabla, no entendemos que interes puede tener el usuario en ver el numero de ventas. Ademas, tendría sentido que
 		pudiera ir a la pagina asociada a ese producto al hacer click y por tanto la funcion getTopVentas deberia devolver, en la tabla, el id
 		de la pelicula (dato necesario para el href)
+	
 
 	En la base de datos:
 		1)	En la tabla customers se guardan las contraseñas sin md5. Respetar esto y no guardar nuevas contraseñas con md5? o actualizar la tabla para que todas las contraseñas esten
 			en md5?
 		2)	En la tabla customers, que campo de los existentes representa el saldo de los usuarios?
+	En el segundo trigger como mirar que el estado anterior era NULL
+	En la tabla de alertas se inserta (pero como actuamos cuando la compra ya se ha hecho?)
 
 # TODO:
 
