@@ -1,4 +1,4 @@
-﻿drop function getTopVentas(integer);
+﻿--drop function getTopVentas(integer);
 CREATE OR REPLACE FUNCTION
 getTopVentas(anno integer)
 RETURNS table(a integer,b bigint ) AS $$
@@ -22,8 +22,27 @@ $$ LANGUAGE plpgsql;
 select * from getTopVentas(1998);
 
 
+select aux.f, ventas.prod_id, aux.max from
+  (select f, max(sum) from 
 
-sumQuantity*ventasProd
+    (select EXTRACT(YEAR FROM orders.orderdate) as f, prod_id, sum(quantity) 
+    from orderdetail
+    natural join orders
+    group by f,prod_id) as v
+    
+  group by f) as aux
+
+  inner join (
+  select EXTRACT(YEAR FROM orders.orderdate) as f, prod_id, sum(quantity) 
+    from orderdetail
+    natural join orders
+    group by f,prod_id) as ventas
+  on ventas.f = aux.f and ventas.sum = aux.max
+
+
+  
+
+(select EXTRACT(YEAR FROM orders.orderdate) as f from orders group by f)
 
 select prod_id, quantity from orderdetail
     inner join orders on orderdetail.orderid = orders.orderid and

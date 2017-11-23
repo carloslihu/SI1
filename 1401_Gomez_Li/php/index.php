@@ -31,9 +31,16 @@
 
                 <?php
                 include "includes/utils.php";
-                $conn = pg_connect("host=localhost port=5432 dbname=si1 user=alumnodb password=alumnodb") or die('No pudo conectarse: ' . pg_last_error());
-                echo "mae mia que pasa";
-                var_dump($conn);
+                try {
+				    $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb" );
+				    /*** use the database connection ***/
+				}
+				catch(PDOException $e)
+				{
+				    echo $e->getMessage();
+				}
+
+                //TODO eliminar los bloques de codigo antiguo (todo lo referente a xml)
                 $xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
                 if (isset($_REQUEST['search'])) {
                     $filtro = $_REQUEST['filtro'];
@@ -53,10 +60,14 @@
                         echo '</div>';
                 	*/
                     //README consulta de las transparencias. A la espera de ver si hay que formatearla mejor o algo para integrarla bien en la pagina web
-                    $consulta = 'SELECT * FROM getTopVentas()';
-                    var_dump($consulta);
-					$resultado = pg_query($conn, $consulta) or die('Consulta fallida: ' . pg_last_error());
-					var_dump($resultado);
+                    $sql = 'SELECT * FROM getTopVentas(0)';
+					$resultado = $db->query($sql);
+					echo '<table>';
+					foreach ($resultado as $row) {
+						var_dump($row)
+					}
+					echo '</table>';
+					/*
 					echo "<table>\n";
 						while ($linea = pg_fetch_array($resultado, null, PGSQL_ASSOC)) {
 						echo "\t<tr>\n";
@@ -66,9 +77,10 @@
 						echo "\t</tr>\n";
 						}
 					echo "</table>\n";
-                                        pg_free_result($resultado);
+                    pg_free_result($resultado);
+                    */
                     }
-				pg_close($conn);
+				$db = null;
                 ?>
                 <div class="clearfix"></div>
             </div>
