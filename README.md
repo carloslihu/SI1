@@ -5,12 +5,11 @@ pareja 15
 
 # TOASK:
 	
-
-	En el segundo trigger como mirar que el estado anterior era NULL
-	En la tabla de alertas se inserta (pero como actuamos cuando la compra ya se ha hecho?)
+	En la tabla de alertas se inserta (hay que hacer rollback en el carrito)
 
 # TODO:
-
+	carrito (cuando hace login debo ver si existe ya carrito empezado y cargarlo en sesion)
+	añadir y quitar pelis al carrito
 
 # CRITERIOS
 

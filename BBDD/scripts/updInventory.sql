@@ -3,7 +3,6 @@
     r RECORD;
     s INT4;
   BEGIN
-  --IF (OLD.status = NULL) THEN
     FOR r IN (
       SELECT * 
       FROM (orderdetail NATURAL JOIN inventory AS i NATURAL JOIN orders) as t 
@@ -27,7 +26,6 @@
     SET orderdate = CURRENT_DATE
     WHERE orderid = NEW.orderid;
     
-  --END IF;
     RETURN NEW;
   END; $$ LANGUAGE plpgsql;
 
