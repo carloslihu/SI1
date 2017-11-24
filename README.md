@@ -13,9 +13,12 @@ pareja 15
 	En la base de datos:
 		1)	En la tabla customers se guardan las contraseñas sin md5. Respetar esto y no guardar nuevas contraseñas con md5? o actualizar la tabla para que todas las contraseñas esten
 			en md5?
+
+			¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡ATENCION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				en actualiza.sql las contraseñas anteriores ya las he pasado a md5
+				supongo que falta hacer que sean MD5 a partir de ahora al registrarse
+			
 		2)	En la tabla customers, que campo de los existentes representa el saldo de los usuarios?
-	En el segundo trigger como mirar que el estado anterior era NULL
-	En la tabla de alertas se inserta (pero como actuamos cuando la compra ya se ha hecho?)
 
 # TODO:
 	carrito (cuando hace login debo ver si existe ya carrito empezado y cargarlo en sesion)

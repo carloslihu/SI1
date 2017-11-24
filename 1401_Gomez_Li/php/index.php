@@ -64,7 +64,7 @@
 					$resultado = $db->query($sql);
 					echo '<table>';
 					foreach ($resultado as $row) {
-						var_dump($row)
+						var_dump($row);
 					}
 					echo '</table>';
 					/*

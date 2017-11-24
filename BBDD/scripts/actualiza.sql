@@ -319,7 +319,27 @@ CREATE TABLE alerts (
       REFERENCES products (prod_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+--------------------------------------------------
+--QUITANDO NOT NULLS
+ALTER TABLE customers ALTER address1 DROP NOT NULL;
+ALTER TABLE customers ALTER firstname DROP NOT NULL;
+ALTER TABLE customers ALTER lastname DROP NOT NULL;
+ALTER TABLE customers ALTER city DROP NOT NULL;
+ALTER TABLE customers ALTER country DROP NOT NULL;
+ALTER TABLE customers ALTER region DROP NOT NULL;
+ALTER TABLE customers ALTER creditcardtype DROP NOT NULL;
+ALTER TABLE customers ALTER creditcardexpiration DROP NOT NULL;
+ALTER TABLE customers ALTER income SET NOT NULL;
+ALTER TABLE customers ALTER email SET NOT NULL;
+--ALTER TABLE customers ADD CONSTRAINT customers_unique_username UNIQUE(email);
 
+--CONTRASEÑAS EN MD5
+UPDATE customers SET password=md5(password);
+
+--ACTUALIZAR SECUENCIAS
+SELECT setval('customers_customerid_seq', 
+(SELECT MAX(customerid) FROM customers)+1,
+ FALSE)
 
 
 --OBSERVACIONES DEL ENUNCIADO
