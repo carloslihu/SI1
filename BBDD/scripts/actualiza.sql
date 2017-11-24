@@ -320,7 +320,7 @@ CREATE TABLE alerts (
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 --------------------------------------------------
---QUITANDO NOT NULLS
+--QUITANDO NOT NULLS DE ATRIBUTOS DE CUSTOMERS QUE NO QUEREMOS
 ALTER TABLE customers ALTER address1 DROP NOT NULL;
 ALTER TABLE customers ALTER firstname DROP NOT NULL;
 ALTER TABLE customers ALTER lastname DROP NOT NULL;
@@ -329,17 +329,56 @@ ALTER TABLE customers ALTER country DROP NOT NULL;
 ALTER TABLE customers ALTER region DROP NOT NULL;
 ALTER TABLE customers ALTER creditcardtype DROP NOT NULL;
 ALTER TABLE customers ALTER creditcardexpiration DROP NOT NULL;
+
 ALTER TABLE customers ALTER income SET NOT NULL;
 ALTER TABLE customers ALTER email SET NOT NULL;
+
+
+ALTER TABLE orders ALTER orderdate DROP NOT NULL;
+ALTER TABLE orders ALTER customerid SET NOT NULL;
+ALTER TABLE orders ALTER tax SET DEFAULT 15;
 --ALTER TABLE customers ADD CONSTRAINT customers_unique_username UNIQUE(email);
 
 --CONTRASEÑAS EN MD5
 UPDATE customers SET password=md5(password);
+----------------------------------------------------
 
---ACTUALIZAR SECUENCIAS
+
+--ACTUALIZAR CURRENT VALUE DE SECUENCIAS
 SELECT setval('customers_customerid_seq', 
 (SELECT MAX(customerid) FROM customers)+1,
- FALSE)
+ FALSE);
+ SELECT setval('imdb_actors_actorid_seq', 
+(SELECT MAX(actorid) FROM imdb_actors)+1,
+ FALSE);
+ SELECT setval('imdb_directormovies_directorid_seq', 
+(SELECT MAX(directorid) FROM imdb_directormovies)+1,
+ FALSE);
+  SELECT setval('imdb_directormovies_movieid_seq', 
+(SELECT MAX(movieid) FROM imdb_directormovies)+1,
+ FALSE);
+  SELECT setval('imdb_directors_directorid_seq', 
+(SELECT MAX(directorid) FROM imdb_directors)+1,
+ FALSE);
+ 
+  SELECT setval('imdb_moviecountries_movieid_seq', 
+(SELECT MAX(movieid) FROM imdb_moviecountries)+1,
+ FALSE);
+  SELECT setval('imdb_moviegenres_movieid_seq', 
+(SELECT MAX(movieid) FROM imdb_moviegenres)+1,
+ FALSE);
+  SELECT setval('imdb_movies_movieid_seq', 
+(SELECT MAX(movieid) FROM imdb_movies)+1,
+ FALSE);
+  SELECT setval('orders_orderid_seq', 
+(SELECT MAX(orderid) FROM orders)+1,
+ FALSE);
+  SELECT setval('products_movieid_seq', 
+(SELECT MAX(movieid) FROM products)+1,
+ FALSE);
+ SELECT setval('products_prod_id_seq', 
+(SELECT MAX(prod_id) FROM products)+1,
+ FALSE);
 
 
 --OBSERVACIONES DEL ENUNCIADO

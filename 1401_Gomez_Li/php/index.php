@@ -32,13 +32,11 @@
                 <?php
                 include "includes/utils.php";
                 try {
-				    $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb" );
-				    /*** use the database connection ***/
-				}
-				catch(PDOException $e)
-				{
-				    echo $e->getMessage();
-				}
+                    $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+                    /*                     * * use the database connection ** */
+                } catch (PDOException $e) {
+                    echo $e->getMessage();
+                }
 
                 //TODO eliminar los bloques de codigo antiguo (todo lo referente a xml)
                 $xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
@@ -53,34 +51,34 @@
                         echo '</div>';
                     }
                 } else {
-                	/*
-					foreach ($xml->children() as $films) {
-                        echo '<div class="responsive">';
-                        print_film($films);
-                        echo '</div>';
-                	*/
+                    /*
+                      foreach ($xml->children() as $films) {
+                      echo '<div class="responsive">';
+                      print_film($films);
+                      echo '</div>';
+                     */
                     //README consulta de las transparencias. A la espera de ver si hay que formatearla mejor o algo para integrarla bien en la pagina web
                     $sql = 'SELECT * FROM getTopVentas(0)';
-					$resultado = $db->query($sql);
-					echo '<table>';
-					foreach ($resultado as $row) {
-						var_dump($row);
-					}
-					echo '</table>';
-					/*
-					echo "<table>\n";
-						while ($linea = pg_fetch_array($resultado, null, PGSQL_ASSOC)) {
-						echo "\t<tr>\n";
-							foreach ($linea as $valor_col) {
-							echo "\t\t<td>$valor_col</td>\n";
-							}
-						echo "\t</tr>\n";
-						}
-					echo "</table>\n";
-                    pg_free_result($resultado);
-                    */
+                    $resultado = $db->query($sql);
+                    echo '<table>';
+                    foreach ($resultado as $row) {
+                        var_dump($row);
                     }
-				$db = null;
+                    echo '</table>';
+                    /*
+                      echo "<table>\n";
+                      while ($linea = pg_fetch_array($resultado, null, PGSQL_ASSOC)) {
+                      echo "\t<tr>\n";
+                      foreach ($linea as $valor_col) {
+                      echo "\t\t<td>$valor_col</td>\n";
+                      }
+                      echo "\t</tr>\n";
+                      }
+                      echo "</table>\n";
+                      pg_free_result($resultado);
+                     */
+                }
+                $db = null;
                 ?>
                 <div class="clearfix"></div>
             </div>
