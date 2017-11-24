@@ -10,6 +10,7 @@ pareja 15
 		pudiera ir a la pagina asociada a ese producto al hacer click y por tanto la funcion getTopVentas deberia devolver, en la tabla, el id
 		de la pelicula (dato necesario para el href)
 	
+	En la tabla de alertas se inserta (hay que hacer rollback en el carrito)
 
 	En la base de datos:
 		1)	En la tabla customers se guardan las contraseñas sin md5. Respetar esto y no guardar nuevas contraseñas con md5? o actualizar la tabla para que todas las contraseñas esten
@@ -19,7 +20,8 @@ pareja 15
 	En la tabla de alertas se inserta (pero como actuamos cuando la compra ya se ha hecho?)
 
 # TODO:
-
+	carrito (cuando hace login debo ver si existe ya carrito empezado y cargarlo en sesion)
+	añadir y quitar pelis al carrito
 
 # CRITERIOS
 

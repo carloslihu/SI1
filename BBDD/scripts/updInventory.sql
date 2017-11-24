@@ -3,46 +3,40 @@
     r RECORD;
     s INT4;
   BEGIN
-  --IF (OLD.status = NULL) THEN
     FOR r IN (
       SELECT * 
       FROM (orderdetail NATURAL JOIN inventory AS i NATURAL JOIN orders) as t 
       WHERE NEW.orderid = t.orderid)
       LOOP
-        UPDATE inventory
-        SET sales = sales + r.quantity,
-        stock = stock - r.quantity
-        WHERE r.prod_id = prod_id;
-
-        s:= (SELECT stock 
-        FROM inventory 
-        WHERE r.prod_id = prod_id);
-        --CONTROL DE STOCK
+        s := (SELECT stock FROM inventory WHERE r.prod_id = prod_id) - r.quantity;
         IF (s < 1) THEN
           INSERT INTO alerts VALUES (r.orderid,r.prod_id);
-        END IF;
+        ELSE
+          UPDATE inventory
+          SET sales = sales + r.quantity,
+          stock = stock - r.quantity
+          WHERE r.prod_id = prod_id;
 
+        END IF;
       END LOOP;
     UPDATE orders
     SET orderdate = CURRENT_DATE
     WHERE orderid = NEW.orderid;
     
-  --END IF;
     RETURN NEW;
   END; $$ LANGUAGE plpgsql;
-
 
 DROP TRIGGER IF EXISTS t_updInventory ON orders;
 
 CREATE TRIGGER t_updInventory AFTER UPDATE ON orders 
 FOR EACH ROW 
-WHEN (NEW.status IS DISTINCT FROM OLD.status)--cuando cambie orders.status(CUANDO PASE DE NULL A ALGO?)
+WHEN (NEW.status IS DISTINCT FROM OLD.status AND OLD.status IS NULL)--cuando cambie orders.status(CUANDO PASE DE NULL A ALGO?)
 EXECUTE PROCEDURE updInventory();
 
-DELETE FROM orderdetail WHERE orderid = 200000;
+/*DELETE FROM orderdetail WHERE orderid = 200000;
 DELETE FROM orders WHERE orderid = 200000;
 INSERT INTO orders VALUES (200000,CURRENT_DATE,10,2,2,2,NULL);
-INSERT INTO orderdetail VALUES (200000, 2, 10, 140);
+INSERT INTO orderdetail VALUES (200000, 2, 10, 2);
 INSERT INTO orderdetail VALUES (200000, 3, 20, 3);
 
-UPDATE orders SET status = 'Paid' WHERE orderid = 200000;
+UPDATE orders SET status = 'Paid' WHERE orderid = 200000;*/
