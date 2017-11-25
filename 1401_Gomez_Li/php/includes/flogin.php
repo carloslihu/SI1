@@ -20,7 +20,7 @@ $resultado = $db->query($sql);
 if ($resultado->rowCount() == 1) {
     $row = $resultado->fetch(PDO::FETCH_OBJ);
     //expira en 1 dia
-    setcookie("username", $row->username, time() + 86400, "/");
+    setcookie("email", $row->username, time() + 86400, "/");
     $_SESSION["username"] = $row->username;
     $_SESSION['saldo'] = $row->income;
     $_SESSION['customerid'] = $row->customerid;

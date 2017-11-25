@@ -14,9 +14,24 @@ function clean_cesta() {
  */
 
 function add_to_cesta($id) {
-    if (!in_array($id, $_SESSION['cesta'])) {
-        array_push($_SESSION['cesta'], $id);
+    if(isset($_SESSION['customerid'])){//si el usuario tiene la sesion iniciada
+        try {
+                $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+                /*                     * * use the database connection ** */
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+            }
+            //TODO si no hay carrito en esta ocasion lo creamos. Si hay carrito, entonces creamos una entrada nueva en orderdetail
+        $sql = "SELECT orderid FROM orders WHERE status is NULL AND customerid=" . $row->customerid;
+        $sql = 'INSERT INTO orderdetail'
+        $resultado = $db->query($sql)->fetchAll();
+        //fetchAll
+        $db = null;
+    } else {//si el usuario no tenia la sesion iniciada
+        if (!in_array($id, $_SESSION['cesta'])) {
+            array_push($_SESSION['cesta'], $id);
         return true;
+    }
     }
     return false;
 }
@@ -51,9 +66,8 @@ function fix_cesta() {
 function is_valid_compra($id) {
     if (!isset($_SESSION['username']))
         return true;
-    $path = '../../usuarios/' . $_SESSION['username'] . '/historial.xml';
     include_once "utils.php";
-    return (!history_contains_id($path, $id));
+    return (!history_contains_id($id));
 }
 
 /*

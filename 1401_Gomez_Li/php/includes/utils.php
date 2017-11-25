@@ -81,14 +81,18 @@ function add_film_to_history($id, $when, $xml, $path) {
     return $xml;
 }
 
-function history_contains_id($path, $id) {
-    $xml = new DOMDocument();
-    $xml->load($path);
-    foreach ($xml->getElementsByTagName('id') as $elem) {
-        if ($elem->nodeValue == $id)
-            return true;
-    }
-    return false;
+function history_contains_id($id) {
+    try {
+            $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+            /*                     * * use the database connection ** */
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    $sql = 'SELECT prod_id from orderdetail natural join orders natural join customers where customerid = '.$_SESSION['customerid'];
+    $resultado = $db->query($sql)->fetchAll();
+    //fetchAll
+    $db = null;
+    return in_array($id, $resultado);
 }
 
 function print_history($path) {
