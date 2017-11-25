@@ -13,8 +13,9 @@ BEGIN
 END;
 
 $$ LANGUAGE plpgsql;
-/*
 SELECT setOrderAmount();
+/*
+
 SELECT * from orders where netamount is not null;
 SELECT * from orderdetail where orderid = 113;
 SELECT precio from (SELECT orderid as id, sum(price * quantity) as precio from orderdetail group by id) as tabla

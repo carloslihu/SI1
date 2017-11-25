@@ -11,6 +11,7 @@ imdb_moviegenres
 imdb_moviecountries
 imdb_directormovies
 imdb_actormovies
+alerts
 products
 orders
 inventory

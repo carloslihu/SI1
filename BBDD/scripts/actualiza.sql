@@ -309,9 +309,11 @@ MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 -----------------------------------------------------
 
 --TABLA ALERTAS
+--DROP TABLE alerts
 CREATE TABLE alerts (
   orderid integer NOT NULL,
   prod_id integer NOT NULL,
+  CONSTRAINT alerts_pkey PRIMARY KEY (orderid,prod_id),
   CONSTRAINT alerts_orderid_fkey FOREIGN KEY (orderid)
       REFERENCES orders (orderid) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,

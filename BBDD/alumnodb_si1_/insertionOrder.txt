@@ -1,6 +1,7 @@
 inventory
 orders
 products
+alerts
 imdb_actormovies
 imdb_directormovies
 imdb_moviecountries
