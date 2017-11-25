@@ -23,10 +23,12 @@ pareja 15
 # TODO:
 	carrito (cuando hace login debo ver si existe ya carrito empezado y cargarlo en sesion)
 	añadir y quitar pelis al carrito
-	arreglar login
 
 	actualizar diagrama ER
+	acabar historial 
+
 	a lo mejor quitar users repetidos
+
 
 # CRITERIOS
 

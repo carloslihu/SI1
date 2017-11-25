@@ -96,6 +96,7 @@ function print_history($path) {
     $xml->load($path);
     $catalogo_xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
     $xpath = new DOMXPath($xml);
+    
     foreach ($xml->getElementsByTagName('fecha') as $fecha_node) {
         echo '<div class="history_tag">';
         echo '<p>' . $xpath->query("text()", $fecha_node)[0]->nodeValue . ' (<a href="#" class="toggler">expandir</a>)</p>';
@@ -109,6 +110,13 @@ function print_history($path) {
         echo '</div>';
         echo '</div>';
     }
+    
+    /*try {
+        $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    $sql =;*/
     return;
 }
 
