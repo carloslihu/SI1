@@ -23,6 +23,7 @@ pareja 15
 # TODO:
 	carrito (cuando hace login debo ver si existe ya carrito empezado y cargarlo en sesion)
 	añadir y quitar pelis al carrito
+	arreglar login
 
 # CRITERIOS
 
