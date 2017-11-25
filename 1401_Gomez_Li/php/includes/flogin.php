@@ -13,29 +13,26 @@ try {
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
-$sql = 'Select customerid from customers
+$sql = 'Select * from customers
   where username = \'' . $username . '\' and password = \'' . md5($password) . '\'
   limit 1';
 $resultado = $db->query($sql);
+$row = $resultado->fetch(PDO::FETCH_OBJ);
 if ($resultado->rowCount() == 1) {
     echo 'yes';
     $_SESSION["username"] = $username;
     //expira en 1 dia
     setcookie("username", $username, time() + 86400, "/");
-    /* TODO mirar pregunta del TOASK referente al saldo de los usuarios
-      $consulta = ''
-      $_SESSION["saldo"] = fgets($userfile);
-     */
-    $_SESSION['saldo'] = "0";
+    $_SESSION['saldo'] = $row->income;
     /* TODO CODIGO PARA ESCRIBIR CESTA EN BBDD */
 
     $sql = "SELECT orderid 
         FROM orders
-        WHERE status=NULL AND customerid=" . $resultado->fetchColumn(0);
+        WHERE status=NULL AND customerid=" . $row->customerid;
     /* No hay carrito en BBDD */
     if ($db->query($sql) == FALSE) {
         /* creo carrito en BBDD */
-        $sql = "INSERT INTO orders(customerid) VALUES (" . $resultado . ");";
+        $sql = "INSERT INTO orders(customerid) VALUES (" . $row->customerid . ");";
         $count = $db->exec($sql);
         if ($count < 0)
             echo 'no he creado el carrito bien';
