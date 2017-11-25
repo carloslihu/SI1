@@ -20,7 +20,7 @@ $resultado = $db->query($sql);
 if ($resultado->rowCount() == 1) {
     $row = $resultado->fetch(PDO::FETCH_OBJ);
     //expira en 1 dia
-    setcookie("username", $row->username, time() + 86400, "/");
+    setcookie("email", $row->username, time() + 86400, "/");
     $_SESSION["username"] = $row->username;
     $_SESSION['saldo'] = $row->income;
     $_SESSION['customerid'] = $row->customerid;
@@ -30,32 +30,38 @@ if ($resultado->rowCount() == 1) {
         FROM orders
         WHERE status is NULL AND customerid=" . $row->customerid;
     $resultado = $db->query($sql);
-    if ($resultado == FALSE) {/* No hay carrito en BBDD */
-        /* creo carrito en BBDD */
-        $sql = "INSERT INTO orders(customerid) VALUES (" . $row->customerid . ");";
-        $count = $db->exec($sql);
-        if ($count < 0)//si no se pudo crear el carrito por algun motivo
-            $_SESSION["loginErr"] = 'Ooops, something went wrong. Try again';
-        //volvemos a buscar el carrito (ahora ya creado)
-        $sql = "SELECT orderid FROM orders WHERE status is NULL AND customerid=" . $row->customerid;
-        $resultado = $db->query($sql);
+    if ($resultado == FALSE) {//si no ha cesta en la BBDD
+        if(isset($_SESSION['cesta'])){//si hay cesta en la sesion
+          $sql = "INSERT INTO orders(customerid) VALUES (" . $row->customerid . ");";//creo una nueva cesta en la bbdd
+          $count = $db->exec($sql);
+          if ($count < 0)//si no se pudo crear el carrito por algun motivo
+              $_SESSION["loginErr"] = 'Ooops, something went wrong. Try again';//devolvemos un error mediante texto
+          //volvemos a buscar el carrito (ahora ya creado)
+          $sql = "SELECT orderid FROM orders WHERE status is NULL AND customerid=" . $row->customerid;
+          $resultado = $db->query($sql);
+        }
     }
-    $orderid = $resultado->fetch(PDO::FETCH_OBJ)->orderid;//nos quedamos con el orderid del carrito
-    $sql = 'SELECT prod_id from orderdetail where orderid ='.$orderid;
-    $resultado = $db->query($sql);
-    while($prod_id = $resultado->fetch(PDO::FETCH_OBJ)){
-      if(in_array($prod_id, $_SESSION['cesta'])){
-        remove_from_cesta($prod_id);
-        //TODO notificar de que se ha eliminado algo de la cesta (?)
+    //README estos dos condicionales no son mutuamente excluyentes. El primero prepara el estado del sistema para el segundo
+    if(isset($_SESSION['cesta'])){//si habia cesta en la base de datos o si habia cesta en local (y por tanto ahora tambien en la base de datos) hacemos merge
+      $orderid = $resultado->fetch(PDO::FETCH_OBJ)->orderid;//nos quedamos con el orderid del carrito
+      $sql = 'SELECT prod_id from orderdetail where orderid ='.$orderid;
+      $resultado = $db->query($sql);
+      while($prod_id = $resultado->fetch(PDO::FETCH_OBJ)){
+        if(in_array($prod_id, $_SESSION['cesta'])){
+          remove_from_cesta($prod_id);
+          //TODO notificar de que se ha eliminado algo de la cesta (?)
+        }
       }
+      foreach ($_SESSION['cesta'] as $prod_id) {
+        //obtenemos el precio de ese prod_id
+        $sql = 'SELECT price FROM products WHERE prod_id = '.$prod_id;
+        $precio = $db->query($sql)->price;
+        $sql = 'INSERT INTO orderdetail(orderid, prod_id, price, quantity) VALUES ('.$orderid.','.$prod_id.','.$precio.',1)';
+        $db->exec($sql);
+      }
+      $_SESSION['orderid'] = $orderid;
     }
-    foreach ($_SESSION['cesta'] as $prod_id) {
-      //obtenemos el precio de ese prod_id
-      $sql = 'SELECT price FROM products WHERE prod_id = '.$prod_id;
-      $precio = $db->query($sql)->price;
-      $sql = 'INSERT INTO orderdetail(orderid, prod_id, price, quantity) VALUES ('.$orderid.','.$prod_id.','.$precio.',1)';
-      $db->exec($sql);
-    }
+
     /*PLAN:
       obtener orderid del carrito
       obtener prod_id que hubiera dentro de ese orderid
@@ -66,6 +72,7 @@ if ($resultado->rowCount() == 1) {
       SELECT orderid from orders where customerid = 6836 and status is null
       SELECT prod_id from orderdetail where orderid = 88699
     */
+    
     header("Location: ../index.php");
 } else {
     unset($_SESSION['username']);

@@ -22,12 +22,12 @@
                 <div>
 
                     <form method="post" action="includes/flogin.php">
-                        <label for="uname">Username</label>
-                        <input type="text" id="uname" name="username" placeholder="Tu nombre de usuario o tu e-mail.." required value="<?php
-                        if (isset($_COOKIE["username"]))
-                            echo $_COOKIE["username"];
+                        <label for="uname">email</label>
+                        <input type="text" id="uname" name="email" placeholder="Tu e-mail.." required value="<?php
+                        if (isset($_COOKIE["email"]))
+                            echo $_COOKIE["email"];
                         ?>">
-                        <label for="pass">Contrasena</label>
+                        <label for="pass">password</label>
                         <input type="password" id="pass" name="password" placeholder="Tu contrasena.." required>
                         <span class="error">
                             <?php print_r($_SESSION["loginErr"]); ?>
