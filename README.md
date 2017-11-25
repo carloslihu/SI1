@@ -25,6 +25,7 @@ pareja 15
 	añadir y quitar pelis al carrito
 
 	actualizar diagrama ER
+	a lo mejor quitar users repetidos
 
 # CRITERIOS
 

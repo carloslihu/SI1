@@ -36,7 +36,7 @@ if ($resultado->rowCount() == 1) {
     if ($db->query($sql) == FALSE) {
         /* creo carrito en BBDD */
         $sql = "INSERT INTO orders(customerid) VALUES (" . $resultado . ");";
-        $count = $dbh->exec($sql);
+        $count = $db->exec($sql);
         if ($count < 0)
             echo 'no he creado el carrito bien';
         /* inserto en BBDD lo que haya en cesta */
