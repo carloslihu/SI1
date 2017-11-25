@@ -39,8 +39,9 @@
                 }
 
                 //TODO eliminar los bloques de codigo antiguo (todo lo referente a xml)
-                $xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
+                //$xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
                 if (isset($_REQUEST['search'])) {
+                    /*
                     $filtro = $_REQUEST['filtro'];
                     $search = $search = strtolower($_REQUEST['search']);
                     $films = $xml->xpath("/catalogo/pelicula[./" . $filtro . "[contains(translate(text(), 'ABCDEFGHJIKLMNOPQRSTUVWXYZ', 'abcdefghjiklmnopqrstuvwxyz'), '$search')]]");
@@ -50,6 +51,7 @@
                         print_film($film);
                         echo '</div>';
                     }
+                    */
                 } else {
                     /*
                       foreach ($xml->children() as $films) {
@@ -60,11 +62,28 @@
                     //README consulta de las transparencias. A la espera de ver si hay que formatearla mejor o algo para integrarla bien en la pagina web
                     $sql = 'SELECT * FROM getTopVentas(0)';
                     $resultado = $db->query($sql);
-                    echo '<table>';
-                    foreach ($resultado as $row) {
-                        var_dump($row);
+                    while($obj = $resultado->fetch(PDO::FETCH_OBJ)){
+                      $sql = 'SELECT prod_id, price, directorname FROM products NATURAL JOIN imdb_directormovies NATURAL JOIN imdb_directors WHERE movieid = \''.$obj->id.'\'';
+                      $subQuery = $db->query($sql);
+                      while($prod = $subQuery->fetch(PDO::FETCH_OBJ)){
+                        echo '<div class="responsive">';
+                        echo '<div class="gallery">
+                                <a href="product.php?id=' . $prod->id . '">
+                                <img src=' .'../img/murder-on-the-owl-express.jpg'. ' alt="' . $obj->titulo . '" width="100" height="100">
+                            </a>
+                                <div class="desc abbreviative">
+                                    <a href="product.php?id=' . $prod->id . '" title="' . $obj->titulo . '">
+                                    <b>' . $obj->titulo . '</b>
+                                </a>
+                                    <br>by: ' . $prod->directorname . '
+                                    <br>price: ' . $prod->price . ' €
+                                </div>
+                            </div>';
+                        echo '</div>';
+                      }
+
+                      
                     }
-                    echo '</table>';
                     /*
                       echo "<table>\n";
                       while ($linea = pg_fetch_array($resultado, null, PGSQL_ASSOC)) {
