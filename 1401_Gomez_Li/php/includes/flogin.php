@@ -3,7 +3,7 @@
 session_start();
 // define variables and set to empty values
 //if ($_SERVER["REQUEST_METHOD"] == "POST") {
-$username = test_input($_POST["username"]);
+$mail = test_input($_POST["mail"]);
 $password = test_input($_POST["password"]);
 //comprueba que existe el usuario
 
@@ -13,44 +13,63 @@ try {
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
-$sql = 'Select * from customers
-  where username = \'' . $username . '\' and password = \'' . md5($password) . '\'
+$sql = 'SELECT * FROM customers
+  WHERE email = \'' . $username . '\' and password = \'' . md5($password) . '\'
   limit 1';
 $resultado = $db->query($sql);
-$row = $resultado->fetch(PDO::FETCH_OBJ);
 if ($resultado->rowCount() == 1) {
-    echo 'yes';
-    $_SESSION["username"] = $username;
+    $row = $resultado->fetch(PDO::FETCH_OBJ);
     //expira en 1 dia
-    setcookie("username", $username, time() + 86400, "/");
+    setcookie("username", $row->username, time() + 86400, "/");
+    $_SESSION["username"] = $row->username;
     $_SESSION['saldo'] = $row->income;
+    $_SESSION['customerid'] = $row->customerid;
     /* TODO CODIGO PARA ESCRIBIR CESTA EN BBDD */
 
     $sql = "SELECT orderid 
         FROM orders
-        WHERE status=NULL AND customerid=" . $row->customerid;
-    /* No hay carrito en BBDD */
-    if ($db->query($sql) == FALSE) {
+        WHERE status is NULL AND customerid=" . $row->customerid;
+    $resultado = $db->query($sql);
+    if ($resultado == FALSE) {/* No hay carrito en BBDD */
         /* creo carrito en BBDD */
         $sql = "INSERT INTO orders(customerid) VALUES (" . $row->customerid . ");";
         $count = $db->exec($sql);
-        if ($count < 0)
-            echo 'no he creado el carrito bien';
-        /* inserto en BBDD lo que haya en cesta */
-        /* TODO */
-    }else {/* hay carrito en BBDD */
-        /* TODO */
-        /* escribir en BBDD lo del carrito */
-
-        /* escribir en carrito lo de BBDD cuando existe */
-
-        /* es posible que toque revisar que no esté ya en la BBDD lo del carrito y viceversa */
+        if ($count < 0)//si no se pudo crear el carrito por algun motivo
+            $_SESSION["loginErr"] = 'Ooops, something went wrong. Try again';
+        //volvemos a buscar el carrito (ahora ya creado)
+        $sql = "SELECT orderid FROM orders WHERE status is NULL AND customerid=" . $row->customerid;
+        $resultado = $db->query($sql);
     }
+    $orderid = $resultado->fetch(PDO::FETCH_OBJ)->orderid;//nos quedamos con el orderid del carrito
+    $sql = 'SELECT prod_id from orderdetail where orderid ='.$orderid;
+    $resultado = $db->query($sql);
+    while($prod_id = $resultado->fetch(PDO::FETCH_OBJ)){
+      if(in_array($prod_id, $_SESSION['cesta'])){
+        remove_from_cesta($prod_id);
+        //TODO notificar de que se ha eliminado algo de la cesta (?)
+      }
+    }
+    foreach ($_SESSION['cesta'] as $prod_id) {
+      //obtenemos el precio de ese prod_id
+      $sql = 'SELECT price FROM products WHERE prod_id = '.$prod_id;
+      $precio = $db->query($sql)->price;
+      $sql = 'INSERT INTO orderdetail(orderid, prod_id, price, quantity) VALUES ('.$orderid.','.$prod_id.','.$precio.',1)';
+      $db->exec($sql);
+    }
+    /*PLAN:
+      obtener orderid del carrito
+      obtener prod_id que hubiera dentro de ese orderid
+      eliminar de $_SESSION['cesta'] los prod_id que ya estuvieran en el carrito de la BBDD README luego notificarselo al usuario en la pantalla de login (?)
+      debemos escribir los prod_id que quedan en cesta en la BBDD
+
+      QUERIES:
+      SELECT orderid from orders where customerid = 6836 and status is null
+      SELECT prod_id from orderdetail where orderid = 88699
+    */
     header("Location: ../index.php");
 } else {
-    echo 'no';
     unset($_SESSION['username']);
-    $_SESSION["loginErr"] = "contraseña incorrecta";
+    $_SESSION["loginErr"] = "invalid username or password";
     header("Location: ../login.php");
 }
 pg_free_result($resultado);

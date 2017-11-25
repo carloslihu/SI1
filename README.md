@@ -28,6 +28,8 @@ pareja 15
 	acabar historial 
 
 	a lo mejor quitar users repetidos
+	si queremos afinar mucho product.php, hacer que la para actores, directores etc muestre solo los importantes (protagonistas, directores principales etc)
+	si el usuario hace login con duplicados en el carrito y base de datos, notificarle en la pantalla de login que se ha limpiado su carrito de dichos duplicados(?)
 
 
 # CRITERIOS
