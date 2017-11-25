@@ -63,7 +63,7 @@
                     $sql = 'SELECT * FROM getTopVentas(0)';
                     $resultado = $db->query($sql);
                     while($obj = $resultado->fetch(PDO::FETCH_OBJ)){
-                      $sql = 'SELECT prod_id, price, directorname FROM products NATURAL JOIN imdb_directormovies NATURAL JOIN imdb_directors WHERE movieid = \''.$obj->id.'\'';
+                      $sql = 'SELECT prod_id as id, price, directorname FROM products NATURAL JOIN imdb_directormovies NATURAL JOIN imdb_directors WHERE movieid = \''.$obj->id.'\'';
                       $subQuery = $db->query($sql);
                       while($prod = $subQuery->fetch(PDO::FETCH_OBJ)){
                         echo '<div class="responsive">';
