@@ -31,7 +31,7 @@ if ($resultado->rowCount() == 1) {
 
     $sql = "SELECT orderid 
         FROM orders
-        WHERE status=NULL AND customerid=" . $resultado;
+        WHERE status=NULL AND customerid=" . $resultado->fetchColumn(0);
     /* No hay carrito en BBDD */
     if ($db->query($sql) == FALSE) {
         /* creo carrito en BBDD */
