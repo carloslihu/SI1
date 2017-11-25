@@ -13,14 +13,32 @@
             <?php include 'includes/lateral.php'; ?>
             <div class="column middle">
                 <?php
-                $xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
-
+                //$xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
                 if (!is_numeric($_GET['id'])) {
                     echo '<h1>error 404: film not found</h1>';
                 } else {
+                    try {
+                        $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+                        /*                     * * use the database connection ** */
+                    } catch (PDOException $e) {
+                        echo $e->getMessage();
+                    }
                     $id = $_GET['id'];
-                    $film = $xml->xpath("/catalogo/pelicula[id='$id']")[0];
-                    if (is_null($film)) {
+                    //README datos que necesitamos del producto
+                    // titulo, imagen, descripcion, director, precio, categoria, anno, actores, 
+                    /* QUERYS:
+                    SELECT movieid, description, price from products where prod_id = 103
+                    SELECT movietitle from imdb_movies where movieid = 7969
+                    SELECT genrename from imdb_genres natural join imdb_moviegenres where movieid = 7969
+                    SELECT actorname from imdb_actors natural join imdb_actormovies where movieid = 7969
+                    SELECT directorname from imdb_directors natural join imdb_directormovies where movieid = 7969
+                    */
+                    $sql = 'SELECT movieid, description, price from products where prod_id = '.$id;
+                    $queryMovie = $db->query($sql);
+                    $movie = $queryMovie->fetch(PDO::FETCH_OBJ);
+                    var_dump($queryMovie);
+                    //$film = $xml->xpath("/catalogo/pelicula[id='$id']")[0];
+                    if (!$queryMovie) {
                         echo '<h1>error 404: film not found</h1>';
                         return;
                     } else {
@@ -40,34 +58,49 @@
                             }
                         }
                     }
+                    $sql = 'SELECT movietitle from imdb_movies where movieid = '.$movie->movieid;
+                    $queryTitulo = $db->query($sql);
+                    $titulo = $queryTitulo->fetch(PDO::FETCH_OBJ);
+                    $sql = 'SELECT genrename from imdb_genres natural join imdb_moviegenres where movieid = '.$movie->movieid.'limit 5';
+                    $queryGeneros = $db->query($sql);
+                    $sql = 'SELECT actorname from imdb_actors natural join imdb_actormovies where movieid = '.$movie->movieid.'limit 5';
+                    $queryActores = $db->query($sql);
+                    $sql = 'SELECT directorname from imdb_directors natural join imdb_directormovies where movieid = '.$movie->movieid.'limit 5';
+                    $queryDirectores = $db->query($sql);
 
+                    
 
                     echo
                     '
-                    <h1>' . $film->titulo . '</h1>
+                    <h1>' . $titulo->movietitle . '</h1>
                     <p class="confirmation_msg">' . $confirm_text . '</p>
                 <div class="responsive">
                     <div class="gallery">
                         <a href="">
-                            <img src=' . $film->poster . ' alt=' . $film->titulo . ' width="100" height="100">
+                            <img src=' . '../img/murder-on-the-owl-express.jpg' . ' alt=' . $titulo->movietitle . ' width="100" height="100">
                         </a>
-                        <div class="desc">' . $film->titulo . '</div>
+                        <div class="desc">' . $titulo->movietitle . '</div>
                     </div>
                 </div>
-                <p><b>Descripción: </b><br/>' . $film->descripcion . '</p>
-                <p><b>Director: </b>' . $film->director . '</p>
-                <p><b>Precio: </b>' . $film->precio . ' €</p>
-                <p><b>Categoria: </b>' . $film->categoria . '</p>
-                <p><b>Año: </b>' . $film->anno . '</p>
-                <p><b>Reparto: </b><br>';
-                    foreach ($film->actores->actor as $actor) {
-                        echo $actor->nombre . ' as ' . $actor->personaje . '<br>';
-                    }
-                    echo '</p>
-                <form method="post" action="product.php?id=' . $film->id . '">
+                <p><b>Descripción: </b><br/>' . $movie->description . '</p>';
+                echo'<p><b>Directors: </b><br/>';
+                while($directores = $queryDirectores->fetch(PDO::FETCH_OBJ))
+                    echo $directores->directorname . '<br/>';
+                echo'</p>';
+                echo '<p><b>Price: </b>' . $movie->price . ' €</p>';
+                echo'<p><b>Categories: </b><br/>';
+                while($genero = $queryGeneros->fetch(PDO::FETCH_OBJ))
+                    echo $genero->genrename . '<br/>';
+                echo'</p>';
+                echo '<p><b>casting:</b><br/>';
+                while($actores = $queryActores->fetch(PDO::FETCH_OBJ))
+                    echo $actores->actorname . '<br/>';
+                echo '</p>
+                <form method="post" action="product.php?id=' . $id . '">
                     <input type="hidden" name="comprar" value="1" />
                     <input value="añadir al carro" type="submit"/>
                 </form>';
+                $db = null;
                 }
                 ?>
                 <div class="clearfix"></div>
