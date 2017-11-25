@@ -19,10 +19,11 @@
 
         END IF;
       END LOOP;
-    UPDATE orders
-    SET orderdate = CURRENT_DATE
-    WHERE orderid = NEW.orderid;
-    
+      
+      UPDATE orders
+      SET orderdate = CURRENT_DATE
+      WHERE orderid = NEW.orderid;
+      
     RETURN NEW;
   END; $$ LANGUAGE plpgsql;
 

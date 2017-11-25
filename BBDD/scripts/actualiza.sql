@@ -45,6 +45,7 @@ FOREIGN KEY (customerid)
 REFERENCES customers (customerid) 
 MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+
 ALTER TABLE imdb_actormovies
 ADD CONSTRAINT imdb_actormovies_actorid_fkey
 FOREIGN KEY (actorid)
@@ -65,44 +66,32 @@ MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 -----------------------------------------------------
 
 
+--QUITANDO NOT NULLS DE ATRIBUTOS DE CUSTOMERS QUE NO QUEREMOS
+ALTER TABLE customers ALTER address1 DROP NOT NULL;
+ALTER TABLE customers ALTER firstname DROP NOT NULL;
+ALTER TABLE customers ALTER lastname DROP NOT NULL;
+ALTER TABLE customers ALTER city DROP NOT NULL;
+ALTER TABLE customers ALTER country DROP NOT NULL;
+ALTER TABLE customers ALTER region DROP NOT NULL;
+ALTER TABLE customers ALTER creditcardtype DROP NOT NULL;
+ALTER TABLE customers ALTER creditcardexpiration DROP NOT NULL;
+
+ALTER TABLE customers ALTER income SET NOT NULL;
+ALTER TABLE customers ALTER email SET NOT NULL;
+ALTER TABLE customers ADD CONSTRAINT customers_unique UNIQUE(email);
+
+ALTER TABLE orders ALTER orderdate DROP NOT NULL;
+ALTER TABLE orders ALTER customerid SET NOT NULL;
+ALTER TABLE orders ALTER tax SET DEFAULT 15;
+
+
+
+--CONTRASEÑAS EN MD5
+UPDATE customers SET password=md5(password);
+----------------------------------------------------
+
 
 --ELIMINAR ROWS DUPLICADOS
---ESTO FUNCIONA, PERO QUITA LOS DUPLICADOS Y EL ORIGINAL
-
---quitamos los que tienen movieid y language duplicados
-/*DELETE FROM imdb_movielanguages
-WHERE movieid IN (
-	SELECT movieid
- 	FROM (
-		SELECT 
-			movieid,
-		 	ROW_NUMBER() OVER (
-		 		partition BY 
-		 			movieid, 
-		 			language 
-		 		ORDER BY movieid
-		  	)
-		  AS rnum
-		  FROM imdb_movielanguages) t
-  WHERE t.rnum > 1);*/
---quitamos orderid y prodid duplicados
-/*DELETE FROM orderdetail
-WHERE orderid IN (
-	SELECT 
-	orderid
-  FROM (
-  	SELECT 
-  		orderid,
-      ROW_NUMBER() OVER (
-      	partition BY 
-      		orderid, 
-      		prod_id 
-      	ORDER BY orderid) 
-      AS rnum
-      FROM orderdetail) t
-  WHERE t.rnum > 1);*/
---CODIGO PARA BORRAR EXTRAINFORMATION DUPLICADOS EN MOVIELANGUAGES PARA UN (MOVIEID,LANGUAGE) FIJO
-
 DELETE FROM imdb_movielanguages WHERE movieid IN
 (SELECT movieid FROM (SELECT movieid, language, COUNT(*) as c FROM imdb_movielanguages
 group by movieid, language) AS count_lan WHERE C>1) AND extrainformation='';
@@ -121,11 +110,6 @@ CREATE TABLE aux (
       REFERENCES products (prod_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
-/*
-INSERT INTO table1 ( column1 )
-SELECT  col1
-FROM    table2  
-*/
 
 INSERT INTO aux 
 (orderid, prod_id, quantity) 
@@ -143,25 +127,60 @@ ALTER TABLE aux rename to orderdetail;
 --------------------------------------------------------                           
 --QUITANDO PRIMARY KEYS
 
-
-ALTER TABLE imdb_actormovies
-DROP CONSTRAINT imdb_actormovies_pkey;
+ALTER TABLE imdb_actormovies 
+DROP COLUMN numparticipation;
 ALTER TABLE imdb_actormovies
 ADD CONSTRAINT imdb_actormovies_pkey PRIMARY KEY (actorid,movieid);
 
 
-ALTER TABLE imdb_actormovies 
-DROP COLUMN numparticipation;
-
-ALTER TABLE imdb_directormovies
-DROP CONSTRAINT imdb_directormovies_pkey;
-ALTER TABLE imdb_directormovies
-ADD CONSTRAINT imdb_directormovies_pkey PRIMARY KEY (directorid,movieid);
 ALTER TABLE imdb_directormovies 
 DROP COLUMN numpartitipation;
+ALTER TABLE imdb_directormovies
+ADD CONSTRAINT imdb_directormovies_pkey PRIMARY KEY (directorid,movieid);
+
 
 ALTER TABLE orderdetail
 ADD CONSTRAINT orderdetail_pkey PRIMARY KEY (orderid,prod_id);
+
+
+--------------------------------------------------
+
+
+--ACTUALIZAR CURRENT VALUE DE SECUENCIAS
+SELECT setval('customers_customerid_seq', 
+(SELECT MAX(customerid) FROM customers)+1,
+ FALSE);
+ SELECT setval('imdb_actors_actorid_seq', 
+(SELECT MAX(actorid) FROM imdb_actors)+1,
+ FALSE);
+ SELECT setval('imdb_directormovies_directorid_seq', 
+(SELECT MAX(directorid) FROM imdb_directormovies)+1,
+ FALSE);
+  SELECT setval('imdb_directormovies_movieid_seq', 
+(SELECT MAX(movieid) FROM imdb_directormovies)+1,
+ FALSE);
+  SELECT setval('imdb_directors_directorid_seq', 
+(SELECT MAX(directorid) FROM imdb_directors)+1,
+ FALSE);
+ 
+  SELECT setval('imdb_moviecountries_movieid_seq', 
+(SELECT MAX(movieid) FROM imdb_moviecountries)+1,
+ FALSE);
+  SELECT setval('imdb_moviegenres_movieid_seq', 
+(SELECT MAX(movieid) FROM imdb_moviegenres)+1,
+ FALSE);
+  SELECT setval('imdb_movies_movieid_seq', 
+(SELECT MAX(movieid) FROM imdb_movies)+1,
+ FALSE);
+  SELECT setval('orders_orderid_seq', 
+(SELECT MAX(orderid) FROM orders)+1,
+ FALSE);
+  SELECT setval('products_movieid_seq', 
+(SELECT MAX(movieid) FROM products)+1,
+ FALSE);
+ SELECT setval('products_prod_id_seq', 
+(SELECT MAX(prod_id) FROM products)+1,
+ FALSE);
 ---------------------------------------------------------------------------
 
 --APARTADO B
@@ -307,8 +326,7 @@ REFERENCES imdb_languages (languageid)
 MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 -----------------------------------------------------
 
---TABLA ALERTAS
---DROP TABLE alerts
+--TABLA ALERTAS APARTADO H
 CREATE TABLE alerts (
   orderid integer NOT NULL,
   prod_id integer NOT NULL,
@@ -320,82 +338,3 @@ CREATE TABLE alerts (
       REFERENCES products (prod_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
---------------------------------------------------
---QUITANDO NOT NULLS DE ATRIBUTOS DE CUSTOMERS QUE NO QUEREMOS
-ALTER TABLE customers ALTER address1 DROP NOT NULL;
-ALTER TABLE customers ALTER firstname DROP NOT NULL;
-ALTER TABLE customers ALTER lastname DROP NOT NULL;
-ALTER TABLE customers ALTER city DROP NOT NULL;
-ALTER TABLE customers ALTER country DROP NOT NULL;
-ALTER TABLE customers ALTER region DROP NOT NULL;
-ALTER TABLE customers ALTER creditcardtype DROP NOT NULL;
-ALTER TABLE customers ALTER creditcardexpiration DROP NOT NULL;
-
-ALTER TABLE customers ALTER income SET NOT NULL;
-ALTER TABLE customers ALTER email SET NOT NULL;
-
-
-ALTER TABLE orders ALTER orderdate DROP NOT NULL;
-ALTER TABLE orders ALTER customerid SET NOT NULL;
-ALTER TABLE orders ALTER tax SET DEFAULT 15;
-
---CONTRASEÑAS EN MD5
-UPDATE customers SET password=md5(password);
-----------------------------------------------------
-
-
---ACTUALIZAR CURRENT VALUE DE SECUENCIAS
-SELECT setval('customers_customerid_seq', 
-(SELECT MAX(customerid) FROM customers)+1,
- FALSE);
- SELECT setval('imdb_actors_actorid_seq', 
-(SELECT MAX(actorid) FROM imdb_actors)+1,
- FALSE);
- SELECT setval('imdb_directormovies_directorid_seq', 
-(SELECT MAX(directorid) FROM imdb_directormovies)+1,
- FALSE);
-  SELECT setval('imdb_directormovies_movieid_seq', 
-(SELECT MAX(movieid) FROM imdb_directormovies)+1,
- FALSE);
-  SELECT setval('imdb_directors_directorid_seq', 
-(SELECT MAX(directorid) FROM imdb_directors)+1,
- FALSE);
- 
-  SELECT setval('imdb_moviecountries_movieid_seq', 
-(SELECT MAX(movieid) FROM imdb_moviecountries)+1,
- FALSE);
-  SELECT setval('imdb_moviegenres_movieid_seq', 
-(SELECT MAX(movieid) FROM imdb_moviegenres)+1,
- FALSE);
-  SELECT setval('imdb_movies_movieid_seq', 
-(SELECT MAX(movieid) FROM imdb_movies)+1,
- FALSE);
-  SELECT setval('orders_orderid_seq', 
-(SELECT MAX(orderid) FROM orders)+1,
- FALSE);
-  SELECT setval('products_movieid_seq', 
-(SELECT MAX(movieid) FROM products)+1,
- FALSE);
- SELECT setval('products_prod_id_seq', 
-(SELECT MAX(prod_id) FROM products)+1,
- FALSE);
-
-ALTER TABLE customers ADD CONSTRAINT customers_unique UNIQUE(email);
---OBSERVACIONES DEL ENUNCIADO
-
---Un pedido en curso (cesta o carrito), se caracteriza por tener un valor NULL (valor reservado de
---SQL, no una cadena de caracteres) en la columna status de la tabla orders. Por ello, sólo puede
---haber como máximo un registro de la tabla orders con status NULL para un cliente dado.
-
---El pedido pasa sucesivamente por los siguientes valores de status: NULL, 'Paid', 'Processed',
---'Shipped'.
-
---La columna sales de la tabla inventory contiene el número acumulado de artículos vendidos de
---un producto.
-
-
-
---OBSERVACIONES PERSONALES
---mirar uniques y nulls
---no meteremos inventory en products porque no todos los products tienen inventory
-
