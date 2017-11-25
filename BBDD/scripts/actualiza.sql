@@ -382,7 +382,6 @@ SELECT setval('customers_customerid_seq',
 (SELECT MAX(prod_id) FROM products)+1,
  FALSE);
 
-
 --OBSERVACIONES DEL ENUNCIADO
 
 --Un pedido en curso (cesta o carrito), se caracteriza por tener un valor NULL (valor reservado de

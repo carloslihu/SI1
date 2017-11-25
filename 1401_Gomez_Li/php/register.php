@@ -19,23 +19,43 @@
             $password = $_POST["password"];
             $password2 = $_POST["password2"];
             $bank_account = $_POST["bank_account"];
-
-
-            if (is_dir("../../usuarios/$username") == TRUE) {
-                $usernameErr = 'Usuario ya existe';
-            } else {
-                mkdir("../../usuarios/$username");
-                $userfile = fopen("../../usuarios/$username/datos.dat", "x");
-                //haremos comprobacion de pass iguales en cliente
-                $hash = md5($password);
-                $txt = "$username\n$email\n" . md5($password) . "\n$bank_account\n" . rand(0, 100);
-                fwrite($userfile, $txt);
-                fclose($userfile);
-
-                $userfile = fopen("../../usuarios/$username/historial.xml", "x");
-                fclose($userfile);
-                $registerErr = "Cuenta creada, por favor, haga login";
+            try {
+                $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+                /*                 * * use the database connection ** */
+            } catch (PDOException $e) {
+                echo $e->getMessage();
             }
+            $sql = 'Select customerid from customers
+            where username = \'' . $username . '\' and password = \'' . md5($password) . '\'
+            limit 1';
+            if ($db->query($sql)->rowCount() > 0)
+                $usernameErr = 'Usuario ya existe';
+            else {
+                $sql = "INSERT INTO customers(username,email,password,creditcard,income) VALUES ('$username','$email','".md5($password)."',$bank_account,".rand(0,100).");";
+                $count = $db->exec($sql);
+                if ($count == 0) {
+                    $registerErr = "error en register";
+                }else{
+                    $registerErr = "Cuenta creada, por favor, haga login";
+                }
+            }
+            /*
+              if (is_dir("../../usuarios/$username") == TRUE) {
+              $usernameErr = 'Usuario ya existe';
+              } else {
+              mkdir("../../usuarios/$username");
+              $userfile = fopen("../../usuarios/$username/datos.dat", "x");
+              //haremos comprobacion de pass iguales en cliente
+              $hash = md5($password);
+              $txt = "$username\n$email\n" . md5($password) . "\n$bank_account\n" . rand(0, 100);
+              fwrite($userfile, $txt);
+              fclose($userfile);
+
+              $userfile = fopen("../../usuarios/$username/historial.xml", "x");
+              fclose($userfile);
+              $registerErr = "Cuenta creada, por favor, haga login";
+              } */
+            $db = null;
         }
         ?>
         <?php include 'includes/header.php'; ?>

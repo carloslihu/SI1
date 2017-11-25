@@ -25,6 +25,9 @@ pareja 15
 	añadir y quitar pelis al carrito
 	arreglar login
 
+	actualizar diagrama ER
+	a lo mejor quitar users repetidos
+
 # CRITERIOS
 
 Este es un conjunto de criterios que han sido consensuados para la corrección de la práctica 3. Estos criterios son orientativos y es potestad del profesor tanto asignar la puntuación que estime oportuna en cada apartado, como el establecer criterios propios respecto a lo que considera "imprescindible" en la entrega de la práctica.
