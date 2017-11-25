@@ -16,11 +16,10 @@
 --CONSULTA PERSONAL PARA VER CAMPOS REPETIDOS BAJO UN PRIMARY KEY
 /*
 select 
-  t.orderid,
-	t.prod_id, 
+  t.email, 
 	count (*)
-from orderdetail as t
-group by orderid, prod_id
+from customers as t
+group by email
 having count(*)>1;
 */
 --------------------------------------------------------
@@ -339,7 +338,6 @@ ALTER TABLE customers ALTER email SET NOT NULL;
 ALTER TABLE orders ALTER orderdate DROP NOT NULL;
 ALTER TABLE orders ALTER customerid SET NOT NULL;
 ALTER TABLE orders ALTER tax SET DEFAULT 15;
---ALTER TABLE customers ADD CONSTRAINT customers_unique_username UNIQUE(email);
 
 --CONTRASEÑAS EN MD5
 UPDATE customers SET password=md5(password);
@@ -382,6 +380,7 @@ SELECT setval('customers_customerid_seq',
 (SELECT MAX(prod_id) FROM products)+1,
  FALSE);
 
+ALTER TABLE customers ADD CONSTRAINT customers_unique UNIQUE(email);
 --OBSERVACIONES DEL ENUNCIADO
 
 --Un pedido en curso (cesta o carrito), se caracteriza por tener un valor NULL (valor reservado de
