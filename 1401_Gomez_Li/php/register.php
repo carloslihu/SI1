@@ -20,7 +20,7 @@
             $password2 = $_POST["password2"];
             $bank_account = $_POST["bank_account"];
 
-
+            /*
             if (is_dir("../../usuarios/$username") == TRUE) {
                 $usernameErr = 'Usuario ya existe';
             } else {
@@ -35,7 +35,7 @@
                 $userfile = fopen("../../usuarios/$username/historial.xml", "x");
                 fclose($userfile);
                 $registerErr = "Cuenta creada, por favor, haga login";
-            }
+            }*/
         }
         ?>
         <?php include 'includes/header.php'; ?>

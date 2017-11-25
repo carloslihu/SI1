@@ -1,19 +1,23 @@
 ﻿CREATE OR REPLACE FUNCTION
 setOrderAmount()
-RETURNS numeric AS $$
+RETURNS void AS $$
 DECLARE
     oDetails record;
 BEGIN
-	FOR oDetails in SELECT orderid as id, sum(price * quantity) as precio from orderdetail group by id
+	FOR oDetails in 
+	(SELECT orderid, 
+    sum(price * quantity) as precio 
+    from orderdetail 
+    group by orderid)
 	LOOP
 		UPDATE orders set netamount = oDetails.precio, totalamount = oDetails.precio + oDetails.precio*orders.tax*0.01
-		where oDetails.id = orders.orderid and (orders.netamount is null or orders.totalamount is null);
+		where oDetails.orderid = orders.orderid and (orders.netamount is null or orders.totalamount is null);
 	END LOOP;
-	RETURN 1;
 END;
 
 $$ LANGUAGE plpgsql;
 SELECT setOrderAmount();
+/*UPDATE orders SET netamount = NULL*/
 /*
 
 SELECT * from orders where netamount is not null;

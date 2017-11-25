@@ -24,6 +24,8 @@ pareja 15
 	carrito (cuando hace login debo ver si existe ya carrito empezado y cargarlo en sesion)
 	añadir y quitar pelis al carrito
 
+	actualizar diagrama ER
+
 # CRITERIOS
 
 Este es un conjunto de criterios que han sido consensuados para la corrección de la práctica 3. Estos criterios son orientativos y es potestad del profesor tanto asignar la puntuación que estime oportuna en cada apartado, como el establecer criterios propios respecto a lo que considera "imprescindible" en la entrega de la práctica.
