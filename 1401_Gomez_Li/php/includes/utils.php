@@ -35,13 +35,25 @@ function gastar_saldo($gasto) {
     if ($gasto > $saldo)
         return false;
     $saldo -= $gasto;
-    $userfile = fopen("../../usuarios/" . $_SESSION['username'] . "/datos.dat", "r");
-    //nos saltamos los campos hasta llegar a password
-    $rewrite = fgets($userfile) . fgets($userfile) . fgets($userfile) . fgets($userfile);
-    fclose($userfile);
-    $userfile = fopen("../../usuarios/" . $_SESSION['username'] . "/datos.dat", "w");
-    fwrite($userfile, $rewrite . strval($saldo));
-    fclose($userfile);
+    /*
+      $userfile = fopen("../../usuarios/" . $_SESSION['username'] . "/datos.dat", "r");
+      //nos saltamos los campos hasta llegar a password
+      $rewrite = fgets($userfile) . fgets($userfile) . fgets($userfile) . fgets($userfile);
+      fclose($userfile);
+      $userfile = fopen("../../usuarios/" . $_SESSION['username'] . "/datos.dat", "w");
+      fwrite($userfile, $rewrite . strval($saldo));
+      fclose($userfile);
+     */
+    try {
+        $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+        /*         * * use the database connection ** */
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    $sql = "UPDATE customers SET income=" . $saldo . " WHERE customerid=" . $_SESSION['customerid'];
+    if ($db->exec($sql) == 0)
+        return false;
+    
     $_SESSION['saldo'] = strval($saldo);
     return true;
 }
@@ -83,12 +95,12 @@ function add_film_to_history($id, $when, $xml, $path) {
 
 function history_contains_id($id) {
     try {
-            $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
-            /*                     * * use the database connection ** */
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-    $sql = 'SELECT prod_id from orderdetail natural join orders natural join customers where customerid = '.$_SESSION['customerid'];
+        $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+        /*         * * use the database connection ** */
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    $sql = 'SELECT prod_id from orderdetail natural join orders natural join customers where customerid = ' . $_SESSION['customerid'];
     $resultado = $db->query($sql)->fetchAll();
     //fetchAll
     $db = null;
@@ -100,7 +112,7 @@ function print_history($path) {
     $xml->load($path);
     $catalogo_xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
     $xpath = new DOMXPath($xml);
-    
+
     foreach ($xml->getElementsByTagName('fecha') as $fecha_node) {
         echo '<div class="history_tag">';
         echo '<p>' . $xpath->query("text()", $fecha_node)[0]->nodeValue . ' (<a href="#" class="toggler">expandir</a>)</p>';
@@ -114,13 +126,13 @@ function print_history($path) {
         echo '</div>';
         echo '</div>';
     }
-    
-    /*try {
-        $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-    $sql =;*/
+
+    /* try {
+      $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+      } catch (PDOException $e) {
+      echo $e->getMessage();
+      }
+      $sql =; */
     return;
 }
 
