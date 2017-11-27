@@ -3,7 +3,7 @@
 session_start();
 // define variables and set to empty values
 //if ($_SERVER["REQUEST_METHOD"] == "POST") {
-$mail = test_input($_POST["mail"]);
+$email = test_input($_POST["email"]);
 $password = test_input($_POST["password"]);
 //comprueba que existe el usuario
 
@@ -14,7 +14,7 @@ try {
     echo $e->getMessage();
 }
 $sql = 'SELECT * FROM customers
-  WHERE email = \'' . $username . '\' and password = \'' . md5($password) . '\'
+  WHERE email = \'' . $email . '\' and password = \'' . md5($password) . '\'
   limit 1';
 $resultado = $db->query($sql);
 if ($resultado->rowCount() == 1) {

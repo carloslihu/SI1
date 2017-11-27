@@ -27,7 +27,7 @@
     RETURN NEW;
   END; $$ LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS t_updInventory ON orders;
+--DROP TRIGGER IF EXISTS t_updInventory ON orders;
 
 CREATE TRIGGER t_updInventory AFTER UPDATE ON orders 
 FOR EACH ROW 

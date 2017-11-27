@@ -52,6 +52,7 @@
         echo '<div>';
 
         //info de la pagina
+        var_dump($_SESSION['orderid']);
 
         echo '<h2>Cesta</h2>
                             <p class="confirmation_msg">' . $alert . '</p>
@@ -62,16 +63,45 @@
                                 <input type="submit" value="comprar" onClick="getDate(\'fecha\');">
                             </form>';
 
-        foreach ($_SESSION['cesta'] as $ids) {
-            $film = $xml->xpath("/catalogo/pelicula[id='$ids']")[0];
+        try {
+            $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+            /*                     * * use the database connection ** */
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        if(isset($_SESSION['orderid'])){
+            //con esta query obtenemos las pelis del carrito
+            $films = $db->query('SELECT movietitle as titulo, products.prod_id as id, movieid, orderdetail.price as precio, array_agg(directorname) as directors from orderdetail 
+                                INNER JOIN products ON products.prod_id = orderdetail.prod_id
+                                NATURAL JOIN imdb_movies NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
+                                where orderid = '.$_SESSION['orderid'].'
+                                group by movietitle, products.prod_id, movieid, orderdetail.price')->fetchAll();
+            foreach ($films as $film) {
+                echo '<div class="responsive">';
+                print_film($film);
+                echo '<form method="post" action="cesta.php">
+                                    <input type="hidden" name="eliminar" value="' . $film->id . '" />
+                                    <input type="submit" value="eliminar">
+                                </form>';
+                echo '</div>';
+            }
 
-            echo '<div class="responsive">';
-            print_film($film);
-            echo '<form method="post" action="cesta.php">
-                                <input type="hidden" name="eliminar" value="' . $film->id . '" />
-                                <input type="submit" value="eliminar">
-                            </form>';
-            echo '</div>';
+        } else {
+            foreach ($_SESSION['cesta'] as $ids) {//TODO
+                $db->query('SELECT movietitle as titulo, orderdetail.price as precio, array_agg(directorname) as directores FROM orderdetail
+                            INNER JOIN products ON products.prod_id = orderdetail.prod_id
+                            NATURAL JOIN imdb_movies NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
+                            WHERE orderdetail.prod_id = '.$id.'
+                            group by movietitle, orderdetail.price');
+
+                echo '<div class="responsive">';
+                print_film($film);
+                echo '<form method="post" action="cesta.php">
+                                    <input type="hidden" name="eliminar" value="' . $film->id . '" />
+                                    <input type="submit" value="eliminar">
+                                </form>';
+                echo '</div>';
+            }
         }
         ?>
         <!-- ELEMENTOS DE LA LISTA DE LA COMPRA -->

@@ -22,6 +22,7 @@ function add_to_cesta($id) {
                 echo $e->getMessage();
             }
         if(!isset($_SESSION['orderid'])){
+            echo 'AAAAAAAAAAAAA';
             //si no hay carrito creado, entonces lo creamos
             $sql = "INSERT INTO orders(customerid) VALUES (" . $_SESSION['customerid'] . ");";
             $db->exec($sql);//TODO control de errores (?)
@@ -81,12 +82,22 @@ function is_valid_compra($id) {
 
 function remove_from_cesta($id) {
     $i = 0;
-    foreach ($_SESSION['cesta'] as $product) {
-        if ($product == $id) {//si encontramos el elemento lo borramos, arreglamos el array y salimos
-            array_splice($_SESSION['cesta'], $i, 1);
-            return;
+    if(isset($_SESSION['orderid'])){
+        try {
+            $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+            /*                     * * use the database connection ** */
+        } catch (PDOException $e) {
+            echo $e->getMessage();
         }
-        $i++;
+        $count = $db->exec('DELETE FROM orderdetail WHERE prod_id = '.$id);//TODO control de errores (?)
+    } else {
+        foreach ($_SESSION['cesta'] as $product) {
+            if ($product == $id) {//si encontramos el elemento lo borramos, arreglamos el array y salimos
+                array_splice($_SESSION['cesta'], $i, 1);
+                return;
+            }
+            $i++;
+        }
     }
 }
 
@@ -94,11 +105,21 @@ function remove_from_cesta($id) {
  * calcula el precio total de la cesta de la compra
  */
 
-function calculate_total($xml) {
+function calculate_total() {
     $total = 0;
-    foreach ($_SESSION['cesta'] as $id) {
-        $film = $xml->xpath("/catalogo/pelicula[id='$id']")[0];
-        $total += floatval($film->precio);
+    try {
+        $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+        /*                     * * use the database connection ** */
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    if(isset($_SESSION['orderid'])){
+        $total = floatval($db->query('SELECT sum(price) FROM orderdetail where orderid = '.$_SESSION['orderid'].'group by orderid')->fetch(PDO::FETCH_OBJ)->sum);
+    } else if(isset($_SESSION['cesta'])){
+        foreach ($_SESSION['cesta'] as $id) {
+            $totqal += floatval($db->query('SELECT price FROM products where prod_id = '.$id)->fetch(PDO::FETCH_OBJ)->price);
+            //$total += floatval($film->precio);
+        }
     }
     return $total;
 }
