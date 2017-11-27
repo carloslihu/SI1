@@ -20,7 +20,7 @@ $resultado = $db->query($sql);
 if ($resultado->rowCount() == 1) {
     $row = $resultado->fetch(PDO::FETCH_OBJ);
     //expira en 1 dia
-    setcookie("email", $row->username, time() + 86400, "/");
+    setcookie("email", $row->email, time() + 86400, "/");
     $_SESSION["username"] = $row->username;
     $_SESSION['saldo'] = $row->income;
     $_SESSION['customerid'] = $row->customerid;
@@ -46,9 +46,11 @@ if ($resultado->rowCount() == 1) {
       $orderid = $resultado->fetch(PDO::FETCH_OBJ)->orderid;//nos quedamos con el orderid del carrito
       $sql = 'SELECT prod_id from orderdetail where orderid ='.$orderid;
       $resultado = $db->query($sql);
-      while($prod_id = $resultado->fetch(PDO::FETCH_OBJ)){
+      $prod_id = $resultado->fetch(PDO::FETCH_OBJ);
+      while($prod_id){
         if(in_array($prod_id, $_SESSION['cesta'])){
           remove_from_cesta($prod_id);
+          $prod_id = $resultado->fetch(PDO::FETCH_OBJ);
           //TODO notificar de que se ha eliminado algo de la cesta (?)
         }
         foreach ($_SESSION['cesta'] as $prod_id) {

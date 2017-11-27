@@ -5,7 +5,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 function print_film($films) {
     echo '
                     <div class="gallery">
@@ -22,12 +21,12 @@ function print_film($films) {
                     </div>';
     return;
 }
-
+/*
 function print_film_by_id($id, $xml) {
     $film = $xml->xpath("/catalogo/pelicula[id='$id']")[0];
     print_film($film);
 }
-
+*/
 function gastar_saldo($gasto) {
     if (!isset($_SESSION['username']) or ! isset($_SESSION['saldo']))
         return false;
@@ -35,15 +34,6 @@ function gastar_saldo($gasto) {
     if ($gasto > $saldo)
         return false;
     $saldo -= $gasto;
-    /*
-      $userfile = fopen("../../usuarios/" . $_SESSION['username'] . "/datos.dat", "r");
-      //nos saltamos los campos hasta llegar a password
-      $rewrite = fgets($userfile) . fgets($userfile) . fgets($userfile) . fgets($userfile);
-      fclose($userfile);
-      $userfile = fopen("../../usuarios/" . $_SESSION['username'] . "/datos.dat", "w");
-      fwrite($userfile, $rewrite . strval($saldo));
-      fclose($userfile);
-     */
     try {
         $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
         /*         * * use the database connection ** */
@@ -53,11 +43,11 @@ function gastar_saldo($gasto) {
     $sql = "UPDATE customers SET income=" . $saldo . " WHERE customerid=" . $_SESSION['customerid'];
     if ($db->exec($sql) == 0)
         return false;
-    
+
     $_SESSION['saldo'] = strval($saldo);
     return true;
 }
-
+/*
 function xml_history_setting($path) {
     $xml = new DOMDocument();
     $xml->load($path);
@@ -69,8 +59,9 @@ function xml_history_setting($path) {
 
     $xml->save($path);
     return $xml;
-}
+}*/
 
+/*
 function add_film_to_history($id, $when, $xml, $path) {
     //$xml = simplexml_load_file($path) or die("Error: Cannot create object");
     $xpath = new DOMXPath($xml);
@@ -92,7 +83,7 @@ function add_film_to_history($id, $when, $xml, $path) {
     $xml->save($path);
     return $xml;
 }
-
+*/
 function history_contains_id($id) {
     try {
         $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
@@ -106,33 +97,30 @@ function history_contains_id($id) {
     $db = null;
     return in_array($id, $resultado);
 }
-
+/*TODO*/
 function print_history($path) {
-    $xml = new DOMDocument();
-    $xml->load($path);
-    $catalogo_xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
-    $xpath = new DOMXPath($xml);
-
-    foreach ($xml->getElementsByTagName('fecha') as $fecha_node) {
-        echo '<div class="history_tag">';
-        echo '<p>' . $xpath->query("text()", $fecha_node)[0]->nodeValue . ' (<a href="#" class="toggler">expandir</a>)</p>';
-        echo '<div class="toggled">';
-        foreach ($xpath->query('id', $fecha_node) as $id_node) {
-            echo '<div class="responsive">';
-            $film = $catalogo_xml->xpath("/catalogo/pelicula[id=" . $id_node->nodeValue . "]")[0];
-            print_film($film); //printea la informacion de la pelicula
-            echo '</div>';
-        }
-        echo '</div>';
-        echo '</div>';
+    try {
+        $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+        /*         * * use the database connection ** */
+    } catch (PDOException $e) {
+        echo $e->getMessage();
     }
+    /* $xml = new DOMDocument();
+      $xml->load($path);
+      $catalogo_xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
+      $xpath = new DOMXPath($xml);
 
-    /* try {
-      $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
-      } catch (PDOException $e) {
-      echo $e->getMessage();
-      }
-      $sql =; */
+      foreach ($xml->getElementsByTagName('fecha') as $fecha_node) {
+      echo '<div class="history_tag">';
+      echo '<p>' . $xpath->query("text()", $fecha_node)[0]->nodeValue . ' (<a href="#" class="toggler">expandir</a>)</p>';
+      echo '<div class="toggled">';
+      foreach ($xpath->query('id', $fecha_node) as $id_node) {
+      echo '<div class="responsive">';
+      $film = $catalogo_xml->xpath("/catalogo/pelicula[id=" . $id_node->nodeValue . "]")[0];
+      print_film($film); //printea la informacion de la pelicula
+      echo '</div>';
+      } */
+    $sql = "SELECT * FROM orders NATURAL JOIN orderdetail WHERE customerid = " . $_SESSION['customerid'];
     return;
 }
 
