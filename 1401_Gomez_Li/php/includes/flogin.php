@@ -51,15 +51,15 @@ if ($resultado->rowCount() == 1) {
           remove_from_cesta($prod_id);
           //TODO notificar de que se ha eliminado algo de la cesta (?)
         }
+        foreach ($_SESSION['cesta'] as $prod_id) {
+          //obtenemos el precio de ese prod_id
+          $sql = 'SELECT price FROM products WHERE prod_id = '.$prod_id;
+          $precio = $db->query($sql)->price;
+          $sql = 'INSERT INTO orderdetail(orderid, prod_id, price, quantity) VALUES ('.$orderid.','.$prod_id.','.$precio.',1)';
+          $db->exec($sql);
+        }
+        $_SESSION['orderid'] = $orderid;
       }
-      foreach ($_SESSION['cesta'] as $prod_id) {
-        //obtenemos el precio de ese prod_id
-        $sql = 'SELECT price FROM products WHERE prod_id = '.$prod_id;
-        $precio = $db->query($sql)->price;
-        $sql = 'INSERT INTO orderdetail(orderid, prod_id, price, quantity) VALUES ('.$orderid.','.$prod_id.','.$precio.',1)';
-        $db->exec($sql);
-      }
-      $_SESSION['orderid'] = $orderid;
     }
 
     /*PLAN:

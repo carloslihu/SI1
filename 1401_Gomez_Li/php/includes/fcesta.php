@@ -21,19 +21,24 @@ function add_to_cesta($id) {
             } catch (PDOException $e) {
                 echo $e->getMessage();
             }
-            //TODO si no hay carrito en esta ocasion lo creamos. Si hay carrito, entonces creamos una entrada nueva en orderdetail
-        $sql = "SELECT orderid FROM orders WHERE status is NULL AND customerid=" . $row->customerid;
-        $sql = 'INSERT INTO orderdetail'
-        $resultado = $db->query($sql)->fetchAll();
-        //fetchAll
+        if(!isset($_SESSION['orderid'])){
+            //si no hay carrito creado, entonces lo creamos
+            $sql = "INSERT INTO orders(customerid) VALUES (" . $_SESSION['customerid'] . ");";
+            $db->exec($sql);//TODO control de errores (?)
+            $sql = "SELECT orderid FROM orders WHERE status is NULL AND customerid=" . $_SESSION['customerid'];
+            $_SESSION['orderid'] = $db->query($sql)->fetch(PDO::FETCH_OBJ)->orderid;//TODO mas control de errores (?)
+        }
+        $sql = 'SELECT price FROM products WHERE prod_id = '.$id;
+        $price = $db->query($sql)->fetch(PDO::FETCH_OBJ)->price;//TODO control de errores
+        $sql = 'INSERT INTO orderdetail(orderid, prod_id, price, quantity) VALUES ('.$_SESSION['orderid'].','.$id.','.$price.')';
         $db = null;
+        return ($db->exec($sql) == 1);
     } else {//si el usuario no tenia la sesion iniciada
         if (!in_array($id, $_SESSION['cesta'])) {
             array_push($_SESSION['cesta'], $id);
-        return true;
+            return true;
+        }
     }
-    }
-    return false;
 }
 
 /*
