@@ -125,7 +125,7 @@ SELECT
 DROP TABLE orderdetail;
 ALTER TABLE aux rename to orderdetail;
 --------------------------------------------------------                           
---QUITANDO PRIMARY KEYS
+--CAMBIANDO PRIMARY KEYS
 
 ALTER TABLE imdb_actormovies 
 DROP COLUMN numparticipation;
