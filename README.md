@@ -10,14 +10,19 @@ pareja 15
 	añadir y quitar pelis al carrito
 
 	actualizar diagrama ER
-	acabar historial 
+	
 
 	si queremos afinar mucho product.php, hacer que la para actores, directores etc muestre solo los importantes (protagonistas, directores principales etc)
 	si el usuario hace login con duplicados en el carrito y base de datos, notificarle en la pantalla de login que se ha limpiado su carrito de dichos duplicados(?)
 
 	UTILS.PHP ADAPTARLO CON BBDD (TODO'S ESCRITOS)
 
+	CESTA.PHP
+	
+	HISTORY.PHP
 	LA PUTA MEMORIA
+
+	PROBAR CARRITO (SIN SESION/ CON SESION)
 
 # CRITERIOS
 

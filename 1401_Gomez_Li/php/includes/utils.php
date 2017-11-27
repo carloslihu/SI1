@@ -21,12 +21,12 @@ function print_film($films) {
                     </div>';
     return;
 }
-/*TODO*/
+/*
 function print_film_by_id($id, $xml) {
     $film = $xml->xpath("/catalogo/pelicula[id='$id']")[0];
     print_film($film);
 }
-
+*/
 function gastar_saldo($gasto) {
     if (!isset($_SESSION['username']) or ! isset($_SESSION['saldo']))
         return false;
@@ -47,7 +47,7 @@ function gastar_saldo($gasto) {
     $_SESSION['saldo'] = strval($saldo);
     return true;
 }
-/*TODO*/
+/*
 function xml_history_setting($path) {
     $xml = new DOMDocument();
     $xml->load($path);
@@ -59,8 +59,9 @@ function xml_history_setting($path) {
 
     $xml->save($path);
     return $xml;
-}
-/*TODO*/
+}*/
+
+/*
 function add_film_to_history($id, $when, $xml, $path) {
     //$xml = simplexml_load_file($path) or die("Error: Cannot create object");
     $xpath = new DOMXPath($xml);
@@ -82,7 +83,7 @@ function add_film_to_history($id, $when, $xml, $path) {
     $xml->save($path);
     return $xml;
 }
-
+*/
 function history_contains_id($id) {
     try {
         $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
