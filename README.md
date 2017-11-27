@@ -5,6 +5,16 @@ pareja 15
 
 # TOASK:
 
+
+	¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡JAVI IMPORTANTE!!!!!!!!!!!!!
+		AL FORMALIZAR LA COMPRA DEL CARRITO HAY QUE MIRAR LA TABLA ALERTS: 
+			SI HAY ALGUN PRODUCTO QUE NO TENGA STOCK SUFICIENTE
+			APARECERA EN ALERTS EL ORDERID+PROD_ID, Y HAY QUE CONSIDERARLO
+
+
+
+
+
 # TODO:
 	carrito (cuando hace login debo ver si existe ya carrito empezado y cargarlo en sesion)
 	añadir y quitar pelis al carrito
