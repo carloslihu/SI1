@@ -40,7 +40,7 @@
             }
         } else if (isset($_POST['eliminar'])) {//el usuario ha pedido eliminar un producto de su carrito
             remove_from_cesta($_POST['eliminar']);
-            $total = calculate_total($xml);
+            $total = calculate_total();
         }
         include 'includes/header.php';
 
@@ -53,6 +53,7 @@
 
         //info de la pagina
         var_dump($_SESSION['orderid']);
+        var_dump($total);
 
         echo '<h2>Cesta</h2>
                             <p class="confirmation_msg">' . $alert . '</p>
@@ -75,8 +76,9 @@
                                 INNER JOIN products ON products.prod_id = orderdetail.prod_id
                                 NATURAL JOIN imdb_movies NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
                                 where orderid = '.$_SESSION['orderid'].'
-                                group by movietitle, products.prod_id, movieid, orderdetail.price')->fetchAll();
-            foreach ($films as $film) {
+                                group by movietitle, products.prod_id, movieid, orderdetail.price');
+            $film = $films->fetch(PDO::FETCH_OBJ);
+            while($film){
                 echo '<div class="responsive">';
                 print_film($film);
                 echo '<form method="post" action="cesta.php">
@@ -84,16 +86,16 @@
                                     <input type="submit" value="eliminar">
                                 </form>';
                 echo '</div>';
+                $film = $films->fetch(PDO::FETCH_OBJ);
             }
 
         } else {
             foreach ($_SESSION['cesta'] as $ids) {//TODO
-                $db->query('SELECT movietitle as titulo, orderdetail.price as precio, array_agg(directorname) as directores FROM orderdetail
+                $film = $db->query('SELECT movietitle as titulo, products.price as precio, array_agg(directorname) as directores FROM orderdetail
                             INNER JOIN products ON products.prod_id = orderdetail.prod_id
                             NATURAL JOIN imdb_movies NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
-                            WHERE orderdetail.prod_id = '.$id.'
-                            group by movietitle, orderdetail.price');
-
+                            WHERE orderdetail.prod_id = '.$ids.' 
+                            group by movietitle, products.price')->fetch(PDO::FETCH_OBJ);
                 echo '<div class="responsive">';
                 print_film($film);
                 echo '<form method="post" action="cesta.php">

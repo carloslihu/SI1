@@ -37,6 +37,7 @@
                     $queryMovie = $db->query($sql);
                     $movie = $queryMovie->fetch(PDO::FETCH_OBJ);
                     var_dump($queryMovie);
+                    var_dump($movie);
                     //$film = $xml->xpath("/catalogo/pelicula[id='$id']")[0];
                     if (!$queryMovie) {
                         echo '<h1>error 404: film not found</h1>';
