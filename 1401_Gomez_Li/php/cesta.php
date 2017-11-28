@@ -79,7 +79,7 @@
 
         if (isset($_SESSION['orderid'])) {
             //con esta query obtenemos las pelis del carrito
-            $films = $db->query('SELECT movietitle as titulo, products.prod_id as id, movieid, orderdetail.price as precio, array_agg(directorname) as director from orderdetail 
+            $films = $db->query('SELECT movietitle as titulo, products.prod_id as id, movieid, orderdetail.price as precio, string_agg(directorname,\',\') as director from orderdetail 
                                 INNER JOIN products ON products.prod_id = orderdetail.prod_id
                                 NATURAL JOIN imdb_movies NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
                                 where orderid = ' . $_SESSION['orderid'] . '
@@ -97,7 +97,7 @@
             }
         } else {
             foreach ($_SESSION['cesta'] as $ids) {//TODO
-                $film = $db->query('SELECT movietitle as titulo, products.price as precio, array_agg(directorname) as director FROM orderdetail
+                $film = $db->query('SELECT movietitle as titulo, products.price as precio, string_agg(directorname,\',\') as director FROM orderdetail
                             INNER JOIN products ON products.prod_id = orderdetail.prod_id
                             NATURAL JOIN imdb_movies NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
                             WHERE orderdetail.prod_id = ' . $ids . ' 

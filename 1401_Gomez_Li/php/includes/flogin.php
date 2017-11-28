@@ -39,11 +39,13 @@ if ($resultado->rowCount() == 1) {
           //volvemos a buscar el carrito (ahora ya creado)
           $sql = "SELECT orderid FROM orders WHERE status is NULL AND customerid=" . $row->customerid;
           $resultado = $db->query($sql);
+          $_SESSION['orderid'] = $orderid;
         }
     }
     //README estos dos condicionales no son mutuamente excluyentes. El primero prepara el estado del sistema para el segundo
     if(isset($_SESSION['cesta'])){//si habia cesta en la base de datos o si habia cesta en local (y por tanto ahora tambien en la base de datos) hacemos merge
       $orderid = $resultado->fetch(PDO::FETCH_OBJ)->orderid;//nos quedamos con el orderid del carrito
+      $_SESSION['orderid'] = $orderid;
       $sql = 'SELECT prod_id from orderdetail where orderid ='.$orderid;
       $resultado = $db->query($sql);
       if($resultado==TRUE){
@@ -61,7 +63,6 @@ if ($resultado->rowCount() == 1) {
           $sql = 'INSERT INTO orderdetail(orderid, prod_id, price, quantity) VALUES ('.$orderid.','.$prod_id.','.$precio.',1)';
           $db->exec($sql);
         }
-        $_SESSION['orderid'] = $orderid;
       }
       }
     }
