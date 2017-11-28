@@ -68,17 +68,19 @@
                     if (strcmp($filtro, "titulo") == 0) {
                         $sql = 'SELECT prod_id as id, movietitle as titulo, price as precio, string_agg(directorname, \',\') as director
                               FROM Products NATURAL JOIN imdb_movies NATURAL JOIN imdb_directormovies NATURAL JOIN imdb_directors
-                              WHERE movietitle ILIKE \'%' . $search . '%\'';
-                    } else if (strcmp($filtro, "categoria") == 0) {
-                        $sql = 'SELECT prod_id as id, movietitle as titulo, price as precio, string_agg(directorname, \',\') as director
+                              WHERE movietitle ILIKE \'%'.$search.'%\'
+                              GROUP BY id, titulo, precio limit 30';
+                    } else if(strcmp($filtro, "categoria") == 0){
+                      $sql = 'SELECT prod_id as id, movietitle as titulo, price as precio, string_agg(directorname, \',\') as director
                               FROM Products NATURAL JOIN imdb_movies NATURAL JOIN imdb_directormovies NATURAL JOIN imdb_directors
                               NATURAL JOIN imdb_moviegenres NATURAL JOIN imdb_genres
-                              WHERE genrename ILIKE \'%' . $search . '%\'';
+                              WHERE genrename ILIKE \'%'.$search.'%\'
+                              GROUP BY id, titulo, precio limit 30';
                     } else {//filtro == director
                         $sql = 'SELECT prod_id as id, movietitle as titulo, price as precio, string_agg(directorname, \',\') as director
                               FROM Products NATURAL JOIN imdb_movies NATURAL JOIN imdb_directormovies NATURAL JOIN imdb_directors
-                              WHERE directorname ILIKE \'%' . $search . '%\'
-                              GROUP BY id, titulo, precio';
+                              WHERE directorname ILIKE \'%'.$search.'%\'
+                              GROUP BY id, titulo, precio limit 30';
                     }
                     $result = $db->query($sql);
                     if ($result) {
