@@ -14,23 +14,23 @@ function clean_cesta() {
  */
 
 function add_to_cesta($id) {
-    if(isset($_SESSION['customerid'])){//si el usuario tiene la sesion iniciada
+    if (isset($_SESSION['customerid'])) {//si el usuario tiene la sesion iniciada
         try {
-                $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
-                /*                     * * use the database connection ** */
-            } catch (PDOException $e) {
-                echo $e->getMessage();
-            }
-        if(!isset($_SESSION['orderid'])){
+            $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+            /*             * * use the database connection ** */
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        if (!isset($_SESSION['orderid'])) {
             //si no hay carrito creado, entonces lo creamos
             $sql = "INSERT INTO orders(customerid) VALUES (" . $_SESSION['customerid'] . ");";
-            $db->exec($sql);//TODO control de errores (?)
+            $db->exec($sql); //TODO control de errores (?)
             $sql = "SELECT orderid FROM orders WHERE status is NULL AND customerid=" . $_SESSION['customerid'];
-            $_SESSION['orderid'] = $db->query($sql)->fetch(PDO::FETCH_OBJ)->orderid;//TODO mas control de errores (?)
+            $_SESSION['orderid'] = $db->query($sql)->fetch(PDO::FETCH_OBJ)->orderid; //TODO mas control de errores (?)
         }
-        $sql = 'SELECT price FROM products WHERE prod_id = '.$id;
-        $price = $db->query($sql)->fetch(PDO::FETCH_OBJ)->price;//TODO control de errores
-        $sql = 'INSERT INTO orderdetail(orderid, prod_id, price, quantity) VALUES ('.$_SESSION['orderid'].','.$id.','.$price.',1)';
+        $sql = 'SELECT price FROM products WHERE prod_id = ' . $id;
+        $price = $db->query($sql)->fetch(PDO::FETCH_OBJ)->price; //TODO control de errores
+        $sql = 'INSERT INTO orderdetail(orderid, prod_id, price, quantity) VALUES (' . $_SESSION['orderid'] . ',' . $id . ',' . $price . ',1)';
         $ret = ($db->exec($sql) == 1);
         $db = null;
         return $ret;
@@ -53,15 +53,15 @@ function fix_cesta() {
         return false;
     }
     /*
-    $path = '../../usuarios/' . $_SESSION['username'] . '/historial.xml';
-    include_once "utils.php";
-    foreach ($_SESSION['cesta'] as $item) {
-        if (history_contains_id($path, $item)) {
-            remove_from_cesta($item);
-            $had_to_fix = true;
-        }
-    }
-    */
+      $path = '../../usuarios/' . $_SESSION['username'] . '/historial.xml';
+      include_once "utils.php";
+      foreach ($_SESSION['cesta'] as $item) {
+      if (history_contains_id($path, $item)) {
+      remove_from_cesta($item);
+      $had_to_fix = true;
+      }
+      }
+     */
     return false;
 }
 
@@ -84,15 +84,17 @@ function is_valid_compra($id) {
 
 function remove_from_cesta($id) {
     $i = 0;
-    if(isset($_SESSION['orderid'])){
+    if (isset($_SESSION['orderid'])) {
         try {
             $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
-            /*                     * * use the database connection ** */
+            /*             * * use the database connection ** */
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
-        $count = $db->exec('DELETE FROM orderdetail WHERE prod_id = '.$id);//TODO control de errores (?)
-    } else if(isset($_SESSION['cesta'])){
+        $count = $db->exec('DELETE FROM orderdetail WHERE prod_id = ' . $id . 'AND orderid = ' . $_SESSION('orderid')); //TODO control de errores (?)
+        /* por si habia alguna alerta por este producto */
+        $db->exec('DELETE FROM alerts WHERE prod_id = ' . $id . 'AND orderid = ' . $_SESSION('orderid'));
+    } else if (isset($_SESSION['cesta'])) {
         foreach ($_SESSION['cesta'] as $product) {
             if ($product == $id) {//si encontramos el elemento lo borramos, arreglamos el array y salimos
                 array_splice($_SESSION['cesta'], $i, 1);
@@ -111,15 +113,15 @@ function calculate_total() {
     $total = 0;
     try {
         $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
-        /*                     * * use the database connection ** */
+        /*         * * use the database connection ** */
     } catch (PDOException $e) {
         echo $e->getMessage();
     }
-    if(isset($_SESSION['orderid'])){
-        $total = floatval($db->query('SELECT sum(price) FROM orderdetail where orderid = '.$_SESSION['orderid'].' group by orderid')->fetch(PDO::FETCH_OBJ)->sum);
-    } else if(isset($_SESSION['cesta'])){
+    if (isset($_SESSION['orderid'])) {
+        $total = floatval($db->query('SELECT sum(price) FROM orderdetail where orderid = ' . $_SESSION['orderid'] . ' group by orderid')->fetch(PDO::FETCH_OBJ)->sum);
+    } else if (isset($_SESSION['cesta'])) {
         foreach ($_SESSION['cesta'] as $id) {
-            $total += floatval($db->query('SELECT price FROM products where prod_id = '.$id)->fetch(PDO::FETCH_OBJ)->price);
+            $total += floatval($db->query('SELECT price FROM products where prod_id = ' . $id)->fetch(PDO::FETCH_OBJ)->price);
             //$total += floatval($film->precio);
         }
     }
