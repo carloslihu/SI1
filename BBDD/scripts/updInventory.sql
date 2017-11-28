@@ -11,6 +11,9 @@
         s := (SELECT stock FROM inventory WHERE r.prod_id = prod_id) - r.quantity;
         IF (s < 1) THEN
           INSERT INTO alerts VALUES (r.orderid,r.prod_id);
+
+          UPDATE orders SET status=NULL
+          WHERE NEW.orderid=orderid;
         ELSE
           UPDATE inventory
           SET sales = sales + r.quantity,
@@ -33,7 +36,6 @@ CREATE TRIGGER t_updInventory AFTER UPDATE ON orders
 FOR EACH ROW 
 WHEN (NEW.status IS DISTINCT FROM OLD.status AND OLD.status IS NULL)--cuando cambie orders.status(CUANDO PASE DE NULL A ALGO?)
 EXECUTE PROCEDURE updInventory();
-
 /*DELETE FROM orderdetail WHERE orderid = 200000;
 DELETE FROM orders WHERE orderid = 200000;
 INSERT INTO orders VALUES (200000,CURRENT_DATE,10,2,2,2,NULL);

@@ -46,8 +46,9 @@ if ($resultado->rowCount() == 1) {
       $orderid = $resultado->fetch(PDO::FETCH_OBJ)->orderid;//nos quedamos con el orderid del carrito
       $sql = 'SELECT prod_id from orderdetail where orderid ='.$orderid;
       $resultado = $db->query($sql);
+      if($resultado==TRUE){
       $prod_id = $resultado->fetch(PDO::FETCH_OBJ);
-      while($prod_id){
+      while($prod_id != NULL){
         if(in_array($prod_id, $_SESSION['cesta'])){
           remove_from_cesta($prod_id);
           $prod_id = $resultado->fetch(PDO::FETCH_OBJ);
@@ -61,6 +62,7 @@ if ($resultado->rowCount() == 1) {
           $db->exec($sql);
         }
         $_SESSION['orderid'] = $orderid;
+      }
       }
     }
 
@@ -78,7 +80,7 @@ if ($resultado->rowCount() == 1) {
     header("Location: ../index.php");
 } else {
     unset($_SESSION['username']);
-    $_SESSION["loginErr"] = "invalid username or password";
+    $_SESSION["loginErr"] = "invalid email or password";
     header("Location: ../login.php");
 }
 $db = null;
