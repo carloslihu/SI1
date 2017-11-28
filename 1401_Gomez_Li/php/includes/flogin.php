@@ -80,7 +80,7 @@ if ($resultado->rowCount() == 1) {
     header("Location: ../index.php");
 } else {
     unset($_SESSION['username']);
-    $_SESSION["loginErr"] = "invalid username or password";
+    $_SESSION["loginErr"] = "invalid email or password";
     header("Location: ../login.php");
 }
 pg_free_result($resultado);
