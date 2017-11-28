@@ -15,7 +15,7 @@ function print_film($films) {
                             <a href="product.php?id=' . $films->id . '" title="' . $films->titulo . '">
                             <b>' . $films->titulo . '</b>
                         </a>
-                            <br>' . $films->director[0] . '
+                            <br>' . $films->director . '
                             <br>' . $films->precio . ' €
                         </div>
                     </div>';
@@ -98,13 +98,46 @@ function history_contains_id($id) {
     return in_array($id, $resultado);
 }
 /*TODO*/
-function print_history($path) {
+function print_history() {
     try {
         $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
         /*         * * use the database connection ** */
     } catch (PDOException $e) {
         echo $e->getMessage();
     }
+    $sql = 'SELECT orderid, orderdate, orderdetail.prod_id as id, movietitle as titulo, orderdetail.price as precio, array_agg(directorname) as director
+            FROM orders NATURAL JOIN orderdetail INNER JOIN products ON orderdetail.prod_id = products.prod_id NATURAL JOIN imdb_movies
+            NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
+            WHERE customerid = '.$_SESSION['customerid'].'
+            group by orderid, orderdate, orderdetail.prod_id, movietitle, orderdetail.price';
+    $result = $db->query($sql);
+    if($result == FALSE){
+        die("error");
+    }
+    $film = $result->fetch(PDO::FETCH_OBJ);
+    $orderdate = $film->orderdate;
+    //abrimos el div de la primera fecha
+    
+    echo '<div class="history_tag">';
+    echo '<p>'.$film->orderdate.'(<a href="#" class="toggler">expandir</a>) </p>';
+    echo '<div class="toggled">';
+
+    while($film){
+        echo '<div class="responsive">';
+        print_film($film);
+        echo '</div>';
+        //fetcheamos siguiente film
+        $film = $result->fetch(PDO::FETCH_OBJ);
+        if($film && $orderdate != $film->orderdate){//si la siguiente pertenece a una fecha distinta, entonces cerramos el div de la anterior y abrimos uno nuevo
+            echo '</div>';
+            echo '</div>';
+            echo '<div class="history_tag">';
+            echo '<p>'.$film->orderdate.'(<a href="#" class="toggler">expandir</a>) </p>';
+            echo '<div class="toggled">';
+        }
+        
+    }
+
     /* $xml = new DOMDocument();
       $xml->load($path);
       $catalogo_xml = simplexml_load_file("../xml/catalogo.xml") or die("Error: Cannot create object");
@@ -120,7 +153,6 @@ function print_history($path) {
       print_film($film); //printea la informacion de la pelicula
       echo '</div>';
       } */
-    $sql = "SELECT * FROM orders NATURAL JOIN orderdetail WHERE customerid = " . $_SESSION['customerid'];
     return;
 }
 

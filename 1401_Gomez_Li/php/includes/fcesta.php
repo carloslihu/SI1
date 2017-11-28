@@ -92,7 +92,7 @@ function remove_from_cesta($id) {
             echo $e->getMessage();
         }
         $count = $db->exec('DELETE FROM orderdetail WHERE prod_id = '.$id);//TODO control de errores (?)
-    } else {
+    } else if(isset($_SESSION['cesta'])){
         foreach ($_SESSION['cesta'] as $product) {
             if ($product == $id) {//si encontramos el elemento lo borramos, arreglamos el array y salimos
                 array_splice($_SESSION['cesta'], $i, 1);
@@ -116,14 +116,10 @@ function calculate_total() {
         echo $e->getMessage();
     }
     if(isset($_SESSION['orderid'])){
-        echo "aaaa";
-        var_dump($db->query('SELECT sum(price) FROM orderdetail where orderid = '.$_SESSION['orderid'].' group by orderid'));
         $total = floatval($db->query('SELECT sum(price) FROM orderdetail where orderid = '.$_SESSION['orderid'].' group by orderid')->fetch(PDO::FETCH_OBJ)->sum);
-        echo "bbbb";
-        var_dump($total);
     } else if(isset($_SESSION['cesta'])){
         foreach ($_SESSION['cesta'] as $id) {
-            $totqal += floatval($db->query('SELECT price FROM products where prod_id = '.$id)->fetch(PDO::FETCH_OBJ)->price);
+            $total += floatval($db->query('SELECT price FROM products where prod_id = '.$id)->fetch(PDO::FETCH_OBJ)->price);
             //$total += floatval($film->precio);
         }
     }

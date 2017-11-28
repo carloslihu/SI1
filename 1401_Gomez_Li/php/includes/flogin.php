@@ -81,7 +81,6 @@ if ($resultado->rowCount() == 1) {
     $_SESSION["loginErr"] = "invalid username or password";
     header("Location: ../login.php");
 }
-pg_free_result($resultado);
 $db = null;
 
 /*

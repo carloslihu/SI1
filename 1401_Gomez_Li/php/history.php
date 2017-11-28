@@ -20,7 +20,6 @@
 
 
         if (isset($_SESSION['username'])) {
-            $path = '../../usuarios/' . $_SESSION['username'] . '/historial.xml';
 
             echo '<h2>Perfil del usuario:</h2>';
             echo '<p><b>Nombre Usuario:</b> ' . $_SESSION['username'] . ' </p>';
@@ -30,7 +29,7 @@
                         <input type="submit" value="añadir saldo">
                       </form>';
             echo '<h2>Historial:</h2>';
-            print_history($path);
+            print_history();
         }
         ?>
         <div class="clearfix"></div>

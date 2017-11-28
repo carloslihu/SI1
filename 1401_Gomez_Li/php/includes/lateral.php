@@ -5,7 +5,7 @@
         <form action="index.php" method="post">
             <input type="hidden" name="search" value="">
             <input type="hidden" name="filtro" value="categoria">
-            <input type="submit"  value="Destacado"/> 
+            <input type="submit"  value="Horror"/> 
         </form>
         <form action="index.php" method="post">
             <input type="hidden" name="search" value="aventura">
