@@ -24,7 +24,7 @@
         $total = calculate_total();
         if (isset($_POST['comprar']) and isset($_POST['fecha'])) {//el usuario ha pedido comprar los productos de su carrito
             if (isset($_SESSION['username'])) {//obligamos al usuario a hacer login
-                if (!empty($_SESSION['orderid'])) {//comprobamos que el carrito este en base de datos (de lo contrario no existe carrito)
+                if (isset($_SESSION['orderid'])) {//comprobamos que el carrito este en base de datos (de lo contrario no existe carrito)
                     $sql = 'SELECT * FROM alerts WHERE orderid=' . $_SESSION['orderid'];
 
                     if ($db->query($sql)) {/*SI HAY ALGUNA ENTRADA EN ALERTS*/
