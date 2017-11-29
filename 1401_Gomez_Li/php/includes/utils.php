@@ -106,11 +106,11 @@ function print_history() {
     } catch (PDOException $e) {
         echo $e->getMessage();
     }
-    $sql = 'SELECT orderid, orderdate, orderdetail.prod_id as id, movietitle as titulo, orderdetail.price as precio, string_agg(directorname,\',\') as director
+    $sql = 'SELECT orderid, orderdate, orderdetail.prod_id as id, movietitle as titulo, description as descr, orderdetail.price as precio, string_agg(directorname,\',\') as director
             FROM orders NATURAL JOIN orderdetail INNER JOIN products ON orderdetail.prod_id = products.prod_id NATURAL JOIN imdb_movies
             NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
-            WHERE customerid = '.$_SESSION['customerid'].'
-            group by orderid, orderdate, orderdetail.prod_id, movietitle, orderdetail.price';
+            WHERE customerid = '.$_SESSION['customerid'].' and orderdate is not null
+            group by orderid, orderdate, orderdetail.prod_id, movietitle, descr, orderdetail.price';
     $result = $db->query($sql);
     if($result == FALSE){
         die("error");
