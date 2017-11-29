@@ -49,6 +49,8 @@
                 <h2>Register</h2>
                 <div>
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]); ?>">
+                        <span class="correct"> <?php echo $registerErr; ?></span>
+                        <br>
                         <label for="uname">Username</label>
                         <input type="text" id="uname" name="username" placeholder="Tu nombre de usuario.." 
                                value="<?php echo $username; ?>"
@@ -72,8 +74,6 @@
 
                         <label for="bacc">Cuenta Bancaria</label>
                         <input type="number" id="bacc" name="bank_account" placeholder="Tu cuenta bancaria..." value="<?php echo $bank_account; ?>" required>
-                        <span class="correct"> <?php echo $registerErr; ?></span>
-
                         <input type="submit" value="Registrarse">
                     </form>
 
