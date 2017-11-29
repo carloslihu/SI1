@@ -37,7 +37,9 @@
                             if ($row) {
                                 gastar_saldo(-$total);
                                 while ($row) {/* SI HAY ALGUNA ENTRADA EN ALERTS */
-                                    $alert = 'el producto ' . $row->prod_id . ' no tiene stock, por favor, eliminelo\n';
+                                    $sql2="SELECT movietitle FROM imdb_movies NATURAL JOIN products WHERE prod_id = ".$row->prod_id;
+                                    
+                                    $alert = 'el producto ' . $db->query($sql2)->fetchObject()->movietitle . ' no tiene stock, por favor, eliminelo';
                                     $row = $queryOutput->fetch(PDO::FETCH_OBJ);
                                 }
                             } else {
