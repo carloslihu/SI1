@@ -9,6 +9,19 @@ function clean_cesta() {
     unset($_SESSION['cesta_len']);
 }
 
+function hasStock($id){
+    try {
+            $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+            /*                     * * use the database connection ** */
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+    $sql = 'SELECT stock FROM inventory WHERE prod_id ='.$id;
+    $stock = $db->query($sql)->fetch(PDO::FETCH_OBJ);
+    $db = null;
+    return ($stock->stock > 0);
+}
+
 /*
  * añade el id de una pelicula a la cesta de la compra
  */
@@ -87,9 +100,6 @@ function remove_from_cesta($id) {
     $db->exec('DELETE FROM orderdetail WHERE prod_id = ' . $id . 'AND orderid = ' . $_SESSION['orderid']); //TODO control de errores (?)
         /* por si habia alguna alerta por este producto */
     $count=$db->exec('DELETE FROM alerts WHERE prod_id = ' . $id . 'AND orderid = ' . $_SESSION['orderid']);
-    var_dump($id);
-    var_dump($_SESSION['orderid']);
-    var_dump($count);
     } else if (isset($_SESSION['cesta'])) {
         foreach ($_SESSION['cesta'] as $product) {
             if ($product == $id) {//si encontramos el elemento lo borramos, arreglamos el array y salimos

@@ -34,7 +34,6 @@
                             $sql = 'SELECT * FROM alerts WHERE orderid=' . $_SESSION['orderid'];
                             $queryOutput = $db->query($sql);
                             $row = $queryOutput->fetch(PDO::FETCH_OBJ);
-                            var_dump($row);
                             if ($row) {
                                 gastar_saldo(-$total);
                                 while ($row) {/* SI HAY ALGUNA ENTRADA EN ALERTS */
@@ -51,7 +50,6 @@
                                 //creamos una nueva cesta
                                 $sql = "INSERT INTO orders(customerid, netamount, totalamount) VALUES (" . $_SESSION['customerid'] . ",0,0)"; //creo una nueva cesta en la bbdd
                                 $count = $db->exec($sql);
-                                var_dump($count);
                                 if ($count <= 0) {//si no se pudo crear el carrito por algun motivo
                                     $alert = 'Ooops, something went wrong. Try again'; //devolvemos un error mediante texto
                                     echo $alert . '<br>';
@@ -60,7 +58,6 @@
                                 //volvemos a buscar el carrito (ahora ya creado)
                                 $sql = "SELECT orderid FROM orders WHERE status IS NULL AND customerid = " . $_SESSION['customerid'];
                                 $resultado = $db->query($sql);
-                                var_dump($resultado);
                                 $_SESSION['orderid'] = $resultado->fetch(PDO::FETCH_OBJ)->orderid;
                             }
                         }
@@ -117,11 +114,11 @@
             }
         } else {
             foreach ($_SESSION['cesta'] as $ids) {//TODO
-                $film = $db->query('SELECT movietitle as titulo, description as descr, products.price as precio, string_agg(directorname,\',\') as director FROM orderdetail
-                            INNER JOIN products ON products.prod_id = orderdetail.prod_id
-                            NATURAL JOIN imdb_movies NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
-                            WHERE orderdetail.prod_id = ' . $ids . ' 
-                            group by movietitle, descr, products.price')->fetch(PDO::FETCH_OBJ);
+                $film = $db->query('SELECT products.prod_id as id, movietitle as titulo, description as descr, products.price as precio, string_agg(directorname,\',\') as director
+                                    FROM products
+                                    NATURAL JOIN imdb_movies NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
+                                    WHERE products.prod_id = '.$ids.'
+                                    group by movietitle, descr, products.price, id')->fetch(PDO::FETCH_OBJ);
                 echo '<div class="responsive">';
                 print_film($film);
                 echo '<form method="post" action="cesta.php">
