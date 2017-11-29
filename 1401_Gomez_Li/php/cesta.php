@@ -31,7 +31,7 @@
 
                     if ($db->query($sql)->fetch(PDO::FETCH_OBJ)) {/* SI HAY ALGUNA ENTRADA EN ALERTS */
                         foreach ($db->query($sql) as $row) {
-                            echo 'el producto ' . $row['prod_id'] . ' no tiene stock, por favor, eliminelo\n';
+                            $alert = 'el producto ' . $row['prod_id'] . ' no tiene stock, por favor, eliminelo\n';
                         }
                     } else if (gastar_saldo($total)) {//gastamos el saldo, marcamos el order como pagado unseteamos orderid
                         if ($db->exec('UPDATE orders set status = \'Paid\' where orderid = ' . $_SESSION['orderid']) == 0) {
