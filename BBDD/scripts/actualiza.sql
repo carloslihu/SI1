@@ -77,6 +77,7 @@ ALTER TABLE customers ALTER creditcardtype DROP NOT NULL;
 ALTER TABLE customers ALTER creditcardexpiration DROP NOT NULL;
 
 ALTER TABLE customers ALTER income SET NOT NULL;
+ALTER TABLE customers ALTER COLUMN income TYPE numeric;
 ALTER TABLE customers ALTER email SET NOT NULL;
 ALTER TABLE customers ADD CONSTRAINT customers_unique UNIQUE(email);
 

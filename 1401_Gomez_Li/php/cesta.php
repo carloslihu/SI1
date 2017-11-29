@@ -91,11 +91,11 @@
 
         if (isset($_SESSION['orderid'])) {
             //con esta query obtenemos las pelis del carrito
-            $films = $db->query('SELECT movietitle as titulo, products.prod_id as id, movieid, orderdetail.price as precio, string_agg(directorname,\',\') as director from orderdetail 
+            $films = $db->query('SELECT movietitle as titulo, description as descr, products.prod_id as id, movieid, orderdetail.price as precio, string_agg(directorname,\',\') as director from orderdetail 
                                 INNER JOIN products ON products.prod_id = orderdetail.prod_id
                                 NATURAL JOIN imdb_movies NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
                                 where orderid = ' . $_SESSION['orderid'] . '
-                                group by movietitle, products.prod_id, movieid, orderdetail.price');
+                                group by movietitle, products.prod_id, descr, movieid, orderdetail.price');
             $film = $films->fetch(PDO::FETCH_OBJ);
             while ($film) {
                 echo '<div class="responsive">';
@@ -109,11 +109,11 @@
             }
         } else {
             foreach ($_SESSION['cesta'] as $ids) {//TODO
-                $film = $db->query('SELECT movietitle as titulo, products.price as precio, string_agg(directorname,\',\') as director FROM orderdetail
+                $film = $db->query('SELECT movietitle as titulo, description as descr, products.price as precio, string_agg(directorname,\',\') as director FROM orderdetail
                             INNER JOIN products ON products.prod_id = orderdetail.prod_id
                             NATURAL JOIN imdb_movies NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
                             WHERE orderdetail.prod_id = ' . $ids . ' 
-                            group by movietitle, products.price')->fetch(PDO::FETCH_OBJ);
+                            group by movietitle, descr, products.price')->fetch(PDO::FETCH_OBJ);
                 echo '<div class="responsive">';
                 print_film($film);
                 echo '<form method="post" action="cesta.php">

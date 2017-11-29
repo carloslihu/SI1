@@ -15,6 +15,7 @@ function print_film($films) {
                             <a href="product.php?id=' . $films->id . '" title="' . $films->titulo . '">
                             <b>' . $films->titulo . '</b>
                         </a>
+                            <br>' . $films->descr .'
                             <br>' . $films->director . '
                             <br>' . $films->precio . ' €
                         </div>
