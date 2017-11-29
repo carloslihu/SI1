@@ -16,22 +16,15 @@ function clean_cesta() {
 function add_to_cesta($id) {
     if (isset($_SESSION['customerid'])) {//si el usuario tiene la sesion iniciada
         try {
-            $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
-            /*             * * use the database connection ** */
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-        if (!isset($_SESSION['orderid'])) {
-            //si no hay carrito creado, entonces lo creamos
-            $sql = "INSERT INTO orders(customerid) VALUES (" . $_SESSION['customerid'] . ");";
-            $db->exec($sql); //TODO control de errores (?)
-            $sql = "SELECT orderid FROM orders WHERE status is NULL AND customerid=" . $_SESSION['customerid'];
-            $_SESSION['orderid'] = $db->query($sql)->fetch(PDO::FETCH_OBJ)->orderid; //TODO mas control de errores (?)
-        }
-        $sql = 'SELECT price FROM products WHERE prod_id = ' . $id;
-        $price = $db->query($sql)->fetch(PDO::FETCH_OBJ)->price; //TODO control de errores
-        $sql = 'INSERT INTO orderdetail(orderid, prod_id, price, quantity) VALUES (' . $_SESSION['orderid'] . ',' . $id . ',' . $price . ',1)';
-        $ret = ($db->exec($sql) == 1);
+                $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+                /*                     * * use the database connection ** */
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+            }
+        $sql = 'SELECT price FROM products WHERE prod_id = '.$id;
+        $price = $db->query($sql)->fetch(PDO::FETCH_OBJ)->price;//TODO control de errores
+        $sql = 'INSERT INTO orderdetail(orderid, prod_id, price, quantity) VALUES ('.$_SESSION['orderid'].','.$id.','.$price.',1)';
+        $ret = ($db->exec($sql) > 0);
         $db = null;
         return $ret;
     } else {//si el usuario no tenia la sesion iniciada
@@ -117,9 +110,9 @@ function calculate_total() {
     } catch (PDOException $e) {
         echo $e->getMessage();
     }
-    if (isset($_SESSION['orderid'])) {
-        $total = floatval($db->query('SELECT sum(price) FROM orderdetail where orderid = ' . $_SESSION['orderid'] . ' group by orderid')->fetch(PDO::FETCH_OBJ)->sum);
-    } else if (isset($_SESSION['cesta'])) {
+    if(isset($_SESSION['orderid'])){
+        $total = floatval($db->query('SELECT totalamount FROM orders where orderid = '.$_SESSION['orderid'])->fetch(PDO::FETCH_OBJ)->totalamount);
+    } else if(isset($_SESSION['cesta'])){
         foreach ($_SESSION['cesta'] as $id) {
             $total += floatval($db->query('SELECT price FROM products where prod_id = ' . $id)->fetch(PDO::FETCH_OBJ)->price);
             //$total += floatval($film->precio);

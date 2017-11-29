@@ -24,28 +24,40 @@
         $total = calculate_total();
         if (isset($_POST['comprar']) and isset($_POST['fecha'])) {//el usuario ha pedido comprar los productos de su carrito
             if (isset($_SESSION['username'])) {//obligamos al usuario a hacer login
-                if (isset($_SESSION['orderid'])) {//comprobamos que el carrito este en base de datos (de lo contrario no existe carrito)
+                //TODO comprobar que existen orderdetails con orderid = $_SESSION['orderid']
+                $resultado = $db->query('SELECT * FROM orderdetail where orderid = ' . $_SESSION['orderid'])->fetch();
+                if (isset($_SESSION['orderid']) && $resultado) {//comprobamos que el carrito este en base de datos (de lo contrario no existe carrito)
                     $sql = 'SELECT * FROM alerts WHERE orderid=' . $_SESSION['orderid'];
 
-                    if ($db->query($sql)) {/*SI HAY ALGUNA ENTRADA EN ALERTS*/
+                    if ($db->query($sql)->fetch(PDO::FETCH_OBJ)) {/* SI HAY ALGUNA ENTRADA EN ALERTS */
                         foreach ($db->query($sql) as $row) {
-                            echo 'el producto '.$row['prod_id'].' no tiene stock, por favor, eliminelo\n';
+                            echo 'el producto ' . $row['prod_id'] . ' no tiene stock, por favor, eliminelo\n';
+                        }
+                    } else if (gastar_saldo($total)) {//gastamos el saldo, marcamos el order como pagado unseteamos orderid
+                        if ($db->exec('UPDATE orders set status = \'Paid\' where orderid = ' . $_SESSION['orderid']) == 0) {
+                            $alert = "Oooops, something went wrong, try again!";
+                        } else {
+                            clean_cesta();
+                            unset($_SESSION['orderid']);
+                            $alert = "¡Gracias por su compra!";
+                            $total = 0;
+                            //creamos una nueva cesta
+                            $sql = "INSERT INTO orders(customerid, netamount, totalamount) VALUES (" . $_SESSION['customerid'] . ",0,0)"; //creo una nueva cesta en la bbdd
+                            $count = $db->exec($sql);
+                            var_dump($count);
+                            if ($count <= 0) {//si no se pudo crear el carrito por algun motivo
+                                $alert = 'Ooops, something went wrong. Try again'; //devolvemos un error mediante texto
+                                echo $alert . '<br>';
+                                //header("Location: cesta.php");
+                            }
+                            //volvemos a buscar el carrito (ahora ya creado)
+                            $sql = "SELECT orderid FROM orders WHERE status IS NULL AND customerid = " . $_SESSION['customerid'];
+                            $resultado = $db->query($sql);
+                            var_dump($resultado);
+                            $_SESSION['orderid'] = $resultado->fetch(PDO::FETCH_OBJ)->orderid;
                         }
                     } else {
-
-                        if (gastar_saldo($total)) {//gastamos el saldo, marcamos el order como pagado unseteamos orderid
-                            if ($db->exec('update orders set status = \'Paid\' where orderid = ' . $_SESSION['orderid']) == 0)
-                                $alert = "Oooops, something went wrong, try again!";
-                            else {
-                                //clean_cesta();
-
-                                unset($_SESSION['orderid']);
-                                $alert = "¡Gracias por su compra!";
-                                $total = 0;
-                            }
-                        } else {
-                            $alert = "no dispones de saldo suficiente!";
-                        }
+                        $alert = "no dispones de saldo suficiente!";
                     }
                 } else {//en el caso de que la cesta estuviera vacía
                     $alert = "La cesta estaba vacía.";

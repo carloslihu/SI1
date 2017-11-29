@@ -30,42 +30,48 @@ if ($resultado->rowCount() == 1) {
         FROM orders
         WHERE status is NULL AND customerid=" . $row->customerid;
     $resultado = $db->query($sql);
-    if ($resultado == FALSE) {//si no ha cesta en la BBDD
-        if(isset($_SESSION['cesta'])){//si hay cesta en la sesion
-          $sql = "INSERT INTO orders(customerid) VALUES (" . $row->customerid . ");";//creo una nueva cesta en la bbdd
-          $count = $db->exec($sql);
-          if ($count < 0)//si no se pudo crear el carrito por algun motivo
-              $_SESSION["loginErr"] = 'Ooops, something went wrong. Try again';//devolvemos un error mediante texto
-          //volvemos a buscar el carrito (ahora ya creado)
-          $sql = "SELECT orderid FROM orders WHERE status is NULL AND customerid=" . $row->customerid;
-          $resultado = $db->query($sql);
-          $_SESSION['orderid'] = $orderid;
+    $aux = $resultado->fetch(PDO::FETCH_OBJ);
+    var_dump($aux);
+    if ($aux == FALSE) {//si no ha cesta en la BBDD
+      $sql = "INSERT INTO orders(customerid, netamount, totalamount) VALUES (" . $row->customerid . ",0,0)";//creo una nueva cesta en la bbdd
+      $count = $db->exec($sql);
+      var_dump($count);
+      if ($count <= 0){//si no se pudo crear el carrito por algun motivo
+          $_SESSION["loginErr"] = 'Ooops, something went wrong. Try again';//devolvemos un error mediante texto
+          header("Location: ../login.php");
         }
+      //volvemos a buscar el carrito (ahora ya creado)
+      $sql = "SELECT orderid FROM orders WHERE status IS NULL AND customerid = " . $row->customerid;
+      $resultado = $db->query($sql);
+      var_dump($resultado);
+      $_SESSION['orderid'] = $resultado->fetch(PDO::FETCH_OBJ)->orderid;
+    } else {
+      $_SESSION['orderid'] = $aux->orderid;
     }
     //README estos dos condicionales no son mutuamente excluyentes. El primero prepara el estado del sistema para el segundo
-    if(isset($_SESSION['cesta'])){//si habia cesta en la base de datos o si habia cesta en local (y por tanto ahora tambien en la base de datos) hacemos merge
-      $orderid = $resultado->fetch(PDO::FETCH_OBJ)->orderid;//nos quedamos con el orderid del carrito
-      $_SESSION['orderid'] = $orderid;
+    if(!empty($_SESSION['cesta'])){//si habia cesta en la base de datos o si habia cesta en local (y por tanto ahora tambien en la base de datos) hacemos merge
+      //$orderid = $resultado->fetch(PDO::FETCH_OBJ)->orderid;//nos quedamos con el orderid del carrito
+      echo 'entramos en zona de codigo para eliminar redundancias<br>';
+      $orderid = $_SESSION['orderid'];
       $sql = 'SELECT prod_id from orderdetail where orderid ='.$orderid;
       $resultado = $db->query($sql);
-      if($resultado==TRUE){
       $prod_id = $resultado->fetch(PDO::FETCH_OBJ);
-      while($prod_id != NULL){
-        if(in_array($prod_id, $_SESSION['cesta'])){
-          remove_from_cesta($prod_id);
+      var_dump($prod_id);
+      while($prod_id != FALSE){
+        if(in_array(strval($prod_id->prod_id), $_SESSION['cesta'])){
+          remove_from_cesta(strval($prod_id->prod_id));
           $prod_id = $resultado->fetch(PDO::FETCH_OBJ);
           //TODO notificar de que se ha eliminado algo de la cesta (?)
         }
-        foreach ($_SESSION['cesta'] as $prod_id) {
-          //obtenemos el precio de ese prod_id
-          $sql = 'SELECT price FROM products WHERE prod_id = '.$prod_id;
-          $precio = $db->query($sql)->price;
-          $sql = 'INSERT INTO orderdetail(orderid, prod_id, price, quantity) VALUES ('.$orderid.','.$prod_id.','.$precio.',1)';
-          $db->exec($sql);
-        }
       }
+      foreach ($_SESSION['cesta'] as $prod_id) {
+        //obtenemos el precio de ese prod_id
+        $sql = 'SELECT price FROM products WHERE prod_id = '.$prod_id;
+        $precio = $db->query($sql)->fetch(PDO::FETCH_OBJ)->price;
+        $sql = 'INSERT INTO orderdetail(orderid, prod_id, price, quantity) VALUES ('.$orderid.','.$prod_id.','.$precio.',1)';
+        $db->exec($sql);
       }
-    }
+  }
 
     /*PLAN:
       obtener orderid del carrito

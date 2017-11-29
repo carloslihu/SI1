@@ -2,6 +2,9 @@
     <h2 class="centerText">Seleccione Categoria</h2>
     <div class="linkButton">
     <?php
+        echo "customerid: ".$_SESSION['customerid'].'<br/>';
+        echo "orderid: ".$_SESSION['orderid'].'<br/>';
+        echo "cesta: ".var_dump($_SESSION['cesta']).'<br/>';
         try {
             $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
             /*                     * * use the database connection ** */
