@@ -86,7 +86,10 @@ function remove_from_cesta($id) {
         }
     $db->exec('DELETE FROM orderdetail WHERE prod_id = ' . $id . 'AND orderid = ' . $_SESSION['orderid']); //TODO control de errores (?)
         /* por si habia alguna alerta por este producto */
-        $db->exec('DELETE FROM alerts WHERE prod_id = ' . $id . 'AND orderid = ' . $_SESSION['orderid']);
+    $count=$db->exec('DELETE FROM alerts WHERE prod_id = ' . $id . 'AND orderid = ' . $_SESSION['orderid']);
+    var_dump($id);
+    var_dump($_SESSION['orderid']);
+    var_dump($count);
     } else if (isset($_SESSION['cesta'])) {
         foreach ($_SESSION['cesta'] as $product) {
             if ($product == $id) {//si encontramos el elemento lo borramos, arreglamos el array y salimos
