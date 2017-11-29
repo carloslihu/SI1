@@ -93,7 +93,7 @@ function history_contains_id($id) {
         echo $e->getMessage();
     }
     $sql = 'SELECT prod_id from orderdetail natural join orders natural join customers where customerid = ' . $_SESSION['customerid'];
-    $resultado = $db->query($sql)->fetchAll();
+    $resultado = $db->query($sql)->fetchAll(PDO::FETCH_COLUMN, "orderdetail");
     //fetchAll
     $db = null;
     return in_array($id, $resultado);
@@ -106,37 +106,40 @@ function print_history() {
     } catch (PDOException $e) {
         echo $e->getMessage();
     }
-    $sql = 'SELECT orderid, orderdate, orderdetail.prod_id as id, movietitle as titulo, description as descr, orderdetail.price as precio, string_agg(directorname,\',\') as director
-            FROM orders NATURAL JOIN orderdetail INNER JOIN products ON orderdetail.prod_id = products.prod_id NATURAL JOIN imdb_movies
-            NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
-            WHERE customerid = '.$_SESSION['customerid'].' and orderdate is not null
-            group by orderid, orderdate, orderdetail.prod_id, movietitle, descr, orderdetail.price';
+    $sql = 'SELECT orderdate from orders where customerid='.$_SESSION['customerid'].' and orderdate is not null group by orderdate';
     $result = $db->query($sql);
-    if($result == FALSE){
-        die("error");
-    }
-    $film = $result->fetch(PDO::FETCH_OBJ);
-    $orderdate = $film->orderdate;
+    $date = $result->fetch(PDO::FETCH_OBJ);
     //abrimos el div de la primera fecha
     
     echo '<div class="history_tag">';
-    echo '<p>'.$film->orderdate.'(<a href="#" class="toggler">expandir</a>) </p>';
+    echo '<p>'.$date->orderdate.'(<a href="#" class="toggler">expandir</a>) </p>';
     echo '<div class="toggled">';
 
-    while($film){
-        echo '<div class="responsive">';
-        print_film($film);
-        echo '</div>';
-        //fetcheamos siguiente film
-        $film = $result->fetch(PDO::FETCH_OBJ);
-        if($film && $orderdate != $film->orderdate){//si la siguiente pertenece a una fecha distinta, entonces cerramos el div de la anterior y abrimos uno nuevo
+    while($date){
+        //var_dump($date);
+        $sql = 'SELECT orderid, orderdetail.prod_id as id, movietitle as titulo, description as descr, orderdetail.price as precio, string_agg(directorname,\',\') as director
+            FROM orders NATURAL JOIN orderdetail INNER JOIN products ON orderdetail.prod_id = products.prod_id NATURAL JOIN imdb_movies
+            NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
+            WHERE customerid = '.$_SESSION['customerid'].' and orderdate = \''.$date->orderdate.'\'
+            group by orderid, orderdate, orderdetail.prod_id, movietitle, descr, orderdetail.price';
+        //var_dump($sql);
+        $filmResult = $db->query($sql);
+        $film = $filmResult->fetch(PDO::FETCH_OBJ);
+        while($film){
+            echo '<div class="responsive">';
+            print_film($film);
+            echo '</div>';
+            $film = $filmResult->fetch(PDO::FETCH_OBJ);
+        }
+        
+        $date = $result->fetch(PDO::FETCH_OBJ);
+        if($date){
             echo '</div>';
             echo '</div>';
             echo '<div class="history_tag">';
-            echo '<p>'.$film->orderdate.'(<a href="#" class="toggler">expandir</a>) </p>';
+            echo '<p>'.$date->orderdate.'(<a href="#" class="toggler">expandir</a>) </p>';
             echo '<div class="toggled">';
         }
-        
     }
 
     /* $xml = new DOMDocument();
