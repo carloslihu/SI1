@@ -84,9 +84,9 @@ function remove_from_cesta($id) {
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
-        $count = $db->exec('DELETE FROM orderdetail WHERE prod_id = ' . $id . 'AND orderid = ' . $_SESSION('orderid')); //TODO control de errores (?)
+    $db->exec('DELETE FROM orderdetail WHERE prod_id = ' . $id . 'AND orderid = ' . $_SESSION['orderid']); //TODO control de errores (?)
         /* por si habia alguna alerta por este producto */
-        $db->exec('DELETE FROM alerts WHERE prod_id = ' . $id . 'AND orderid = ' . $_SESSION('orderid'));
+        $db->exec('DELETE FROM alerts WHERE prod_id = ' . $id . 'AND orderid = ' . $_SESSION['orderid']);
     } else if (isset($_SESSION['cesta'])) {
         foreach ($_SESSION['cesta'] as $product) {
             if ($product == $id) {//si encontramos el elemento lo borramos, arreglamos el array y salimos

@@ -66,7 +66,7 @@
                 header("Location: login.php");
             }
         } else if (isset($_POST['eliminar'])) {//el usuario ha pedido eliminar un producto de su carrito
-            remove_from_cesta($_POST['eliminar']);
+            remove_from_cesta(intval($_POST['eliminar']));
             $total = calculate_total();
         }
         include 'includes/header.php';
