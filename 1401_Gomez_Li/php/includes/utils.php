@@ -110,19 +110,18 @@ function print_history() {
     $result = $db->query($sql);
     $date = $result->fetch(PDO::FETCH_OBJ);
     //abrimos el div de la primera fecha
-    
-    echo '<div class="history_tag">';
-    echo '<p>'.$date->orderdate.'(<a href="#" class="toggler">expandir</a>) </p>';
-    echo '<div class="toggled">';
+    if($date){
+        echo '<div class="history_tag">';
+        echo '<p>'.$date->orderdate.'(<a href="#" class="toggler">expandir</a>) </p>';
+        echo '<div class="toggled">';
+    }
 
     while($date){
-        //var_dump($date);
         $sql = 'SELECT orderid, orderdetail.prod_id as id, movietitle as titulo, description as descr, orderdetail.price as precio, string_agg(directorname,\',\') as director
             FROM orders NATURAL JOIN orderdetail INNER JOIN products ON orderdetail.prod_id = products.prod_id NATURAL JOIN imdb_movies
             NATURAL JOIN (SELECT movieid, directorname FROM imdb_directormovies NATURAL JOIN imdb_directors) AS D
             WHERE customerid = '.$_SESSION['customerid'].' and orderdate = \''.$date->orderdate.'\'
             group by orderid, orderdate, orderdetail.prod_id, movietitle, descr, orderdetail.price';
-        //var_dump($sql);
         $filmResult = $db->query($sql);
         $film = $filmResult->fetch(PDO::FETCH_OBJ);
         while($film){

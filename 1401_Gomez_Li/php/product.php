@@ -48,10 +48,14 @@
                                 $is_valid = is_valid_compra($id);
                                 if (!$is_valid) { //añadimos el producto a la cesta
                                     $confirm_text = "ya tienes este producto";
-                                } else if (add_to_cesta($id) == true) {//si el error viene dado por intentar añadir a la cesta un producto que ya se compro
-                                    $confirm_text = "producto añadido a la cesta";
-                                } else {//si el error viene dado por intentar añadir a la cesta algo que ya estaba añadido
-                                    $confirm_text = "este producto ya estaba en la cesta";
+                                } else if(hasStock($id)){
+                                    if (add_to_cesta($id) == true) {//si el error viene dado por intentar añadir a la cesta un producto que ya se compro
+                                        $confirm_text = "producto añadido a la cesta";
+                                    } else {//si el error viene dado por intentar añadir a la cesta algo que ya estaba añadido
+                                        $confirm_text = "este producto ya estaba en la cesta";
+                                    }
+                                } else {
+                                    $confirm_text = "no quedan ejemplares de este producto";
                                 }
                                 unset($_POST['comprar']); //desactivamos la variable por si el usuario da a f5 (?)
                             }

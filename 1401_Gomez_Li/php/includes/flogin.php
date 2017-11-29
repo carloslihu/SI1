@@ -31,11 +31,9 @@ if ($resultado->rowCount() == 1) {
         WHERE status is NULL AND customerid=" . $row->customerid;
     $resultado = $db->query($sql);
     $aux = $resultado->fetch(PDO::FETCH_OBJ);
-    var_dump($aux);
     if ($aux == FALSE) {//si no ha cesta en la BBDD
       $sql = "INSERT INTO orders(customerid, netamount, totalamount) VALUES (" . $row->customerid . ",0,0)";//creo una nueva cesta en la bbdd
       $count = $db->exec($sql);
-      var_dump($count);
       if ($count <= 0){//si no se pudo crear el carrito por algun motivo
           $_SESSION["loginErr"] = 'Ooops, something went wrong. Try again';//devolvemos un error mediante texto
           header("Location: ../login.php");
@@ -43,7 +41,6 @@ if ($resultado->rowCount() == 1) {
       //volvemos a buscar el carrito (ahora ya creado)
       $sql = "SELECT orderid FROM orders WHERE status IS NULL AND customerid = " . $row->customerid;
       $resultado = $db->query($sql);
-      var_dump($resultado);
       $_SESSION['orderid'] = $resultado->fetch(PDO::FETCH_OBJ)->orderid;
     } else {
       $_SESSION['orderid'] = $aux->orderid;
@@ -56,7 +53,6 @@ if ($resultado->rowCount() == 1) {
       $sql = 'SELECT prod_id from orderdetail where orderid ='.$orderid;
       $resultado = $db->query($sql);
       $prod_id = $resultado->fetch(PDO::FETCH_OBJ);
-      var_dump($prod_id);
       while($prod_id != FALSE){
         if(in_array(strval($prod_id->prod_id), $_SESSION['cesta'])){
           remove_from_cesta(strval($prod_id->prod_id));
