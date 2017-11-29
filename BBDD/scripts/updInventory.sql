@@ -9,7 +9,7 @@
       WHERE NEW.orderid = t.orderid)
       LOOP
         s := (SELECT stock FROM inventory WHERE r.prod_id = prod_id) - r.quantity;
-        IF (s < 1) THEN
+        IF (s < 0) THEN
           INSERT INTO alerts VALUES (r.orderid,r.prod_id);
 
           UPDATE orders SET status=NULL
