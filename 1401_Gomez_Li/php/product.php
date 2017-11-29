@@ -76,7 +76,7 @@
                 <div class="responsive">
                     <div class="gallery">
                         <a href="">
-                            <img src=' . '../img/murder-on-the-owl-express.jpg' . ' alt=' . $titulo->movietitle . ' width="100" height="100">
+                            <img src=' . '../img/murder-on-the-owl-express.jpg' . ' alt="' . $titulo->movietitle . '"" width="100" height="100">
                         </a>
                         <div class="desc">' . $titulo->movietitle . '</div>
                     </div>
