@@ -28,7 +28,7 @@
             $sql = "Select customerid from customers
             where email ='" . $email . "'";
             if ($db->query($sql)->rowCount() > 0)
-                $usernameErr = 'Usuario ya existe';
+                $usernameErr = 'email ya existe';
             else {
                 $sql = "INSERT INTO customers(username,email,password,creditcard,income) VALUES ('$username','$email','" . md5($password) . "',$bank_account," . rand(0, 100) . ");";
                 $count = $db->exec($sql);
@@ -54,12 +54,12 @@
                                value="<?php echo $username; ?>"
                                onkeyup="checkChars();" >
                         
-                        <br>
+                        
 
                         <label for="email">E-mail</label>
                         <input type="email" id="email" name="email" placeholder="Tu e-mail.." value="<?php echo $email; ?>" required>
                         <span id= "userr" class="error"> <?php echo $usernameErr; ?></span>
-
+                        <br>
                         <label for="pass">Contraseña</label>
                         <input type="password" id="pass" name="password" placeholder="Tu contraseña.." value="<?php echo $password; ?>" pattern=".{8,}" required title="8 caracteres minimo" onkeyup='check(); strength()'>
                         <progress id="strength-meter" max="100" value="0"></progress><br>
