@@ -101,7 +101,8 @@ function remove_from_cesta($id) {
         /* por si habia alguna alerta por este producto */
     $count=$db->exec('DELETE FROM alerts WHERE prod_id = ' . $id . 'AND orderid = ' . $_SESSION['orderid']);
     } else if (isset($_SESSION['cesta'])) {
-        foreach ($_SESSION['cesta'] as $product) {
+        $aux = $_SESSION['cesta'];
+        foreach ($aux as $product) {
             if ($product == $id) {//si encontramos el elemento lo borramos, arreglamos el array y salimos
                 array_splice($_SESSION['cesta'], $i, 1);
                 return;

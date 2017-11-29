@@ -6,7 +6,8 @@ session_start();
 $email = test_input($_POST["email"]);
 $password = test_input($_POST["password"]);
 //comprueba que existe el usuario
-
+include 'utils.php';
+include 'fcesta.php';
 try {
     $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
     /*     * * use the database connection ** */
@@ -56,9 +57,9 @@ if ($resultado->rowCount() == 1) {
       while($prod_id != FALSE){
         if(in_array(strval($prod_id->prod_id), $_SESSION['cesta'])){
           remove_from_cesta(strval($prod_id->prod_id));
-          $prod_id = $resultado->fetch(PDO::FETCH_OBJ);
           //TODO notificar de que se ha eliminado algo de la cesta (?)
         }
+        $prod_id = $resultado->fetch(PDO::FETCH_OBJ);
       }
       foreach ($_SESSION['cesta'] as $prod_id) {
         //obtenemos el precio de ese prod_id

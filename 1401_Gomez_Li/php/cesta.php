@@ -86,9 +86,13 @@
         //info de la pagina
 
         echo '<h2>Cesta</h2>
-                            <p class="confirmation_msg">' . $alert . '</p>
-                            <h1>Total:' . strval($total) . ' €</h1>
-                            <form method="post" action="cesta.php">
+                            <p class="confirmation_msg">' . $alert . '</p>';
+        if(isset($_SESSION['orderid']))
+            echo '<h1>Total:' . strval($total) . ' €</h1>';
+        else
+            echo '<h1>Total:' . strval($total) . ' € (without taxes) </h1>';
+                            
+        echo                '<form method="post" action="cesta.php">
                                 <input type="hidden" name="comprar" value="1" />
                                 <input type="hidden" id="fecha" name="fecha" value="0/0/0" />
                                 <input type="submit" value="comprar" onClick="getDate(\'fecha\');">
