@@ -19,16 +19,16 @@ if (!isset($_REQUEST['submit'])) {
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $db->beginTransaction();
 
+        $sql = "DELETE FROM orders WHERE customerid=" . $_REQUEST['customerid'];
+        $result = $db->exec($sql);
+
         $sql = "DELETE FROM orderdetail WHERE orderid IN "
                 . "(SELECT orderid FROM orders WHERE customerid=" . $_REQUEST['customerid'] . ");";
-        $result = $db->exec($sql);
-        
-        $sql = "DELETE FROM orders WHERE customerid=" . $_REQUEST['customerid'];
         $result = $db->exec($sql);
 
         $sql = "DELETE FROM customers WHERE customerid=" . $_REQUEST['customerid'];
         $result = $db->exec($sql);
-        sleep(20);
+
         $db->commit();
         echo '<p><b>Borrado correcto</b></p>';
         echo '<p><a href="borraCliente.php">Nueva consulta</a></p>';
