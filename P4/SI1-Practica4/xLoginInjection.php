@@ -33,7 +33,7 @@ define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'")
       try {
         $conn = new PDO(DSN,PGUSER,PGPASSWORD);
         $query="select * from customers where username='".$login."' and password='".$pswd."'";
-        // echo "<p> $query </p>";
+        echo "<p> $query </p>";
         $st = $conn->prepare($query);
         if ($st === FALSE) {
           echo "Error en la query: $query";

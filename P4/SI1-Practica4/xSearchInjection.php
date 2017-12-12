@@ -20,7 +20,7 @@ define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'")
       if (isset($anio)) {
         try {
             $consulta = "select movietitle from imdb_movies where year = '$anio'"; 
-
+            echo $consulta;
             $conn = new PDO(DSN,PGUSER,PGPASSWORD);
             $st = $conn->prepare($consulta);
             $st->execute();
