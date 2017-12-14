@@ -2,7 +2,7 @@
 
 CREATE OR REPLACE FUNCTION updPromo() RETURNS TRIGGER AS $$
   BEGIN
-    PERFORM pg_sleep(30);
+    --PERFORM pg_sleep(30);
     UPDATE orderdetail 
     SET price = p.price * (1 - NEW.promo * 0.01)
     FROM products AS p, orders AS o
@@ -22,7 +22,7 @@ EXECUTE PROCEDURE updPromo();
 
 UPDATE customers
 SET promo=50
-WHERE customerid=3;
+WHERE customerid=1;
 /*
 
 

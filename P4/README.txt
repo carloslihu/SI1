@@ -10,5 +10,6 @@ TOASK:
 		c no funciona
 		identificar manualmente?
 		g identificar?
+	
 	GENERAL
 		inyectar a manualmente?
