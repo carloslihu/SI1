@@ -22,7 +22,8 @@ if (!isset($_REQUEST['submit'])) {
         $sql = "DELETE FROM orderdetail WHERE orderid IN "
                 . "(SELECT orderid FROM orders WHERE customerid=" . $_REQUEST['customerid'] . ");";
         $result = $db->exec($sql);
-        sleep(20);
+        /* DESCOMENTAR PARA PROBAR DEADLOCK */
+        /*sleep(20);*/
         $sql = "DELETE FROM orders WHERE customerid=" . $_REQUEST['customerid'];
         $result = $db->exec($sql);
 

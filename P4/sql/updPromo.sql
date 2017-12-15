@@ -1,6 +1,4 @@
-﻿ALTER TABLE customers ADD COLUMN promo numeric;
-
-CREATE OR REPLACE FUNCTION updPromo() RETURNS TRIGGER AS $$
+﻿CREATE OR REPLACE FUNCTION updPromo() RETURNS TRIGGER AS $$
   BEGIN
     --PERFORM pg_sleep(30);
     UPDATE orderdetail 
@@ -20,19 +18,18 @@ FOR EACH ROW
 WHEN (NEW.promo IS DISTINCT FROM OLD.promo)
 EXECUTE PROCEDURE updPromo();
 
-UPDATE customers
-SET promo=50
-WHERE customerid=1;
-/*
 
+--EJECUTAR PARA PROBAR DEADLOCK, JUSTO DESPUES DE PONER EL CUSTOMERID=1 EN BORRACLIENTE.PHP
+ALTER TABLE customers ADD COLUMN promo numeric;
 
-SELECT * FROM orderdetail WHERE orderid IN(
-SELECT orderid FROM orders
-WHERE customerid=1);
-
-SELECT price FROM products WHERE prod_id=1256;
-*/
 UPDATE orders
 SET status=NULL;
 SELECT orderid FROM orders WHERE customerid=1;
+
+
+UPDATE customers
+SET promo=50
+WHERE customerid=1;
+
+
 
