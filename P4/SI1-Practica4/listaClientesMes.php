@@ -109,9 +109,6 @@ define("DSN", "pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'"
                         $stmt->execute();
                         $linea = $stmt->fetch();
                     } else {
-                        /* ejecución de consulta no preparada
-                          $linea = ...
-                         */
                         $linea = $db->query("SELECT count(orderid) AS cc "
                                         . "FROM customers NATURAL JOIN orders "
                                         . "WHERE totalamount >" . $umbral . " AND EXTRACT(MONTH FROM orderdate)=" .
